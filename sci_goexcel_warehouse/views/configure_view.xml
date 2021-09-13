@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<odoo>
+
+   <record id='view_tree_job_scope' model='ir.ui.view'>
+        <field name="name">Job Scope List</field>
+        <field name="model">warehouse.job.scope</field>
+        <field name="arch" type="xml">
+			<tree string='Job Scope'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_job_scope" model="ir.ui.view">
+        <field name="name">Job Scope Form</field>
+        <field name="model">warehouse.job.scope</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="code" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id='view_tree_packing_type' model='ir.ui.view'>
+        <field name="name">Packing Type List</field>
+        <field name="model">warehouse.packing.type</field>
+        <field name="arch" type="xml">
+			<tree string='Packing Type'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_packing_type" model="ir.ui.view">
+        <field name="name">Packing Type Form</field>
+        <field name="model">warehouse.packing.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="code" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id='view_tree_packing_on_pallet' model='ir.ui.view'>
+        <field name="name">Packing Type List</field>
+        <field name="model">warehouse.packing.on.pallet</field>
+        <field name="arch" type="xml">
+			<tree string='Packing on Pallet'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_packing_on_pallet" model="ir.ui.view">
+        <field name="name">Packing on Pallet</field>
+        <field name="model">warehouse.packing.on.pallet</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="code" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id='view_tree_sorting_by' model='ir.ui.view'>
+        <field name="name">Sorting By List</field>
+        <field name="model">warehouse.sorting.by</field>
+        <field name="arch" type="xml">
+			<tree string='Sorting By'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_sorting_by" model="ir.ui.view">
+        <field name="name">Sort By Form</field>
+        <field name="model">warehouse.sorting.by</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="code" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+     <act_window id="action_configure_warehouse_job_scope" name="Job Scope" res_model="warehouse.job.scope"
+                 view_mode="tree,form"/>
+       <act_window id="action_configure_warehouse_packing_type" name="Packing Type" res_model="warehouse.packing.type"
+                 view_mode="tree,form"/>
+       <act_window id="action_configure_warehouse_packing_on_pallet" name="Packing on Pallet" res_model="warehouse.packing.on.pallet"
+                 view_mode="tree,form"/>
+       <act_window id="action_configure_warehouse_sorting_by" name="Sorting By" res_model="warehouse.sorting.by"
+                 view_mode="tree,form"/>
+
+
+
+    <menuitem id="menu_warehouse_job_scope" name="Job Scope" parent="stock.menu_warehouse_config" sequence="1"
+              action="action_configure_warehouse_job_scope"/>
+    <menuitem id="menu_warehouse_packing_type" name="Packing Type" parent="stock.menu_warehouse_config" sequence="2"
+              action="action_configure_warehouse_packing_type"/>
+    <menuitem id="menu_warehouse_packing_on_pallet" name="Packing on Pallet" parent="stock.menu_warehouse_config" sequence="3"
+              action="action_configure_warehouse_packing_on_pallet"/>
+    <menuitem id="menu_warehouse_sorting_by" name="Sorting By" parent="stock.menu_warehouse_config" sequence="4"
+              action="action_configure_warehouse_sorting_by"/>
+
+</odoo>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="action_rft"
+            string="Request Of Transport (ROT)"
+            model="transport.rft"
+            report_type="qweb-pdf"
+            name="sci_goexcel_transport.report_rft"/>
+
+    <template id="report_rft">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o.haulage">
+                <div class="header">
+                    <div class="row" style="margin-left:30px;">
+                        <b style="font-family:arial;font-size:15pt;"><span t-field="o.haulage.name"/> </b><span t-field="o.haulage.vat"/><br/>
+                        <span t-field="o.haulage.street"/><br/>
+                        <span t-field="o.haulage.street2"/><br/>
+                        <span t-field="o.haulage.zip"/> <span t-field="o.haulage.city"/>, <span t-field="o.haulage.state_id.name"/><br/>
+                        TEL: <span t-field="o.haulage.phone"/>  FAX: <span t-field="o.haulage.fax"/><br/>
+                    </div>
+                </div>
+                </t>
+                <div class="page">
+                    <br/>
+                    <h3>
+                        <center><b><u>Request Of Transport (ROT)</u></b></center>
+                    </h3>
+
+
+                    <p style="text-align:right;"><b>RFT No: </b><span t-field="o.rft_no"/></p>
+                    <table border="1" style="border-collapse: collapse; line-height: 150%;
+                            font-size:14px; width:100%;">
+
+                        <tr>
+                            <td colspan="2" style="width:50%;">
+                                FROM<br/>
+                                <span t-field="o.pickup_from.name"/><br/>
+                                <span t-field="o.pickup_from.street"/><br/>
+                                <span t-field="o.pickup_from.street2"/><br/>
+                                <span t-field="o.pickup_from.zip"/> <span t-field="o.pickup_from.city"/> <span t-field="o.pickup_from.state_id.name"/><br/><br/>
+                                ATTN: <span t-field="o.pickup_from_contact_name.name"/>  TEL: <span t-field="o.pickup_from_contact_name.phone"/>
+                            </td>
+                            <td colspan="2" style="width:50%;">
+                                To<br/>
+                                <span t-field="o.delivery_to.name"/><br/>
+                                <span t-field="o.delivery_to.street"/><br/>
+                                <span t-field="o.delivery_to.street2"/><br/>
+                                <span t-field="o.delivery_to.zip"/> <span t-field="o.delivery_to.city"/> <span t-field="o.delivery_to.state_id.name"/><br/><br/>
+                                ATTN: <span t-field="o.delivery_to_contact_name.name"/>  TEL: <span t-field="o.delivery_to_contact_name.phone"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>BOOKING REFERENCE</td>
+                            <td><span t-field="o.booking_reference"/></td>
+                            <td>CONTAINER OPERATOR</td>
+                            <td><span t-field="o.container_operator"/></td>
+                        </tr>
+                        <tr>
+                            <td>CONTAINER SIZE/TYPE</td>
+                            <td>
+                                <t t-foreach="o.container_line_ids" t-as="line">
+                                    <span t-esc="line.exp_vol"/>
+                                </t>
+                            </td>
+                            <td>GROSS WT</td>
+                            <td>
+                                <t t-foreach="o.container_line_ids" t-as="line">
+                                    <span t-esc="line.exp_gross_weight"/>
+                                </t>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>SEAL NO.</td>
+                            <td><span t-field="o.seal_no"/></td>
+                            <td>CLOSING DATE/TIME</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>COMMODITY</td>
+                            <td colspan="3"><span t-field="o.commodity1.name"/></td>
+
+                        </tr>
+                        <tr>
+                            <td>VESSEL NAME/ VOY</td>
+                            <td><span t-field="o.vessel_name.name"/></td>
+                            <td>ETA</td>
+                            <td><span t-field="o.vessel_eta_etd"/></td>
+                        </tr>
+                        <tr>
+
+                            <td>VESSEL CODE</td>
+                            <td><span t-field="o.vessel_code"/></td>
+                            <td>TRANSHIPMENT/ DESTINATION PORT</td>
+                            <td><span t-field="o.port.name"/></td>
+                        </tr>
+                        <tr>
+                            <td>STATUS</td>
+                            <td><span t-field="o.direction"/></td>
+                            <td>PORT CODE</td>
+                            <td><span t-field="o.port.code"/></td>
+                        </tr>
+                        <tr>
+
+                        </tr>
+                        <tr>
+                            <td>FORWARDING AGENT</td>
+                            <td colspan="3"><span t-field="o.forwarding_agent.name"/></td>
+
+                        </tr>
+                        <tr>
+                            <td>SHIPPING AGENT</td>
+                            <td colspan="3"><span t-field="o.shipping_agent.name"/></td>
+                        </tr>
+                        <tr>
+                            <td>SHIPPER/ CONSIGNEE</td>
+                            <td colspan="3"><span t-field="o.shipper.name"/>/ <span t-field="o.consignee.name"/></td>
+                        </tr>
+
+                        <tr>
+                            <td rowspan="4" colspan="2">
+                                Requested By: <br/>
+                                Name <span t-field="o.requested_by"/><br/>
+                                I.C No. <br/>
+                                Tel No <br/>
+                                Company Stamp GLOBAL TRACK LINES (M) SDN BHD<br/>
+                                Signature: <br/>
+                            </td>
+                            <td rowspan="4" colspan="2">
+                                <b><u>Delivery Instruction</u></b><br/>
+                                REQUIRED DATE:
+                                <t t-if="o.required_date_time">
+                                    <span t-esc="datetime.datetime.strptime(str(o.required_date_time), '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')"/>
+                                </t>
+                                <br/>
+                                TIME:
+                                <t t-if="o.required_date_time">
+                                    <span t-esc="datetime.datetime.strptime(str(o.required_date_time), '%Y-%m-%d %H:%M:%S').strftime('%H:%M:%S')"/>
+                                </t>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <hr/>
+                    List of Container No assigned by Shipping or CMO issued by Shipping Agent
+                    <table style="width:100%">
+                        <t t-set="item_no" t-value="0"/>
+                        <t t-foreach="o.container_line_ids" t-as="line">
+                            <tr>
+                                <t t-set="item_no" t-value="item_no + 1" />
+                                <td><span t-esc="item_no"/></td>
+                                <td><span t-esc="line.container_no"/></td>
+                            </tr>
+                        </t>
+                    </table>
+                    <hr/>
+                    GOODS ARE ACCEPTED FOR CARRIAGE BY <b><span t-field="o.haulage.name"/></b>
+                    Trading will be subjected to the Haulier's Conditions of Carriage &amp; Conditions of Tariff.
+                    (Copies available at above address on request)
+                </div>
+
+
+
+            </t>
+        </t>
+    </template>
+</odoo>

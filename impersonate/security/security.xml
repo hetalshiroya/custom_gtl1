@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<data noupdate="0">
+
+		<record id="group_impersonate_all" model="res.groups">
+			<field name="name">Impersonate Anyone</field>
+			<field name="comment">Allows to Impersonate anyone</field>
+		</record>
+
+	</data>
+
+</odoo>

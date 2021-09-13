@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_form_si_manifest_fcl" model="ir.ui.view">
+        <field name="name">Shipping Instruction Manifest FCL</field>
+        <field name="model">freight.website.si.fcl</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="container_no"/>
+                        <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+                               options='{"always_reload": True}'/>
+                        <field name="seal_no"/>
+                        <field name="container_product_name"/>
+                        <field name="packages_no"/>
+                        <field name="packages_no_uom"/>
+                        <field name="exp_net_weight"/>
+                        <field name="exp_gross_weight"/>
+                        <field name="dim_length"/>
+                        <field name="dim_width"/>
+                        <field name="dim_height"/>
+                        <field name="exp_vol"/>
+                        <field name="remark"/>
+                        <field name="container_category_id" invisible="1"/>
+                        <field name="commodity_category_id" invisible="1"/>
+                        <field name="container_commodity_id" invisible="1" domain="[('categ_id', '=', commodity_category_id)]"
+                               options='{"always_reload": True}'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_form_si_manifest_lcl" model="ir.ui.view">
+        <field name="name">Shipping Instruction Manifest LCL</field>
+        <field name="model">freight.website.si.lcl</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="container_no"/>
+                        <field name="container_product_id" domain="[('categ_id', '=', commodity_category_id)]"
+                               options='{"always_reload": True}'/>
+                        <field name="seal_no"/>
+                        <field name="container_product_name"/>
+                        <field name="packages_no"/>
+                        <field name="packages_no_uom"/>
+                        <field name="exp_net_weight"/>
+                        <field name="exp_gross_weight"/>
+                        <field name="dim_length"/>
+                        <field name="dim_width"/>
+                        <field name="dim_height"/>
+                        <field name="exp_vol"/>
+                        <field name="shipping_mark"/>
+                        <field name="commodity_category_id" invisible="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

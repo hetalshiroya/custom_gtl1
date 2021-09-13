@@ -1,0 +1,34 @@
+<odoo>
+
+    <!-- Inherited the invoice view and add RFT id -->
+	<record model="ir.ui.view" id="view_invoice_view_booking">
+		<field name="name">Request For Transport</field>
+		<field name="model">account.invoice</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<!--<field name="inherit_id" ref="account_operating_unit.invoice_form"/>-->
+		<field name="inherit_id" ref="account.invoice_form"/>
+		<field name="arch" type="xml">
+             <xpath expr="//field[@name='date_invoice']" position="before">
+                 <field name="rft_id" attrs="{'invisible':[('rft_id','=',False)]}"/>
+            </xpath>
+		</field>
+	</record>
+
+     <!-- Inherited the vendor bill view and add freight booking id -->
+<!--	<record model="ir.ui.view" id="view_vendor_bill_view_booking">-->
+<!--		<field name="name">Freight Booking</field>-->
+<!--		<field name="model">account.invoice</field>-->
+<!--        <field name="type">form</field>-->
+<!--		<field name="priority" eval="1"/>-->
+<!--		<field name="inherit_id" ref="account.invoice_supplier_form"/>-->
+<!--		<field name="arch" type="xml">-->
+<!--             <xpath expr="//field[@name='origin']" position="before">-->
+<!--                 <field name="freight_booking"/>-->
+<!--            </xpath>-->
+<!--		</field>-->
+<!--	</record>-->
+
+
+
+</odoo>

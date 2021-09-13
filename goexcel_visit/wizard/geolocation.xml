@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="mobile_attendance.form">
+		<field name="name">mobile_attendance form</field>
+		<field name="model">mobile_attendance.mobile_attendance</field>
+		<field name="arch" type="xml">
+			<form id="geo_form">
+				<sheet>
+					<separator string="" colspan="4" col="6"/>
+					<group string="Log Your Attendance">
+						<field name="employee"/>
+						<field name="datetime"/>
+						<p id="demo1">
+							<field name="latitude"/>
+							<field name="longitude"/>
+						</p>
+						<field name="google_map_partner" widget="map"/>
+						<div>
+							<template id="geolocate" inherit_id="web.assets_backend" name="GeoLocation">
+								<xpath expr="." position="inside">
+									<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script> -->
+									<script type="text/javascript" xmlns:h="http://www.w3.org/1999/xhtml">
+										<![CDATA[
+										"use strict";
+										 alert('Hello');
+										 var x = document.getElementById("demo1").onclick = function(){getLocation()};
+										 function getLocation(){
+										 	if (navigator.geolocation){
+										 		navigator.geolocation.getCurrentPosition(showPosition);
+										 	}
+											else{
+										 		x.innerHTML = "Geolocation is not supported by this browser.";
+										 	}
+										 }
+
+										 function showPosition(position){
+											x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+											latitude = position.coords.latitude<br>;
+											longitude = position.coords.longitude;
+											// trying to print location.
+											document.getElementById("latitude").innerHTML = position.coords.latitude;
+											document.getElementById("longitude").innerHTML = position.coords.longitude;
+											//console.log(latitude);
+											//console.log(longitude);
+										 }
+										]]>
+									</script>
+								</xpath>
+							</template>
+							<button id="add_location" onclick="geolocate" string="Add Location" class="oe_highlight" type="object"/>
+						</div>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+</odoo>

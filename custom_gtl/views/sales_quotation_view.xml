@@ -1,0 +1,36 @@
+<odoo>
+
+
+	 <!-- SQ Form -->
+	<record model="ir.ui.view" id="view_sales_quotation_view_booking_gtl">
+		<field name="name">Freight Booking GTL</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_order_form"/>
+		<field name="arch" type="xml">
+			<!--<xpath expr="//field[@name='commodity']" position="replace">
+				<field name="commodity" domain="[('categ_id', '=', commodity_category_id)]"
+					   options='{"always_reload": True}'
+					   attrs="{'invisible': [('service_type', '=', 'others')]}"/>
+			</xpath>-->
+			<xpath expr="//button[@name='action_copy_to_booking']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+			<xpath expr="//button[@name='action_copy_to_rft']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+			<xpath expr="//field[@name='warehouse_hours']" position="after">
+				<field name="instruction"/>
+			</xpath>
+			<xpath expr="//field[@name='validity_date']" position="before">
+				<field name="sq_type" widget="radio" options="{'horizontal': true}"/>
+			</xpath>
+			
+			<xpath expr="//field[@name='note']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+			<xpath expr="//field[@name='sq_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+		</field>
+	</record>
+</odoo>

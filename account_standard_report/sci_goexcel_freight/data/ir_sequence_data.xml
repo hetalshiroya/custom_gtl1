@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+    	<record id="sequence_hbl" model="ir.sequence">
+            <field name="name">hbl</field>
+            <field name="code">hbl</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">HBL-%(y)s%(month)s%(day)s-</field>
+            <field name="sequence_size">3</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+    	</record>
+
+    	<record id="sequence_awb" model="ir.sequence">
+            <field name="name">awb</field>
+            <field name="code">awb</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">AWB-%(y)s%(month)s%(day)s-</field>
+            <field name="sequence_size">3</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+    	</record>
+
+         <record id="sequence_fb" model="ir.sequence">
+            <field name="name">fb</field>
+            <field name="code">fb</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">FB-%(y)s%(month)s%(day)s-</field>
+            <field name="sequence_size">3</field>
+             <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+   		</record>
+
+        <record id="sequence_si" model="ir.sequence">
+            <field name="name">si</field>
+            <field name="code">si</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">SI-%(y)s%(month)s%(day)s-</field>
+            <field name="sequence_size">3</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+   		</record>
+	</data>
+</odoo>

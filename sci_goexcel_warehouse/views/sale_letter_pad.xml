@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="invoice_form_sale_order_term" model="ir.ui.view">
+            <field name="name">sale.order.form.term.invoice</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sci_goexcel_warehouse.view_order_form_warehouse"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//page[@name='other_information']" position="after">
+                        <page string="Terms and Conditions">
+                            <group>
+                                <field name="template_id"/>
+                                <field name="print_term"/>
+                            </group>
+                            <field name="sale_term"/>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    
+        <record id="account_letter_template_form_warehouse" model="ir.ui.view">
+            <field name="name">sale.letter.template.form.warehouse</field>
+            <field name="model">sale.letter.template</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Term">
+                    <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Subject of the letter"/>
+                        </h1>
+                    </div>
+                    <group>
+                            <field name="template" nolabel="1"/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sale_letter_template_tree" model="ir.ui.view">
+            <field name="name">sale.letter.template.tree</field>
+            <field name="model">sale.letter.template</field>
+            <field name="arch" type="xml">
+                <tree string="Sale Term">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sale_letter_template_formats" model="ir.actions.act_window">
+            <field name="name">Sales Terms</field>
+            <field name="res_model">sale.letter.template</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+   <!--     <menuitem id="menu_action_sale_term_form"  parent="sale.menu_sale_config" action="sale_letter_template_formats"
+            sequence="2"/>-->
+        <menuitem id="menu_warehouse_3pl_sale_term" name="Sales Term Condition" parent="menu_warehouse_tallysheet"
+              action="sale_letter_template_formats" sequence="10"/>
+
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+	<record model="ir.ui.view" id="account_letter_template_form_gtl">
+		<field name="name">sale.letter.template.form.gtl</field>
+		<field name="model">sale.letter.template</field>
+		<field name="inherit_id" ref="sale_term.account_letter_template_form"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+
+			<xpath expr="//field[@name='template']" position="after">
+				<field name="sq_type"/>
+			 </xpath>
+
+		</field>
+	</record>
+
+</odoo>

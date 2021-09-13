@@ -1,0 +1,97 @@
+<odoo>
+
+	 <!--Invoice Form-->
+	<record model="ir.ui.view" id="view_invoice_form_gtl">
+		<field name="name">account.invoice.form.inherit.gtl</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="account.invoice_form"/>
+        <field name="type">form</field>
+		<field name="priority" eval="16"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='account_id']" position="replace">
+			</xpath>
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='name']" position="replace">
+			</xpath>
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='product_id']" position="after">
+				<field name="account_id"/>
+				<field name="name"/>
+			</xpath>
+			<xpath expr="//field[@name='team_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='uom_id']" position="after">
+				<field name="freight_currency"/>
+				<field name="freight_foreign_price"/>
+				<field name="freight_currency_rate"/>
+			</xpath>
+			<!-- #TS  -->
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='account_id']" position="before">
+				<field name="freight_hbl"/>
+			</xpath>
+			<xpath expr="//field[@name='date_invoice']" position="before">
+                <!-- <field name="freight_booking" attrs="{'invisible': [('freight_booking', '=', False)]}"
+                        context="{'parent_id':parent.invoice_id}"/>-->
+                  <field name="freight_hbl"/>
+            </xpath>
+			<!-- TS End -->
+
+		</field>
+	</record>
+
+
+	 <!--vendor bill Form-->
+	<record model="ir.ui.view" id="view_invoice_vendor_form_gtl">
+		<field name="name">account.invoice.form.vendor.inherit.gtl</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="type">form</field>
+		<field name="priority" eval="16"/>
+		<field name="arch" type="xml">
+
+			<!-- change the position of these fields -->
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='account_id']" position="replace">
+			</xpath>
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='name']" position="replace">
+			</xpath>
+
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='product_id']" position="after">
+				<field name="account_id"/>
+				<field name="name"/>
+			</xpath>
+			<xpath expr="//field[@name='reference']" position="attributes">
+				<attribute name="string">Vendor Invoice No</attribute>
+			</xpath>
+
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='uom_id']" position="after">
+				<field name="freight_currency"/>
+				<field name="freight_foreign_price"/>
+				<field name="freight_currency_rate"/>
+			</xpath>
+			<xpath expr="//field[@name='origin']" position="before">
+                <field name="freight_hbl"/>
+            </xpath>
+			<xpath expr="//field[@name='invoice_line_ids']/tree[1]/field[@name='freight_booking']" position="after">
+				<field name="freight_hbl"/>
+			</xpath>
+
+		</field>
+	</record>
+
+
+
+	<record id="view_invoice_search_gtl" model="ir.ui.view">
+            <field name="name">Vendor Bill Search</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+				<search>
+					<field name="reference" string="Vendor Reference"/>
+					<field name="date_invoice"/>
+				</search>
+            </field>
+    </record>
+
+</odoo>

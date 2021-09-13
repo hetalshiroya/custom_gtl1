@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report id="action_dispatch"
+            string="Dispatch Job"
+            model="freight.dispatch.job"
+            report_type="qweb-pdf"
+            name="sci_goexcel_dispatch_job.report_dispatch"
+            print_report_name = "('DJ - '+object.dispatch_job_no)"
+    />
+
+    <template id="report_dispatch">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div>
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style=" margin-right:15px; max-height: 120px; max-width: 200px; float: left" alt="Logo"/>
+                        <t t-if="res_company.partner_id">
+                            <b><span t-field="res_company.partner_id.name" style="font-family:arial;font-size:15pt;"/></b>
+                            <span t-field="res_company.company_registry"/><br/>
+                            <span t-field="res_company.partner_id.street"/><br/>
+                            <span t-field="res_company.partner_id.zip"/>
+                            <span t-field="res_company.partner_id.city"/>,
+                            <span t-field="res_company.partner_id.state_id.name"/>,
+                            <span t-field="res_company.partner_id.country_id.name"/><br/>
+                            Hunting Line: <span t-field="res_company.partner_id.phone"/>
+                            <![CDATA[&nbsp;&nbsp;]]>
+                            <br/>
+                            Email : <span t-field="res_company.partner_id.email" style="font-size:11pt;"/>
+                            <![CDATA[&nbsp;]]>
+                            Website : <span t-field="res_company.partner_id.website" style="font-size:11pt;"/>
+                        </t>
+                    </div>
+                </div>
+                <div class="page">
+                    <table border="1" style="border-collapse: collapse; line-height: 150%; font-size:14px; width:100%;">
+                        <tr>
+                            <td style="width:25%; padding-left: 5px;">
+                                DATE:
+                                 <br/>
+                                 <br/>
+
+                            </td>
+                            <td style="width:25%; padding-left: 5px;">
+                                <span t-field="o.received_date"/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                            <td style="width:25%; padding-left: 5px;">
+                                REQUEST NO:
+                                 <br/>
+                                 <br/>
+
+                            </td>
+                            <td style="width:25%; padding-left: 5px;">
+                                <span t-field="o.dispatch_job_no"/>
+                                  <br/>
+                                 <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">
+                                JOB:
+                                <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                            <td colspan="3" style="padding-left: 5px;">
+                                <span t-field="o.type"/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">
+                                CUSTOMER:
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <span t-field="o.customer_id.name"/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                DISPATCH:
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <span t-field="o.dispatcher_id.name"/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">
+                                TASK:
+                                 <br/>
+                                 <br/>
+                                <br/>
+                                 <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <span t-field="o.task"/>
+                                <br/>
+                                 <br/>
+                                <br/>
+                                 <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                TASK COMPLETION DEADLINE:
+                                 <br/>
+                                 <br/>
+                                <br/>
+                                 <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <span t-field="o.deadline"/>
+                                 <br/>
+                                 <br/>
+                                <br/>
+                                 <br/>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">
+                                RECEIVED BY:
+                                 <br/>
+                                (Chop &amp; Sign)
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <!--<span t-field="o.request_by"/>-->
+                            </td>
+                            <td style="padding-left: 5px;">
+                                DATE RECEIVED:
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <span t-field="o.customer_received_date"/>
+                                <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                                 <br/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding-left: 5px;">
+                                COMPLETION DATE:
+                                <br/>
+                                <br/>
+                                <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <span t-field="o.completion_date"/>
+                                <br/>
+                                <br/>
+                                <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                VERIFIED BY:
+                                <br/>
+                                <br/>
+                                <br/>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <span t-field="o.verify_by"/>
+                                <br/>
+                                <br/>
+                                <br/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

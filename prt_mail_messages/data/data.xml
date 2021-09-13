@@ -1,0 +1,21 @@
+<odoo>
+    <data noupdate="1">
+
+        <!-- Partner category (=partner tag) used to mark partners created from Conversations -->
+        <record id="cetmix_conversations_partner_cat" model="res.partner.category">
+            <field name="name">Conversations</field>
+        </record>
+
+        <!-- Default message text preview length -->
+        <record id="cetmix_message_preview_length" model="ir.config_parameter">
+            <field name="key">cetmix.messages_easy_text_preview</field>
+            <field name="value">120</field>
+        </record>
+
+        <!-- Default BG color for internal notes -->
+        <record id="cetmix_message_in_bg_color" model="ir.config_parameter">
+            <field name="key">cetmix.messages_easy_color_note</field>
+            <field name="value">#fbd78b</field>
+        </record>
+    </data>
+</odoo>

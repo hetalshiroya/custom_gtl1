@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report id="action_si"
+            string="Shipping Instruction"
+            model="freight.website.si"
+            report_type="qweb-pdf"
+            name="sci_goexcel_freight.report_si"
+    />
+
+    <template id="report_si">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div>
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style=" margin-right:15px; max-height: 120px; max-width: 200px; float: left" alt="Logo"/>
+                        <t t-if="res_company.partner_id">
+                            <b><span t-field="res_company.partner_id.name" style="font-family:arial;font-size:15pt;"/><br/></b>
+                            <span t-field="res_company.partner_id.street"/><br/>
+                            <span t-field="res_company.partner_id.zip"/>
+                            <span t-field="res_company.partner_id.city"/>,
+                            <span t-field="res_company.partner_id.state_id.name"/>,
+                            <span t-field="res_company.partner_id.country_id.name"/><br/>
+                            Hunting Line: <span t-field="res_company.partner_id.phone"/>
+                            <![CDATA[&nbsp;&nbsp;]]>
+                            Reg No: <span t-field="res_company.company_registry"/><br/>
+                            Email : <span t-field="res_company.partner_id.email"/>
+                            <![CDATA[&nbsp;]]>
+                            Website : <span t-field="res_company.partner_id.website"/>
+                        </t>
+                    </div>
+                </div>
+                <div class="page">
+                    <table border="1" style="border-collapse: collapse; line-height: 150%;
+                            font-size:14px; width:100%;">
+                        <tr>
+                            <td colspan="2" style=" vertical-align: top; padding-left: 5px;">
+                                Booking No.<br/>
+                                <span t-field="o.booking_ref.booking_no"/>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                Freight Type<br/>
+                                <span t-field="o.freight_type"/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                Bill Of Lading Type<br/>
+                                <span t-field="o.bill_of_lading_type"/>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">
+                                Shipper<br/>
+                                <span t-field="o.shipper_c.name"/><br/>
+                                <span t-field="o.shipper_c.street"/><br/>
+                                <span t-field="o.shipper_c.street2"/><br/>
+                                <span t-field="o.shipper_c.zip"/> <span t-field="o.shipper_c.city"/> <span t-field="o.shipper_c.state_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                Consignee <br/>
+                                <span t-field="o.consignee_c.name"/><br/>
+                                <span t-field="o.consignee_c.street"/><br/>
+                                <span t-field="o.consignee_c.street2"/><br/>
+                                <span t-field="o.consignee_c.zip"/> <span t-field="o.consignee_c.city"/> <span t-field="o.consignee_c.state_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                Notify Party<br/>
+                                <span t-field="o.notify_party_c.name"/><br/>
+                                <span t-field="o.notify_party_c.street"/><br/>
+                                <span t-field="o.notify_party_c.street2"/><br/>
+                                <span t-field="o.notify_party_c.zip"/> <span t-field="o.notify_party_c.city"/> <span t-field="o.notify_party_c.state_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                Vessel, Voyage &amp; Direction<br/>
+                                <span t-field="o.vessel"/> / <span t-field="o.voyage_no"/> / <span t-field="o.direction"/><br/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                Port of Load<br/>
+                                <span t-field="o.port_of_loading_input"/><br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                Port of Discharge<br/>
+                                <span t-field="o.port_of_discharge_input"/><br/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                Final Destination<br/>
+                                <span t-field="o.place_of_delivery"/><br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="width:60%; padding-left: 5px;">
+                                Remark<br/>
+                                <span t-field="o.note"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                </t>
+        </t>
+    </template>
+</odoo>

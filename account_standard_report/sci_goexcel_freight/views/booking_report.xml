@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Booking Report Pivot -->
+    <record id='view_booking_report_pivot' model='ir.ui.view'>
+        <field name="name">Booking Report Pivot</field>
+        <field name="model">freight.booking.report</field>
+        <field name="arch" type="xml">
+			<pivot string='Booking Report'>
+                <!--<field name="owner" type="col"/>-->
+                <field name="booking_date_time" interval="month" type="row"/>
+                <field name="customer_name" type="row"/>
+                <field name="product_id" type="row"/>
+				<field name="profit_total" type="measure"/>
+                <field name="sale_total" type="measure"/>
+                <field name="profit_qty" type="measure"/>
+                <field name="cost_total" type="measure"/>
+                <field name="cost_qty" type="measure"/>
+               <!-- <field name="invoice_count" type="measure"/>-->
+               <!-- <field name="vendor_bill_count" type="measure"/>-->
+                <field name="margin_total" type="measure"/>
+			</pivot>
+		</field>
+	</record>
+
+    <!-- Booking Report Tree -->
+     <record id="view_tree_booking_report" model="ir.ui.view">
+        <field name="name">Booking Report Form</field>
+        <field name="model">freight.booking.report</field>
+        <field name="arch" type="xml">
+            <tree string='Booking Job'>
+                <field name="booking_no"/>
+                <field name="booking_date_time"/>
+                <field name="customer_name"/>
+                <field name="product_id"/>
+                 <field name="direction"/>
+                <field name="service_type"/>
+                <field name="cargo_type"/>
+                <field name="shipper"/>
+                <field name="consignee"/>
+                <field name="port_of_loading"/>
+                 <field name="port_of_discharge"/>
+                 <field name="profit_total"/>
+                <field name="cost_total"/>
+                <field name="sale_total"/>
+                 <field name="margin_total"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Booking Report Form -->
+    <record id="view_form_booking_report" model="ir.ui.view">
+        <field name="name">Booking Report Form</field>
+        <field name="model">freight.booking.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="booking_no"/>
+                            <field name="booking_date_time"/>
+                            <field name="customer_name"/>
+                            <field name="profit_total"/>
+                            <field name="cost_total"/>
+                            <field name="sale_total"/>
+                            <field name="product_id"/>
+                            <field name="margin_total"/>
+                            <field name="owner"/>
+                        </group>
+                         <group>
+                             <field name="direction"/>
+                            <field name="service_type"/>
+                            <field name="cargo_type"/>
+                            <field name="carrier_booking_no"/>
+                            <field name="shipper"/>
+                            <field name="consignee"/>
+                            <field name="port_of_loading"/>
+                             <field name="port_of_discharge"/>
+                         </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- Search View Booking -->
+    <record id="view_search_booking_report" model="ir.ui.view">
+        <field name="name">Booking Report Filter</field>
+        <field name="model">freight.booking.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="booking_no"/>
+                 <field name="customer_name"/>
+                <field name="carrier_booking_no"/>
+                <field name="port_of_loading"/>
+                <field name="port_of_discharge"/>
+                <field name="booking_type"/>
+               <!-- <filter string="Loading ETA" name="port_loading_eta" date="port_of_loading_eta"/>-->
+                <filter string="Booking Date" name="filter_booking_date" date="booking_date_time"/>
+                <filter string="Ocean Booking" name="ocean_booking" domain="[('service_type', '=', 'ocean')]"/>
+                <filter string="Land Booking" name="land_booking" domain="[('service_type', '=', 'land')]"/>
+                <filter string="Air Booking" name="air_booking" domain="[('service_type', '=', 'air')]"/>
+                <filter string="Import" name="import" domain="[('direction', '=', 'import')]"/>
+                <filter string="Export" name="export" domain="[('direction', '=', 'export')]"/>
+                <filter string="Booking Draft" name="booking status" domain="[('shipment_booking_status', '=', '01')]"/>
+                <filter string="Booking Confirmed" name="booking status" domain="[('shipment_booking_status', '=', '02')]"/>
+                <filter string="SI Received" name="booking status" domain="[('shipment_booking_status', '=', '03')]"/>
+                <filter string="BL Confirmed" name="booking status" domain="[('shipment_booking_status', '=', '04')]"/>
+                <filter string="OBL confirmed" name="booking status" domain="[('shipment_booking_status', '=', '05')]"/>
+                <filter string="AWB Confirmed" name="booking status" domain="[('shipment_booking_status', '=', '06')]"/>
+                <filter string="Shipment Arrived" name="booking status" domain="[('shipment_booking_status', '=', '07')]"/>
+                <filter string="Done" name="booking status" domain="[('shipment_booking_status', '=', '08')]"/>
+                <filter string="Invoiced" name="booking status" domain="[('shipment_booking_status', '=', '10')]"/>
+                <filter string="FCL" name="fcl" domain="[('direction', '=', 'fcl')]"/>
+                <filter string="LCL" name="lcl" domain="[('direction', '=', 'lcl')]"/>
+
+                 <group expand="1" string="Group By">
+                     <filter string="Booking Date" name="booking_month" domain="[]" context="{'group_by':'booking_date_time'}"/>
+                    <filter string="Loading ETA" name="loading_eta" domain="[]" context="{'group_by':'port_of_loading_eta'}"/>
+                    <filter string="Shipment Mode" name="service_type" domain="[]" context="{'group_by':'service_type'}"/>
+                    <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by':'sales_person'}"/>
+                    <filter string="Owner" name="owner" domain="[]" context="{'group_by':'owner'}"/>
+                    <filter string="Customer" name="customer_name" domain="[]" context="{'group_by':'customer_name'}"/>
+                    <filter string="Port of Loading" name="port_of_loading" domain="[]" context="{'group_by':'port_of_loading'}"/>
+                    <filter string="Port of Discharge" name="port_of_discharge" domain="[]" context="{'group_by':'port_of_discharge'}"/>
+
+
+                 </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_view_freight_booking_report" model="ir.actions.act_window">
+		<field name="name">Report</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">freight.booking.report</field>
+		<!--<field name="view_type">form</field>-->
+		<field name="view_mode">pivot,form,tree</field>
+ 	</record>
+
+   <menuitem id="menu_freight_report_analysis" name="Report" parent="menu_freight" sequence="6"/>
+
+    <menuitem id="menu_freight_analysis" name="Booking Job Profit Analysis" parent="menu_freight_report_analysis"
+               action="action_view_freight_booking_report"/>
+
+ <!--   <menuitem id="menu_freight_booking_booking"    name="Booking"    parent="menu_freight_booking"    action="action_booking"/>-->
+</odoo>

@@ -1,0 +1,113 @@
+<odoo>
+
+     <record model="ir.ui.view" id="view_form_si_gtl">
+         <field name="name">freight.website.si.gtl</field>
+         <field name="model">freight.website.si</field>
+         <field name="inherit_id" ref="sci_goexcel_freight.view_form_si"/>
+         <field name="arch" type="xml">
+             <!--
+             <xpath expr="//field[@name='lcl_line_ids']/tree[1]/field[@name='container_no']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='lcl_line_ids']/tree[1]/field[@name='shipping_mark']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='lcl_line_ids']/tree[1]/field[@name='container_product_id']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='lcl_line_ids']/tree[1]/field[@name='seal_no']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='lcl_line_ids']/tree[1]/field[@name='container_product_name']" position="before">
+                 <field name="shipping_mark"/>
+                 <field name="container_no"/>
+                 <field name="seal_no"/>
+             </xpath>
+             <xpath expr="//field[@name='fcl_line_ids']/tree[1]/field[@name='container_no']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='fcl_line_ids']/tree[1]/field[@name='remark']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='fcl_line_ids']/tree[1]/field[@name='container_product_id']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='fcl_line_ids']/tree[1]/field[@name='seal_no']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='fcl_line_ids']/tree[1]/field[@name='container_product_name']" position="before">
+                 <field name="remark"/>
+                 <field name="container_no"/>
+                 <field name="seal_no"/>
+             </xpath>
+             <xpath expr="//field[@name='fcl_line_ids']/tree[1]/field[@name='dim_length']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//field[@name='fcl_line_ids']/tree[1]/field[@name='dim_width']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//field[@name='fcl_line_ids']/tree[1]/field[@name='dim_height']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//field[@name='lcl_line_ids']/tree[1]/field[@name='dim_length']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//field[@name='lcl_line_ids']/tree[1]/field[@name='dim_width']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//field[@name='lcl_line_ids']/tree[1]/field[@name='dim_height']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             -->
+             <xpath expr="//field[@name='customer_ref']" position="after">
+                 <field name="shipper_load"/>
+             </xpath>
+             <xpath expr="//field[@name='customer_ref']" position="attributes">
+                 <attribute name="string">Co-loader Reference No</attribute>
+             </xpath>
+             <xpath expr="//field[@name='bol_status']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//field[@name='no_of_original_bl']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+
+             <xpath expr="//tree[@name='manifest_tree_fcl']" position="replace">
+                 <tree name="manifest_tree_fcl">
+                     <field name="remark"/>
+                     <field name="container_no"/>
+                     <field name="seal_no"/>
+                     <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+                                           options='{"always_reload": True}' attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="container_product_name" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="packages_no" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="packages_no_uom" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="exp_net_weight" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="exp_gross_weight" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="exp_vol" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="container_category_id" invisible="1" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="commodity_category_id" invisible="1" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="container_commodity_id" invisible="1" domain="[('categ_id', '=', commodity_category_id)]"
+                            options='{"always_reload": True}' attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                 </tree>
+             </xpath>
+             <xpath expr="//tree[@name='manifest_tree_lcl']" position="replace">
+                 <tree name="manifest_tree_lcl">
+                     <field name="shipping_mark"/>
+                     <field name="container_no"/>
+                     <field name="seal_no"/>
+                     <field name="container_product_name" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="packages_no" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="packages_no_uom" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="exp_net_weight" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="exp_gross_weight" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="exp_vol" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                     <field name="commodity_category_id" invisible="1" />
+                 </tree>
+             </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>

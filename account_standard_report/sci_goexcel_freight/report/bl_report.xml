@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_bol" model="report.paperformat">
+        <field name="name">BOL A4</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">2</field>
+        <field name="margin_bottom">28</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+    <report id="action_bl"
+            string="Bill Of Lading"
+            model="freight.bol"
+            report_type="qweb-pdf"
+            name="sci_goexcel_freight.report_bl"
+    />
+
+    <template id="report_bl">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div>
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style=" margin-right:15px; max-height: 120px; max-width: 200px; float: left" alt="Logo"/>
+                        <t t-if="res_company.partner_id">
+                            <b><span t-field="res_company.partner_id.name" style="font-family:arial;font-size:15pt;"/><br/></b>
+                            <span t-field="res_company.partner_id.street"/><br/>
+                            <span t-field="res_company.partner_id.zip"/>
+                            <span t-field="res_company.partner_id.city"/>,
+                            <span t-field="res_company.partner_id.state_id.name"/>,
+                            <span t-field="res_company.partner_id.country_id.name"/><br/>
+                            Hunting Line: <span t-field="res_company.partner_id.phone"/>
+                            <![CDATA[&nbsp;&nbsp;]]>
+                            Reg No: <span t-field="res_company.company_registry"/><br/>
+                            Email : <span t-field="res_company.partner_id.email"/>
+                            <![CDATA[&nbsp;]]>
+                            Website : <span t-field="res_company.partner_id.website"/>
+                        </t>
+                    </div>
+                </div>
+                <div class="page">
+                    <div class="watermark" style="position: fixed; opacity:0.2; font-size:100px; width:50%; text-align:center;
+			                                        z-index:99;border: 2px solid black; bottom: 600px; right: 230px;
+			                                        -webkit-transform: rotate(-30deg);">
+                         <span t-field="o.bol_status"/><br/>
+                    </div>
+
+                    <table border="1" style="border-collapse: collapse; line-height: 150%;
+                            font-size:14px; width:100%;">
+                            <tr>
+                                <td rowspan = "2" colspan="2" style="width:60%; padding-left: 5px;">
+                                    1.Shipper<br/>
+                                    <span t-field="o.shipper_c.name"/><br/>
+                                    <span t-field="o.shipper_c.street"/><br/>
+                                    <span t-field="o.shipper_c.street2"/><br/>
+                                    <span t-field="o.shipper_c.zip"/> <span t-field="o.shipper_c.city"/> <span t-field="o.shipper_c.state_id.name"/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    Booking No.<br/>
+                                    <span t-field="o.booking_ref.booking_no"/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    Sea Waybill No.<br/>
+                                    <span t-field="o.bol_no"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="vertical-align: top; padding-left: 5px;width:40%;" >
+                                    Export References<br/>
+                                    <span t-field="o.export_reference"/>
+                                </td>
+                            </tr>
+							<tr>
+                                <td rowspan = "2" colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                    2. Consignee <br/>
+                                    <span t-field="o.consignee_c.name"/><br/>
+                                    <span t-field="o.consignee_c.street"/><br/>
+                                    <span t-field="o.consignee_c.street2"/><br/>
+                                    <span t-field="o.consignee_c.zip"/> <span t-field="o.consignee_c.city"/> <span t-field="o.consignee_c.state_id.name"/>
+                                </td>
+                                <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                    Forwarding Agent and References<br/>
+                                    FMC/CHB No.<br/>
+                                    <span t-field="o.fa_reference"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                    Point and Country of Origin<br/>
+                                    <span t-field="o.point_country_origin"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                    3. Notify Party<br/>
+                                    <span t-field="o.notify_party_c.name"/><br/>
+                                    <span t-field="o.notify_party_c.street"/><br/>
+                                    <span t-field="o.notify_party_c.street2"/><br/>
+                                    <span t-field="o.notify_party_c.zip"/> <span t-field="o.notify_party_c.city"/> <span t-field="o.notify_party_c.state_id.name"/>
+                                </td>
+                                <td rowspan = "2" colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                    Also Notify Party-routing &amp; Instructions<br/>
+                                    <span t-field="o.routing_instruction"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    4. Combined Transport *   Pre-Carriage by <br/>
+                                    <span t-field="o.pre_carriage_by"/><br/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    5. Combined Transport *  Place of Receipt<br/>
+                                    <span t-field="o.place_of_receipt"/><br/>
+                                </td>
+                            </tr>
+							<tr>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    6. Ocean Vessel Voy. No<br/>
+                                    <span t-field="o.voyage_no"/><br/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    7. Port of Loading<br/>
+                                    <span t-field="o.port_of_loading_input"/><br/>
+                                </td>
+								<td style="vertical-align: top; padding-left: 5px;">
+                                    Service Contract No<br/>
+                                    <span t-field="o.service_contract_no"/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    Doc. Form No<br/>
+                                    <span t-field="o.doc_form_no"/>
+                                </td>
+                            </tr>
+							<tr>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    8. Port of Discharge<br/>
+                                    <span t-field="o.port_of_discharge_input"/><br/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    9. Combined Transport * Place of Delivery<br/>
+                                    <span t-field="o.place_of_delivery"/><br/>
+                                </td>
+								<td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                    Type of Movement<br/>
+                                    <span t-field="o.cargo_type"/><br/>
+                                </td>
+                            </tr>
+						</table>
+						<table border="1" style="border-collapse: collapse; line-height: 150%;
+                            font-size:14px; width:100%;">
+                            <tr>
+                                <th>
+									Marks &amp; Nos. Container / Seal No
+								</th>
+								<th>
+									No. of Container or Packages
+								</th>
+								<th>
+									Description of Goods (if Dangerous Goods, See Clause 20)
+								</th>
+								<th>
+									Gross Weight
+								</th>
+								<th>
+									Measurement
+								</th>
+							</tr>
+                            <t t-foreach="o.cargo_line_ids" t-as="line">
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.marks"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;" >
+                                        <span t-esc="line.container_no"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.container_product_name"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.exp_gross_weight"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.exp_vol"/>
+                                    </td>
+                                </tr>
+                            </t>
+							<tr>
+                                <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+									Declared Cargo Value US$
+								</td>
+								<td colspan="3" style="vertical-align: top; padding-left: 5px;">
+									Description of Contents for Shipper's Use Only (Not part of This Sea Waybill Contract)
+								</td>
+							</tr>
+							<tr>
+                                <td colspan="5" style="vertical-align: top; padding-left: 5px;">
+									10. Total Number of Containers and/or Packages (in words) Subject to Clause 7 Limitation
+									<span t-field="o.total_no_of_packages_words"/>
+								</td>
+							</tr>
+						</table>
+						<table border="1" style="border-collapse: collapse; line-height: 150%;
+                            font-size:14px; width:100%;">
+                            <tr>
+                                <th style="width:20%;">
+									11. Freight &amp; Charges
+								</th>
+								<th>
+									Revenue Tons
+								</th>
+								<th>
+									Rate
+								</th>
+								<th>
+									Per
+								</th>
+								<th>
+									Amount
+								</th>
+								<th>
+									Prepaid
+								</th>
+								<th>
+									Collect
+								</th>
+								<th style="width:25%;">
+									Freight &amp; Charges Payable at / by
+								</th>
+							</tr>
+                            <t t-foreach="o.charge_line_ids" t-as="line">
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.freight_charges"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.revenue_tons"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.rate"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.per"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.amount"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.prepaid"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.collect"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        <span t-esc="line.payable_at_by"/>
+                                    </td>
+                                </tr>
+                            </t>
+							<tr>
+                                <td colspan="5" rowspan="2" style="vertical-align: top; font-size:10px; padding-left: 5px;">
+									Received in external apparent good order and condition except as otherwise noted. The total number of the packages or units
+                                    stuffed in the container, the description of the goods and the weights shown in this Sea Waybill are furnished by the
+                                    merchants, and which the carrier has no reasonable means of checking and is not a part of this Sea Waybill contract. The
+                                    carrier has issued 1 Sea Waybill. The merchants agree to be bound by the terms and conditions of this Sea Waybill as
+                                    if each had personally signed this Sea Waybill.<br/>
+                                    *Applicable Only When Document Used as a Combined Transport Sea Waybill.
+                                    Demurrage and Detention shall be charged according to the tariff published on the Home page of http://lines.coscoshipping.
+                                    com. If any ambiguity or query, please search by Demurrage &amp; Detention Tariff Enquiry. The complete TERMS AND CONDITIONS
+                                    appearing on the reverse side of this Bill of Lading are available at http://lines.coscoshipping.com, which also provides
+                                    other services and more detailed information.
+								</td>
+								<td colspan="3" style="vertical-align: top; padding-left: 5px;">
+									Date Laden on Board <span t-field="o.date_laden_on_board"/>
+								</td>
+							</tr>
+							<tr>
+                                <td colspan="3" style="vertical-align: top; padding-left: 5px;">
+									Signed by:
+								</td>
+
+							</tr>
+						</table>
+                        <p style="text-align:left; ">
+						1201 Date of Issue <span t-field="o.date_of_issue"/> Place of Issue <span t-field="o.place_of_issue"/>
+                        <span style="float:right;">
+                        Signed for the Carrier, <span t-field="o.carrier_c.name"/>
+                        </span>
+                        </p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

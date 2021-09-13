@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report id="action_si_report"
+            string="Shipping Instruction"
+            model="freight.website.si"
+            report_type="qweb-pdf"
+            name="sci_goexcel_shipping_instruction.report_si"
+            menu="False"
+            print_report_name = "('SI - ' + object.si_no)"
+    />
+
+    <report id="action_si_report_xlsx"
+            string="Shipping Instruction Excel"
+            model="freight.website.si"
+            report_type="xlsx"
+            name="sci_goexcel_shipping_instruction.report_si_xlsx"
+            menu="False"
+            print_report_name = "('SI - ' + object.si_no)"
+    />
+
+    <template id="report_si">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div>
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style=" margin-right:15px; max-height: 120px; max-width: 200px; float: left" alt="Logo"/>
+                        <t t-if="res_company.partner_id">
+                            <b><span t-field="res_company.partner_id.name" style="font-family:arial;font-size:15pt;"/></b>
+                            <span t-field="res_company.company_registry"/><br/>
+                            <span t-field="res_company.partner_id.street"/><br/>
+                            <span t-field="res_company.partner_id.zip"/>
+                            <span t-field="res_company.partner_id.city"/>,
+                            <span t-field="res_company.partner_id.state_id.name"/>,
+                            <span t-field="res_company.partner_id.country_id.name"/><br/>
+                            Hunting Line: <span t-field="res_company.partner_id.phone"/>
+                            <![CDATA[&nbsp;&nbsp;]]>
+                            <br/>
+                            Email : <span t-field="res_company.partner_id.email" style="font-size:11pt;"/>
+                            <![CDATA[&nbsp;]]>
+                            Website : <span t-field="res_company.partner_id.website" style="font-size:11pt;"/>
+                        </t>
+                    </div>
+                </div>
+                <div class="page">
+                    <t t-if="o.service_type == 'ocean' or o.service_type == 'air'">
+                        <t t-if="o.direction == 'import'">
+                            <div style="font-size:16px;">
+                                <h3><b>SHIPPING INSTRUCTION - <span t-field="o.air_freight_type"/></b></h3>
+                            </div>
+                            <table style="line-height: 150%; font-size:10px; width:100%;">
+                                <tr>
+                                    <td style="width:20%; padding-left: 5px;">
+                                        DATE
+                                    </td>
+                                    <td style="width:2%; padding-left: 5px;">
+                                        :
+                                    </td>
+                                    <td style="width:78%; padding-left: 5px;">
+                                        <span t-field="o.booking_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">TO</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.to_char"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">ATTENTION</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.attn_char"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding-left: 5px; border-top:1px solid black;">
+                                        WE HEREBY APPEND BELOW FULL DETAILS FOR THE SHIPMENT
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">SHIPPER</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.shipper"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">CONSIGNEE</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.consignee"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">DEPARTURE</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;">
+                                        <span t-field="o.port_of_loading_input"/>/
+                                        <span t-field="o.booking_ref.port_of_loading_eta"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">DESTINATION</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;">
+                                        <span t-field="o.port_of_discharge_input"/>/
+                                        <span t-field="o.booking_ref.port_of_discharge_eta"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">PCS/WEIGHT/M3</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.pcs_weight_m3"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">COMMODITY</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.commodity"/></td>
+                                </tr>
+                            </table>
+                            <table style="line-height: 150%; font-size:10px; width:100%;">
+                                <tr>
+                                    <td style="width:20%; padding-left: 5px;">
+                                        MAWB NO.
+                                    </td>
+                                    <td style="width:2%; padding-left: 5px;">
+                                        :
+                                    </td>
+                                    <td style="width:23%; padding-left: 5px;">
+                                        <span t-field="o.booking_ref.mawb_no"/>
+                                    </td>
+                                    <td style="width:5%; padding-left: 5px;"></td>
+                                    <td style="width:10%; padding-left: 5px;">
+                                        MAWB
+                                    </td>
+                                    <td style="width:2%; padding-left: 5px;">
+                                        :
+                                    </td>
+                                    <td style="width:38%; padding-left: 5px;">
+                                        <span t-field="o.freight_type"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">HAWB NO.</td>
+                                    <td style="width:2%; padding-left: 5px;">:</td>
+                                    <td style="width:23%; padding-left: 5px;"><span t-field="o.booking_ref.awb_no"/></td>
+                                    <td style="width:5%; padding-left: 5px;"></td>
+                                    <td style="width:10%; padding-left: 5px;">HAWB</td>
+                                    <td style="width:2%; padding-left: 5px;">:</td>
+                                    <td style="width:3%; padding-left: 5px;"><span t-field="o.freight_type"/></td>
+                                </tr>
+                            </table>
+                            <br/><br/><br/>
+                            <p style="">THANKS &amp; BEST REG ARDS</p>
+                            <p style=""><span t-esc="user.name"/></p>
+                        </t>
+                    </t>
+                    <t t-if="o.direction == 'export' or o.service_type == 'land'">
+                        <table border="1" style="border-collapse: collapse; line-height: 150%; font-size:10px; width:100%;">
+                            <tr>
+                                <td colspan="2" style=" vertical-align: top; padding-left: 5px;">
+                                    <b>Booking No.</b><br/>
+                                    <span t-field="o.booking_ref.booking_no"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    <b>Freight Type</b><br/>
+                                    <span t-field="o.freight_type"/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    <b>Bill Of Lading Type</b><br/>
+                                    <span t-field="o.bill_of_lading_type"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding-left: 5px;">
+                                    <b>Shipper</b><br/>
+                                    <span t-field="o.shipper"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                    <b>Consignee </b><br/>
+                                    <span t-field="o.consignee"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                    <b>Notify Party</b><br/>
+                                    <span t-field="o.notify_party"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    <b>Vessel, Voyage &amp; Direction</b><br/>
+                                    <span t-field="o.vessel"/> / <span t-field="o.voyage_no"/> / <span t-field="o.direction"/><br/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    <b>Port of Load</b><br/>
+                                    <span t-field="o.port_of_loading_input"/><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    <b>Port of Discharge</b><br/>
+                                    <span t-field="o.port_of_discharge_input"/><br/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;">
+                                    <b>Final Destination</b><br/>
+                                    <span t-field="o.place_of_delivery"/><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="width:60%; padding-left: 5px;">
+                                    <b>Remark</b><br/>
+                                    <span t-field="o.note"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

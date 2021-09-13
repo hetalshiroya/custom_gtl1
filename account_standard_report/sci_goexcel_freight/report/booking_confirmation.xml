@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <report id="action_booking_information_report"
+            string="Booking Confirmation"
+            model="freight.booking"
+            report_type="qweb-pdf"
+            name="sci_goexcel_freight.report_booking_confirmation"/>
+          <!--    paperformat="paperformat_A4_portrait_report"/>
+           file="sci_goexcel_freight.report_booking_confirmation" -->
+    <template id="report_booking_confirmation">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">  <!-- define in general settings -> document template, for logo, address -->
+                    <div class="page">
+                        <!-- Report header content -->
+                            <br/>
+                            <h3 style="border-left:1pt solid black;border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;background-color:#E0E0E0;width:100%">
+                                <center><span t-field="o.cargo_type"/><span>&#160;Booking Confirmation </span></center>
+                            </h3>
+                            <br/>
+
+                            <table style="width:100%">
+                                <tr>
+                                    <th>TO:</th>
+                                    <td><span t-field="o.customer_name"/></td>
+                                    <th>BOOKING NO:</th>
+                                    <td><span t-field="o.booking_no"/></td>
+                                </tr>
+                                <tr>
+                                    <th>ATTN:</th>
+                                    <td><span t-esc="o.contact_name" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/></td>
+                                    <th>BOOKING DATE:</th>
+                                    <td><span t-esc="o.booking_date_time" t-options='{"widget": "date"}'/></td>
+                                </tr>
+                                <tr>
+                                    <th>TEL:</th>
+                                    <td>
+                                    <div t-field="o.customer_name"
+                                    t-options='{"widget": "contact", "fields": ["phone"], "no_marker": True, "phone_icons": True}'/>
+                                    </td>
+                                   <!-- <td><span t-field="o.contact_name"/></td>-->
+                                    <th>DATE PRINTED:</th>
+                                     <td>
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <th>FAX:</th>
+                                    <td>
+                                    <div t-field="o.customer_name"
+                                    t-options='{"widget": "contact", "fields": ["fax"], "no_marker": True}'/>
+                                    </td>
+                                    <th>CARRIER REFERENCE NO:</th>
+                                    <td><span t-field="o.carrier_booking_no"/></td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td></td>
+                                    <th>PREPARED BY:</th>
+                                    <td><span t-field="o.owner"/></td>
+                                </tr>
+	                	    </table>
+                            <br/>
+                             <span>WE ARE PLEASED TO CONFIRM YOUR BOOKING AS PER FOLLOWING:</span>
+                            <br/>
+                            <br/>
+                            <table style="width:100%">
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>SHIPPER:</th>
+                                    <td><span t-field="o.shipper"/></td>
+                                    <th>CARRIER:</th>
+                                    <td><span t-field="o.carrier"/></td>
+                                </tr>
+                                 <tr style="background-color:#E0E0E0;">
+                                    <th>FORWARDING AGENT:</th>
+                                    <td><span t-field="o.forwarding_agent_code"/></td>
+                                     <th style="height:35px">FEEDER/DIRECT VESSEL:</th>
+                                    <td><span t-field="o.vessel_name"/>/<span t-field="o.vessel_id"/></td>
+                                </tr>
+
+                          <!--  </table>-->
+
+                            <!--<table style="background-color:#F8F9F9;width:100%">-->
+                                <tr style="background-color:#F8F9F9">
+                                    <th>PLACE OF RECEIPT:</th>
+                                    <td><span t-field="o.place_of_receipt"/></td>
+                                    <th>RECEIPT ETA:</th>
+                                    <td><span t-field="o.place_of_receipt_ata"/></td>
+                                </tr>
+                                  <tr style="background-color:#F8F9F9">
+                                    <th>PORT OF LOADING:</th>
+                                    <td><span t-field="o.port_of_loading"/></td>
+                                     <th>LOADING ETD:</th>
+                                    <td><span t-field="o.port_of_loading_eta"/></td>
+                                </tr>
+                                 <tr style="background-color:#F8F9F9">
+                                    <th>PORT OF TRANSHIP:</th>
+                                    <td><span t-field="o.port_of_tranship"/></td>
+                                    <th>TRANSHIP ETA:</th>
+                                    <td><span t-field="o.port_of_tranship_eta"/></td>
+                                 </tr>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>PORT OF DISCHARGE:</th>
+                                    <td><span t-field="o.port_of_discharge"/></td>
+                                    <th style="height:35px">LOADING ETA:</th>
+                                    <td><span t-field="o.port_of_discharge_eta"/></td>
+                                </tr>
+                           <!-- </table>
+                            <table style="background-color:#E0E0E0;width:100%">-->
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>CLOSING DATE / TIME:</th>
+                                    <td><span t-field="o.shipment_close_date_time"/></td>
+                                    <th>FREIGHT TERM:</th>
+                                    <td>FREIGHT&#160;<span t-field="o.freight_type"/></td>
+                                </tr>
+                                 <tr style="background-color:#E0E0E0;">
+                                    <th>CARGO DELIVERY TO:</th>
+                                    <td><span t-field="o.delivery_to"/></td>
+                                     <th style="height:35px"></th>
+                                    <td></td>
+                                </tr>
+                         <!--   </table>
+                            <table style="background-color:#F8F9F9;width:100%">-->
+                            <t t-if="o.cargo_type == 'fcl'" t-foreach="o.operation_line_ids" t-as="line">
+                                <tr style="background-color:#F8F9F9">
+                                    <th>COMMODITY:</th>
+                                    <td><span t-field="o.commodity"/></td>
+                                    <th>CONTAINER:</th>
+                                    <td><span t-field="line.fcl_container_qty"/>&#160;X&#160;<span t-field="line.container_id"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                   <th>WEIGHT:</th>
+                                    <td><span t-field="line.exp_gross_weight"/></td>
+                                    <th>NO OF PACKAGES:</th>
+                                    <td><span t-field="line.packages_no"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>VOLUME:</th>
+                                    <td><span t-field="line.exp_vol"/></td>
+                                    <th style="height:35px"></th>
+                                    <td></td>
+                                </tr>
+                            </t>
+                                <t t-if="o.cargo_type == 'lcl'" t-foreach="o.operation_line_ids2" t-as="line">
+                               <tr style="background-color:#F8F9F9">
+                                    <th>COMMODITY:</th>
+                                    <td><span t-field="o.commodity"/></td>
+                                    <th>CONTAINER:</th>
+                                    <td><span t-field="line.container_id"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                   <th>WEIGHT:</th>
+                                    <td><span t-field="line.exp_gross_weight"/></td>
+                                    <th>NO OF PACKAGES:</th>
+                                    <td><span t-field="line.packages_no"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>VOLUME:</th>
+                                    <td><span t-field="line.exp_vol"/></td>
+                                    <th style="height:35px"></th>
+                                    <td></td>
+                                </tr>
+                            </t>
+                            <!--</table>
+                            <table style="background-color:#E0E0E0;width:100%">-->
+                               <tr style="background-color:#E0E0E0;">
+                                    <th>SMK SA CODE:</th>
+                                    <td><span t-field="o.shipping_agent_smk_code"/></td>
+                                    <th>PSA CODE:</th>
+                                    <td><span t-field="o.psa_code"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>VESSEL ID:</th>
+                                    <td><span t-field="o.vessel_id"/></td>
+                                     <th>SCN CODE:</th>
+                                    <td><span t-field="o.scn_code"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>TERMINAL:</th>
+                                    <td><span t-field="o.terminal"/></td>
+                                    <th style="height:35px"></th>
+                                    <td></td>
+                                </tr>
+                                <!-- GTL -->
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>EMPTY PICK UP LOCATION:</th>
+                                    <td><span t-field="o.empty_pick_up_location"/></td>
+                                    <th>FULL RETURN LOCATION:</th>
+                                    <td><span t-field="o.full_return_location"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>EMPTY PICK UP ADDRESS:</th>
+                                    <td><span t-field="o.empty_pick_up_address"/></td>
+                                    <th>FULL RETURN ADDRESS:</th>
+                                    <td><span t-field="o.full_return_address"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>EMPTY PICK UP TELEPHONE:</th>
+                                    <td><span t-field="o.empty_pick_up_telephone"/></td>
+                                    <th>FULL RETURN TELEPHONE:</th>
+                                    <td><span t-field="o.full_return_telephone"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0">
+                                    <th>REQUIRED DOCUMENT:</th>
+                                    <td colspan="3"><span t-field="o.required_document"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0">
+                                    <th>DUE DATE:</th>
+                                    <td colspan="3"><span t-field="o.due_date"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0">
+                                    <th>RESPONSIBLE PARTIES:</th>
+                                    <td colspan="3"><span t-field="o.responsible_parties"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>CARGO NATURE:</th>
+                                    <td colspan="3"><span t-field="o.cargo_nature"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>CARGO DESCRIPTION:</th>
+                                    <td colspan="3"><span t-field="o.commodity"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>INTENDED VGM CUT-OFF:</th>
+                                    <td><span t-field="o.intended_vgm_cut_off"/></td>
+                                    <th>INTENDED SI CUT-OFF:</th>
+                                    <td><span t-field="o.intended_si_cut_off"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>INTENDED <span t-field="o.cargo_type"/> CY CUT-OFF:</th>
+                                    <td><span t-field="o.intended_cy_cut_off"/></td>
+                                    <th>INTENDED BL CUT-OFF:</th>
+                                    <td><span t-field="o.intended_bl_cut_off"/></td>
+                                </tr>
+                            </table><br/>
+                        <b>
+                        REMARK:
+                        </b><br/>
+                        <span t-field="o.note"/>
+                        <br/><br/><br/> <!-- Report footer content -->
+                        <center>Vessel is subject to change with/without prior notice from carrier/agent.</center>
+                        We provide worldwide marine insurance coverage upon your request/instruction. Please note that
+                        it is your responsibility to ensure the adequate marine insurance coverage for ALL shipment
+                        on transit via airfreight/seafreight from origin to final destination at all time. <br/>
+                        <center>E &amp; OE</center>
+                        ALL BUSINESS TRANSACTION ARE SUBJECTED TO OUR COMPANY STANDARD TRADING CONDITIONS.
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

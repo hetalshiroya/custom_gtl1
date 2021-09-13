@@ -1,0 +1,309 @@
+<odoo>
+
+	 <!-- Tree View SI -->
+    <record id='view_tree_si' model='ir.ui.view'>
+        <field name="name">Shipping Instruction</field>
+        <field name="model">freight.website.si</field>
+        <field name="arch" type="xml">
+			<tree string='Shipping Instruction' decoration-muted="si_status=='04'">
+                <field name="si_status"/>
+				<field name="si_no"/>
+                <field name="cargo_type"/>
+				<field name="service_type"/>
+                <field name="direction"/>
+				<field name="customer_name"/>
+                <field name="shipper"/>
+                <field name="consignee" />
+                <field name="booking_date"/>
+                <field name="create_date"/>
+                <field name="port_of_loading_input"/>
+                <field name="port_of_discharge_input"/>
+                <field name="carrier_booking_ref"/>
+               <!-- <field name="company_id" groups="base.group_multi_company"/>-->
+			</tree>
+		</field>
+	</record>
+
+
+    <!-- Form View SI -->
+    <record id="view_form_si" model="ir.ui.view">
+        <field name="name">Shipping Instruction</field>
+        <field name="model">freight.website.si</field>
+        <field name="arch" type="xml">
+            <form string="Shipping Instruction">
+                <header>
+                  <!--  <button name="action_copy_to_booking"
+							type="object"
+							string="Copy to Booking"
+							class="oe_highlight" confirm='Kindly Manually Update Master Data for Notify Party, Consignee and Oversea Agent!'
+                                    attrs="{'invisible': [('si_status', 'not in', ['01','02'])]}"/>-->
+                    <button name="action_cancel_si"
+							type="object"
+							string="Cancel SI"
+							class="oe_button"
+                            confirm="Are you sure you want to Cancel SI?"
+                            attrs="{'invisible': [('si_status', 'in', ['03','04'])]}"/>
+                    <!--
+                    <button name="action_send_si"
+							type="object"
+							string="Send SI"
+							class="oe_highlight"/>
+                    <button name="action_send_si_xlsx"
+							type="object"
+							string="Print SI (Excel)"
+							class="oe_highlight"/>
+							-->
+                    <field name="si_status" widget="statusbar" clickable="True" statusbar_visible="01,02,03" options='{"always_reload": True}'/>
+				</header>
+                <sheet>
+					<group string="Booking Information">
+                        <group>
+                            <field name="service_type" widget="radio" options="{'horizontal': true}"  attrs="{'readonly':[('si_status', 'not in', '01')]}"/>
+                            <field name="direction" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('si_status', 'not in', '01')]}"/>
+							<field name="cargo_type"  widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('si_status', 'not in', '01')]}"/>
+							<field name="booking_ref" readonly="1"/>
+                            <field name="bl_ref" readonly="1"/>
+                        </group>
+                        <group>
+							<field name="si_no" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                            <field name="booking_date" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                            <field name="carrier" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                            <field name="carrier_contact" domain="[('parent_id', '=', carrier)]" options='{"always_reload": True}' attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="carrier_booking_ref" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="customer_ref" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                        </group>
+                    </group>
+                    <group string="Customer Information">
+                        <group>
+                            <field name="customer_name" domain="[('customer','=',True), ('type','not in',['invoice','delivery'])]" context="{'search_default_customer':1, 'show_address': 1, 'show_email': 1}" options='{"always_reload": True}' attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="contact_name" domain="[('parent_id', '=', customer_name)]" options='{"always_reload": True}'/>
+                            <field name="notify_party" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                        </group>
+                        <group>
+                             <field name="shipper" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="consignee" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                        </group>
+                    </group>
+					<group string="Shipment Information">
+                        <group>
+                            <field name="voyage_no" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="vessel" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="freight_type" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                            <field name="bill_of_lading_type" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="bol_status" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="no_of_original_bl" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                            <field name="note" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                        </group>
+                        <group>
+                             <field name="port_of_loading_input" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="port_of_discharge_input" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="place_of_delivery" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+							<field name="shipping_agent" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Manifest" attrs="{'invisible': [('cargo_type', '!=', 'fcl')]}">
+                            <field name="fcl_line_ids" mode="tree,kanban">
+								<tree editable="bottom" name="manifest_tree_fcl">
+                                    <field name="container_no" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+                                           options='{"always_reload": True}' attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="seal_no" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="container_product_name" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="packages_no" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="packages_no_uom" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="exp_net_weight" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="exp_gross_weight" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="dim_length" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="dim_width" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="dim_height" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="exp_vol" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="remark" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+
+                                    <field name="container_category_id" invisible="1" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="commodity_category_id" invisible="1" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="container_commodity_id" invisible="1" domain="[('categ_id', '=', commodity_category_id)]"
+                                            options='{"always_reload": True}' attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                </tree>
+                                <kanban class="o_kanban_mobile">
+                                    <field name="container_category_id" invisible="1" />
+                                    <field name="commodity_category_id" invisible="1" />
+                                    <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+                                           options='{"always_reload": True}'/>
+                                    <field name="container_commodity_id" domain="[('categ_id', '=', commodity_category_id)]"
+                                           options='{"always_reload": True}'/>
+                                    <field name="container_product_name" />
+                                    <field name="container_no"/>
+                                    <field name="fcl_container_qty"/>
+                                    <field name="seal_no" />
+                                    <field name="packages_no"/>
+                                    <field name="exp_gross_weight"/>
+                                    <field name="exp_vol" />
+                                    <field name="remark" />
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.container_product_id.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.container_product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Qty:
+                                                            <t t-esc="record.fcl_container_qty.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Ctn no:
+                                                            <t t-esc="record.container_no.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+						</page>
+                        <page string="Manifest" attrs="{'invisible': [('cargo_type', '=', 'fcl')]}">
+                            <field name="lcl_line_ids" mode="tree,kanban">
+								<tree editable="bottom" name="manifest_tree_lcl">
+                                    <field name="container_no" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="container_product_id" domain="[('categ_id', '=', commodity_category_id)]"
+                                                options='{"always_reload": True}' attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="seal_no" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="container_product_name" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="packages_no" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="packages_no_uom" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="exp_net_weight" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="exp_gross_weight" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="dim_length" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="dim_width" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="dim_height" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="exp_vol" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="shipping_mark" attrs="{'readonly':[('parent.si_status', 'in', ['03','04'])]}"/>
+                                    <field name="commodity_category_id" invisible="1" />
+								</tree>
+                                 <kanban class="o_kanban_mobile">
+                                     <field name="container_no"/>
+                                     <field name="container_product_id" domain="[('categ_id', '=', commodity_category_id)]"
+                                                options='{"always_reload": True}'/>
+                                    <field name="commodity_category_id" invisible="1" />
+                                    <field name="container_product_name" />
+                                    <field name="packages_no"/>
+                                     <field name="packages_no_uom" />
+                                     <field name="dim_length"/>
+                                    <field name="dim_width"/>
+                                    <field name="dim_height"/>
+                                     <field name="exp_gross_weight"/>
+                                    <field name="exp_net_weight" />
+                                    <field name="exp_vol" />
+                                    <field name="shipping_mark"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.container_product_id.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.container_product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            SubJob:
+                                                            <t t-esc="record.subjob.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Pkg No:
+                                                            <t t-esc="record.packages_no.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+						</page>
+						 <page string="Attachment" attrs="{'invisible': [('service_type', '!=', 'ocean')]}">
+                             <group>
+                                    <field name="si_file_name" invisible="1"/>
+                             </group>
+                         	<group>
+                                    <field name="si_attachment" filename="si_file_name" widget="FieldBinary"/>
+                            </group>
+						</page>
+                        <page string="System Info">
+                            <group>
+                                <field name="owner" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                                <field name="processor" attrs="{'readonly':[('si_status', 'in', ['03','04'])]}"/>
+                               <!-- <field name="department" readonly="1"/>-->
+                                <field name="create_date"/>
+                                <field name="create_uid"/>
+                                <field name="write_date"/>
+                                <field name="write_uid"/>
+                                <field name="company_id" options="{'no_create': True}"/>
+                            </group>
+						</page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+
+    <act_window id="action_si" name="Shipping Instruction" res_model="freight.website.si" view_mode="tree,form"/>
+
+  <!--   <record id="action_si" model="ir.actions.act_window">
+		<field name="name">Shipping Instruction</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">freight.website.si</field>
+		<field name="view_mode">tree,form</field>
+       &lt;!&ndash; <field name="view_id" ref="view_tree_air_booking"/>&ndash;&gt;
+      &lt;!&ndash;  <field name="act_window_id" ref="action_booking_view_id3"/>&ndash;&gt;
+       &lt;!&ndash; <field name="context">{"search_default_air_booking":1}</field>&ndash;&gt;
+        &lt;!&ndash;  <field name="domain">[('company_id', '=', user.company_id.id)]</field>&ndash;&gt;
+ 	</record>-->
+
+	<menuitem id="main_menu_document" name="Documents" parent="menu_freight" sequence="2"/>
+    <menuitem id="menu_si" name="Shipping Instruction" parent="main_menu_document" action="action_si"/>
+<!--    <menuitem id="menu_si" name="Shipping Instruction" parent="menu_freight_booking" action="action_si"  sequence="5"/>-->
+
+</odoo>

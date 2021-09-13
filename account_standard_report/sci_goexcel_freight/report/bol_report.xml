@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+      <record id="paperformat_bol" model="report.paperformat">
+        <field name="name">BOL A4</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">28</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+	<report id="report_bol_action"
+        model="freight.bol"
+        string="BOL"
+        report_type="qweb-pdf"
+            name="sci_goexcel_freight.report_bol_details"
+        paperformat="paperformat_bol"
+            print_report_name="'BL %s' % (object.bol_no)"/>
+
+    <template id="report_bol_details">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page" >
+                         <table class="table table-sm table-bordered" style="font-size:13px">
+                              <thead>
+<!--                                  <th style="width:25%" class="d-none"></th>-->
+<!--                                  <th style="width:25%" class="d-none"></th>-->
+<!--                                  <th style="width:25%" class="d-none"></th>-->
+<!--                                  <th style="width:25%" class="d-none"></th>-->
+                              </thead>
+                            <tbody>
+                                <tr style="background:#e0e0e0;">
+                                    <td colspan="4">
+                                       <strong>CONSIGNMENT NOTE FOR SCHEDULED WASTE</strong>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td colspan="4">
+                                       <img t-att-src="image_data_uri(o.qr)" style="width:70px;height:70px"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>CONSIGNMENT NO:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                        <span t-field="o.cn_no"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>DATE SUBMIT:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.date_submit"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>STATUS:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                        <span t-field="o.cn_status"/>
+                                    </td>
+                                </tr>
+                                 <tr style="background:#e0e0e0;">
+                                    <td colspan="4">
+                                       <strong>I. WASTE GENERATOR</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>NAME OF WASTE GENERATOR:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                        <span t-field="o.wg_id.name"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-left">
+                                       <strong>ADDRESS:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                         <span t-field="o.wg_id.street"/>
+                                         <t t-if="o.wg_id.street2">
+                                            <span t-field="o.wg_id.street2"/>&#160;
+                                         </t>
+                                         <span t-field="o.wg_id.zip"/>,
+                                         <span t-field="o.wg_id.city"/>,&#160;<span t-field="o.wg_id.state_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>SERIAL NO:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>WASTE ORIGIN:</strong>
+                                    </td>
+                                     <td class="text-left">
+
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>NAME OF RESPONSIBLE PERSON:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.wg_contact_id.name"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-left">
+                                       <strong>WASTE ORIGIN CODE:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>POSITION:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.wg_contact_id.function"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-left">
+                                       <strong>WASTE PACKAGING:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                         <span t-field="o.waste_packaging"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>FAX NO:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.wg_id.fax"/>
+                                    </td>
+                                </tr>
+                                  <tr>
+                                    <td class="text-left">
+                                       <strong>TYPE OF WASTE:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                         <span t-field="o.waste_type"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>TELEPHONE NO:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.wg_id.phone"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-left">
+                                       <strong>OTHER WASTE PACKAGING:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>EMAIL:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.wg_id.email"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>WASTE COMPONENT:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                          <span t-field="o.waste_component"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>COST OF TREATMENT AND DISPOSAL (RM):</strong>
+                                    </td>
+                                      <td class="text-left">
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-left">
+                                       <strong>QUANTITY PER PACKAGE:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                         <span t-field="o.qty_per_package"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>QUANTITY (METRIC TONNE):</strong>
+                                    </td>
+                                      <td class="text-left">
+                                          <span t-field="o.qty"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>WASTE CODE:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                         <span t-field="o.waste_code"/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>WASTE NAME:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                         <span t-field="o.waste_name"/>
+                                    </td>
+
+                                </tr>
+                                <tr style="background:#e0e0e0;">
+                                    <td colspan="4">
+                                       <strong>II. CONTRACTOR</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>NAME OF CONTRACTOR:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                        <span t-field="o.wr_id.name"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-left">
+                                       <strong>ADDRESS:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                         <span t-field="o.wr_id.street"/>
+                                         <t t-if="o.wr_id.street2">
+                                            <span t-field="o.wr_id.street2"/>&#160;
+                                         </t>
+                                         <span t-field="o.wr_id.zip"/>,
+                                         <span t-field="o.wr_id.city"/>,&#160;<span t-field="o.wr_id.state_id.name"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-left">
+                                       <strong>NAME OF RESPONSIBLE PERSON:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                        <span t-field="o.wr_contact_id.name"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>POSITION:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.wr_contact_id.function"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>TEL NO:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                        <span t-field="o.wr_id.phone"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>FAX NO:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.wr_id.fax"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>EMAIL:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                        <span t-field="o.wr_id.email"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>NAME OF DRIVER:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                        <span t-field="o.driver_name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>NRIC:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                        <span t-field="o.nric"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>VEHICLE NO:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.vehicle_license_plate"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>TEMPORARY STORAGE:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+
+                                    </td>
+                                </tr>
+                                <tr style="background:#e0e0e0;">
+                                    <td colspan="4">
+                                       <strong>III. STORAGE/TREATMENT/RECOVER/DISPOSAL/FACILITY OPERATOR</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>NAME OF FACILITY:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                        <span t-field="o.fo_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>ADDRESS:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="3">
+                                         <span t-field="o.fo_id.street"/>
+                                         <t t-if="o.fo_id.street2">
+                                            <span t-field="o.fo_id.street2"/>&#160;
+                                         </t>
+                                         <span t-field="o.fo_id.zip"/>,
+                                         <span t-field="o.fo_id.city"/>,&#160;<span t-field="o.fo_id.state_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>TEL NO:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                        <span t-field="o.wr_id.phone"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>NAME OF RESPONSIBLE PERSON:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.fo_contact_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                       <strong>FAX NO:</strong>
+                                    </td>
+                                      <td class="text-left">
+                                        <span t-field="o.fo_id.fax"/>
+                                    </td>
+                                    <td class="text-left">
+                                       <strong>EMAIL:</strong>
+                                    </td>
+                                     <td class="text-left">
+                                        <span t-field="o.fo_id.email"/>
+                                    </td>
+                                </tr>
+
+
+
+
+                            </tbody>
+                         </table>
+                    </div>
+                    <p style="font-size:12px"><i>
+                    THIS IS A COMPUTER-GENERATED DOCUMENT AND IT DOES NOT REQUIRE A SIGNATURE.
+                    </i>
+                    </p>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

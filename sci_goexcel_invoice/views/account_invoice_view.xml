@@ -1,0 +1,200 @@
+<odoo>
+	 <!-- Tree View for invoice -->
+     <record id='view_invoice_tree_freight' model='ir.ui.view'>
+        <field name="name">invoice Tree</field>
+        <field name="model">account.invoice</field>
+        <field name="type">tree</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='number']" position="after">
+    			<field name="invoice_description"/>
+  			</xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+    			<field name="create_uid"/>
+  			</xpath>
+		</field>
+	</record>
+
+	<!-- Search Invoice with added field -->
+	<record id="view_invoice_search_freight" model="ir.ui.view">
+            <field name="name">Invoice Search</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+				<search>
+					<field name="invoice_description"/>
+                    <field name="invoice_line_ids" string="Lorry No" filter_domain="[('invoice_line_ids.lorry_no','ilike',self)]"/>
+                    <filter name="approve" string="To Approve" domain="[('state', '=', 'approve')]"/>
+				</search>
+            </field>
+    </record>
+
+
+	 <!-- Invoice Form -->
+	<record model="ir.ui.view" id="view_invoice_booking">
+		<field name="name">account.invoice.form.inherit.booking</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="account.invoice_form"/>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+    			<field name="invoice_description"/>
+  			</xpath>
+             <!--<xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']">
+                 <field name="booking_line_id"/>
+             </xpath>-->
+            <xpath expr="//field[@name='partner_bank_id']" position="after">
+    			<field name="currency_id"/>
+  			</xpath>
+			 <xpath expr="//field[@name='date_invoice']" position="before">
+                <!-- <field name="freight_booking" attrs="{'invisible': [('freight_booking', '=', False)]}"
+                        context="{'parent_id':parent.invoice_id}"/>-->
+                  <field name="freight_booking"/>
+                  <!--<field name="freight_booking" attrs="{'invisible': [('freight_booking', '=', False)]}"/>-->
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+    			<field name="attn" domain="[('parent_id', '=', partner_id)]" options='{"always_reload": True}'/>
+  			</xpath>
+
+			<!--<xpath expr="//field[@name='comment']" position="replace">
+                 <field name="invoice_note" placeholder="Additional notes..."/>
+            </xpath>-->
+			<field name="user_id" position="after">
+                <field name="invoice_type" widget="radio" options="{'horizontal': true}"/>
+            </field>
+            <xpath expr="//field[@name='invoice_line_ids'] //tree //field[@name='name']" position="after">
+                <field name="do_no" attrs="{'column_invisible':[('parent.invoice_type','=','without_lorry')]}"/>
+                <field name="lorry_type" attrs="{'column_invisible':[('parent.invoice_type','=','without_lorry')]}"/>
+                <field name="lorry_no" attrs="{'column_invisible':[('parent.invoice_type','=','without_lorry')]}"/>
+                <field name="location" attrs="{'column_invisible':[('parent.invoice_type','=','without_lorry')]}"/>
+                <field name="dest_location" attrs="{'column_invisible':[('parent.invoice_type','=','without_lorry')]}"/>
+               <!-- <field name="inv_parent_id" invisible="1" context="{'new_parent_id':parent.active_id}"/>-->
+            </xpath>
+
+
+            <xpath expr="//notebook" position="inside">
+                <page string="DO Attachments" name="g_documents" attrs="{'invisible':[('invoice_type','=','without_lorry')]}">
+                    <group>
+                        <field name="document_attachments_ids" nolabel="1" mode="tree,kanban">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name" string="Remarks" invisible="1"/>
+                                <field name="file_name" required="1"/>
+                                <field name="file" filename="file_name" />
+                                <field name="file_url" widget="url" invisible="1"/>
+                                <button type="object" name="upload_document" string="Upload to Google Drive" icon="fa-cloud-upload" context="{'rec_id':parent.id,'rec_model':'account.invoice'}" attrs="{'invisible':[('file','=',False)]}"/>
+                                <button type="object" name="download_document" string="Download from Google Drive" icon="fa-download" attrs="{'invisible':[('file_url','=',False)]}"/>
+                            </tree>
+                            <kanban class="o_kanban_mobile">
+                                <field name="name" string="Remarks" invisible="1"/>
+                                <field name="file_name" required="1"/>
+                                <field name="file" filename="file_name" />
+                                <field name="file_url" widget="url" invisible="1"/>
+                                <button type="object" name="upload_document" string="Upload to Google Drive" icon="fa-cloud-upload" context="{'rec_id':parent.id,'rec_model':'account.invoice'}" attrs="{'invisible':[('file','=',False)]}"/>
+                                <button type="object" name="download_document" string="Download from Google Drive" icon="fa-download" attrs="{'invisible':[('file_url','=',False)]}"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div t-attf-class="oe_kanban_global_click">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <strong>
+                                                        <span>
+                                                            <t t-esc="record.file_name.value"/>
+                                                        </span>
+                                                    </strong>
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>
+                                                        <span class="float-right text-right">
+                                                            <t t-esc="record.file.value"/>
+                                                        </span>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+		</field>
+	</record>
+
+
+    <record id="action_freight_invoice" model="ir.actions.act_window">
+		<field name="name">Invoice</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">account.invoice</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+ 	</record>
+
+
+	 <!-- Inherited the vendor bill view and add freight booking id -->
+	<record model="ir.ui.view" id="view_vendor_bill_view_booking">
+		<field name="name">Freight Booking</field>
+		<field name="model">account.invoice</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account.invoice_supplier_form"/>
+		<field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="before">
+                <field name="freight_booking"/>
+            </xpath>
+            <!--<xpath expr="//button[@name='action_invoice_draft']" position="after">
+                <button name="action_assign_job_cost" type="object" string="Assign Cost" class="oe_highlight"/>
+            </xpath>-->
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']"
+                   position="before">
+                <!--<field name="booking_job_cost" invisible="1"/>-->
+                <!--<button name="%(sci_goexcel_transport.pod_signature_wizard)d" string="Sign" icon='fa-pencil-square-o' options='{"warn": true}' type="action"/>-->
+				<!--<<button name="action_assign_job_cost"
+                        type="object" string="Cost" class="oe_highlight" context="{'invoice_line_id': active_id}"
+                        attrs="{'invisible': [('freight_booking', '=', [])]}"/>-->
+                <field name="invoice_id" invisible="1"/>
+                <!--<field name="freight_booking" attrs="{'readonly': ['|',('freight_booking','!=', False),('invoice_id','=', False)]}" force_save="1"/>-->
+                <!--<field name="freight_booking" attrs="{'readonly': [('freight_booking','!=', False)]}" force_save="1"/> -->
+                <field name="freight_booking" force_save="1"/>
+
+                <!--TODO-->
+                <!--<field name="booking_line_id" />-->
+                <field name="booking_line_id" invisible="1"/>
+                <field name="bl_line_id" invisible="1"/>
+            </xpath>
+		</field>
+	</record>
+
+	 <!-- Tree View for vendor bill -->
+     <record id='view_vendor_bill_freight' model='ir.ui.view'>
+        <field name="name">Vendor bill Tree</field>
+        <field name="model">account.invoice</field>
+        <field name="type">tree</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account.invoice_supplier_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='number']" position="after">
+    			<field name="name"/>
+  			</xpath>
+			<xpath expr="//field[@name='reference']" position="replace">
+    			<field name="reference" string="Vendor Reference"/>
+  			</xpath>
+		</field>
+	</record>
+
+	<!-- Search vendor bill with added field -->
+	<record id="view_vendor_bill_search_freight" model="ir.ui.view">
+            <field name="name">Vendor Bill Search</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+				<search>
+					<field name="name"/>
+				</search>
+            </field>
+    </record>
+</odoo>
+

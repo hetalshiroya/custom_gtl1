@@ -1,0 +1,50 @@
+<odoo>
+
+ 		<record id="view_job_cost_form" model="ir.ui.view">
+            <field name="name">job.cost.form</field>
+            <field name="model">freight.booking.job.cost</field>
+            <field name="arch" type="xml">
+                <form string="Assign Job Cost">
+                    <group class="oe_title">
+                        <field name="vendor_id" readonly="1"/>
+                        <field name="booking_job_no"/>
+                    </group>
+                    <group class="oe_title">
+                        <field name="carrier_job_no"/>
+                        <field name="customer_name" readonly="1"/>
+                    </group>
+                    <group class="oe_title">
+                        <field name="job_cost_lines" nolabel="1">
+                            <tree create="false" delete="0" editable="bottom" string="Job Cost">
+                               <!-- <field name="booking_no" readonly="1"/>-->
+                                <field name="add_to_vendor_bill"/>
+                                <field name="product_id" readonly="1"/>
+                                <field name="product_name" readonly="1"/>
+                                <field name="profit_qty" readonly="1"/>
+                                <field name="list_price" readonly="1"/>
+                                <!--<field name="uom_id" groups="uom.group_uom"/>-->
+                                <field name="profit_amount" readonly="1"/>
+                                <field name="profit_currency" readonly="1"/>
+                                <field name="profit_currency_rate" readonly="1"/>
+                                <field name="sale_total" readonly="1"/>
+                                <field name="cost_qty" readonly="1"/>
+                                <field name="cost_price" readonly="1"/>
+                                <field name="cost_amount" readonly="1"/>
+                                <field name="vendor_id" readonly="1"/>
+                                <field name="cost_currency" readonly="1"/>
+                                <field name="cost_currency_rate" readonly="1"/>
+                                <field name="cost_total" readonly="1"/>
+                                <field name="profit_total" readonly="1"/>
+                                <field name="invoiced" readonly="1"/>
+                               <!-- <field name="invoiced"/>-->
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="action_assign_job_cost" string="Assign Job Cost" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>

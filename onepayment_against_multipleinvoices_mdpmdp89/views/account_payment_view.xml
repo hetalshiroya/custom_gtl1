@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="view_account_payment_form_inherited" model="ir.ui.view">
+                <field name="name">view.account.payment.form.inherited</field>
+                <field name="model">account.payment</field>
+                <field name="inherit_id" ref="account.view_account_payment_form"/>
+                <field name="arch" type="xml">
+                     <xpath expr='//field[@name="payment_transaction_id"]' position="after">
+                        <field name="move_reconciled" string="Fully Matched?" attrs="{'invisible':[('state','in',['draft','cancelled'])]}"/>
+                    </xpath>
+                    <xpath expr='//field[@name="payment_transaction_id"]' position="before">
+					     <field name="bank_charge_amount"/>
+					    <field name="bank_charge_account_id"/>
+				    </xpath>
+                    <xpath expr='//sheet/group' position="after">
+                        <notebook>
+                            <page string="Invoices" attrs="{'invisible': ['|', ('payment_type', 'not in', ['inbound', 'outbound']), ('partner_type', 'not in', ['customer', 'supplier'])]}">
+                                <field name="payment_invoice_ids" attrs="{'invisible': ['|', ('payment_type', 'not in', ['inbound', 'outbound']), ('partner_type', 'not in', ['customer', 'supplier'])]}">
+                                    <tree editable="bottom" create="false" default_order="date_invoice">
+                                         <!--TS add   -->
+                                        <field name="date_invoice"/>
+                                        <field name="invoice_id" readonly="1" force_save="1"/>
+                                        <field name="reference" string="Vendor Reference" attrs="{'column_invisible':[('parent.payment_type', '!=', 'outbound')]}"/>
+                                        <field name="origin"/>
+                                        <field name="date_due"/>
+                                         <field name="amount_total" sum="Total Amount"/>
+                                        <field name="residual" sum="Total Residual"/>
+                                        <!--TS add   -->
+                                        <field name="fully_reconcile"/>
+                                        <field name="reconcile_amount" attrs="{'readonly': [('payment_state', '!=', 'draft')]}" sum="Total Recon"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="payment_state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Journal Lines" attrs="{'invisible': ['|', ('payment_type', 'not in', ['inbound', 'outbound']), ('partner_type', 'not in', ['customer', 'supplier'])]}">
+                                <field name="open_move_line_ids">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="move_id"/>
+                                        <field name="journal_id"/>
+                                        <field name="name"/>
+                                        <field name="ref"/>
+                                        <field name="partner_id"/>
+                                        <field name="account_id"/>
+                                        <field name="analytic_account_id"/>
+                                        <field name="debit" sum="Total Debit"/>
+                                        <field name="credit" sum="Total Credit"/>
+                                        <field name="amount_currency" sum="Total Amount Currency"/>
+                                        <field name="date_maturity"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </xpath>
+                </field>
+        </record>
+
+
+
+        <!-- Register Payment form in invoice/vendor bill form-->
+		<record
+			id="view_account_payment_invoice_form_bank_charges"
+			model="ir.ui.view">
+			<field name="name">view.account.payment.invoice.form.bank.charges
+			</field>
+			<field name="model">account.payment</field>
+			<field name="inherit_id"
+				ref="account.view_account_payment_invoice_form" />
+			<field name="arch" type="xml">
+				<field name="journal_id" position="after">
+					 <!-- TS -->
+					<field name="bank_charge_amount"/>
+					 <field name="bank_charge_account_id"/>
+				</field>
+			</field>
+		</record>
+
+    </data>
+</odoo>

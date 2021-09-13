@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+		<record id="ir_cron_ir_attachment_upload" model="ir.cron">
+			<field name="name">IR Attachment Upload Schedule</field>
+			<field eval="True" name="active" />
+			<field name="interval_number">10</field>
+			<field name="interval_type">minutes</field>
+			<field name="numbercall">-1</field>
+			<field eval="False" name="doall" />
+			<field name="model_id" ref="base.model_ir_attachment" />
+			<field name="state">code</field>
+			<field name="code">model.cron_upload_attachments()</field>
+			<field name="priority">5</field>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,1097 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Display SI breadcrumb -->
+    <template id="portal_my_home_menu_si" name="Portal layout: SI menu entry" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'si' or si" t-attf-class="breadcrumb-item #{'active ' if not si else ''}">
+                <a t-if="si" t-attf-href="/my/si?{{ keep_query() }}">Shipping Instruction</a>
+                <t t-else="">Shipping Instruction</t>
+            </li>
+            <li t-if="si" class="breadcrumb-item active">
+                <t t-esc="si.si_no"/>
+            </li>
+        </xpath>
+    </template>
+
+
+    <!-- Display SI count with other documents -->
+    <template id="portal_my_home" name="Portal My Home: SI entries" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="si_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Shipping Instruction</t>
+                <t t-set="url" t-value="'/my/si'"/>
+                <t t-set="count" t-value="si_count"/>
+            </t>
+            <!-- Submit New SI -->
+            <!--<t t-call="portal.portal_docs_entry">
+                <div class="col-md-3">
+                    <t t-set="title"></t>
+                    <t t-set="url" t-value="'/my/si/edit'"/>
+                    <t t-set="count" t-value="'Click To Submit New SI'"/>
+                </div>
+            </t>-->
+        </xpath>
+    </template>
+
+
+   <!-- &lt;!&ndash; Display Create SI button &ndash;&gt;
+    <template id="portal_my_home" name="Portal My Home: SI entries" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="si_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Shipping Instruction</t>
+                <t t-set="url" t-value="'/my/si'"/>
+                <t t-set="count" t-value="si_count"/>
+            </t>
+        </xpath>
+    </template>-->
+
+    <!-- Display table of the SI in list view -->
+    <template id="portal_my_si" name="My SI">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Shipping Instruction</t>
+            </t>
+            <t t-if="not sis">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no SI.
+                </div>
+            </t>
+            <t t-if="sis" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>SI #</th>
+                        <th>Status</th>
+                        <th class="text-right">Shipment Date</th>
+                        <th class="text-right">Carrier Booking No</th>
+                        <th class="text-right">Shipper</th>
+                        <th class="text-right">Consignee</th>
+                        <th class="text-right">Port of Loading</th>
+                        <th class="text-right">Port of Discharge</th>
+                      <!--  <th class="text-center"/>-->
+                        <th class="text-right">Carrier Booking Ref</th>
+                    </tr>
+                </thead>
+                <t t-foreach="sis" t-as="si">
+                    <tr>
+                        <td><a t-attf-href="/my/si/#{si.id}?{{ keep_query() }}"><span t-field="si.si_no"/></a></td>
+                        <td class="text-right"><span t-field="si.si_status"/></td>
+                        <td class="text-right"><span t-field="si.booking_date"/></td>
+                        <td class="text-right"><span t-field="si.carrier_booking_ref"/></td>
+                        <td class="text-right"><span t-field="si.shipper"/></td>
+                        <td class="text-right"><span t-field="si.consignee"/></td>
+                        <td class="text-right"><span t-field="si.port_of_loading_input"/></td>
+                        <td class="text-right"><span t-field="si.port_of_discharge_input"/></td>
+                        <td class="text-right">
+                            <span t-field="si.carrier_booking_ref"/>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <!-- Display full detail of the individual SI -->
+    <template id="my_si_si" name="My Shipping Instruction">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>
+                                    <t t-call='portal.record_pager'/>
+                                    SI - #<span t-esc="si.si_no"/>
+                                    <span t-field="si.si_status" class="pull-right label label-info" title="Current Status"/>
+                                     <div t-if="si.si_status != '03'">
+                                        <a t-attf-href="/my/si/edit/#{si.id}?{{ keep_query() }}" class="btn btn-info"><i class="fa fa-pencil"/>Edit</a>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Shipment Date:</strong></label>
+                                    <div t-if="si.booking_date">
+                                        <span t-field="si.booking_date" t-options='{"widget": "date"}'/>
+                                    </div>
+                                </div>
+                                 <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Cargo Type:</strong></label>
+                                    <div t-if="si.cargo_type">
+                                        <span t-field="si.cargo_type"/>
+                                    </div>
+                                </div>
+                                <div t-attf-class="form-group col-xl-3">
+                                     <label class="col-form-label"><strong>Carrier Booking Ref:</strong></label>
+                                    <div t-if="si.carrier_booking_ref">
+                                        <span t-field="si.carrier_booking_ref"/>
+                                    </div>
+                                </div>
+<!--                                <div t-attf-class="form-group col-xl-3">-->
+<!--                                    <label class="col-form-label"><strong>Voyage No:</strong></label>-->
+<!--                                    <div t-if="si.voyage_no">-->
+<!--                                        <span t-field="si.voyage_no"/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                            </div>
+                            <div class="row">
+                                <div t-attf-class="form-group col-xl-3">
+                                     <label class="col-form-label"><strong>Customer:</strong></label>
+                                    <div>
+                                        <address t-field="si.customer_name"
+                                                 t-options='{"widget": "contact", "fields": ["name", "address", "email", "phone"], "no_marker": True}'/>
+                                    </div>
+                                </div>
+                                <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Shipper:</strong></label>
+                                    <div t-if="si.shipper">
+                                        <span t-field="si.shipper"/>
+                                    </div>
+                                </div>
+                                 <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Consignee:</strong></label>
+                                    <div t-if="si.consignee">
+                                        <span t-field="si.consignee"/>
+                                    </div>
+                                </div>
+                                <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Notify Party:</strong></label>
+                                    <div t-if="si.notify_party">
+                                        <span t-field="si.notify_party"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div t-attf-class="form-group col-xl-3">
+                                     <label class="col-form-label"><strong>Port of Loading:</strong></label>
+                                     <div t-if="si.port_of_loading_input">
+                                        <span t-field="si.port_of_loading_input"/>
+                                    </div>
+                                </div>
+                                <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Port of Discharge:</strong></label>
+                                    <div t-if="si.port_of_discharge_input">
+                                        <span t-field="si.port_of_discharge_input"/>
+                                    </div>
+                                </div>
+                                 <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Place of Delivery:</strong></label>
+                                    <div t-if="si.place_of_delivery">
+                                        <span t-field="si.place_of_delivery"/>
+                                    </div>
+                                </div>
+                                <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>BOL Type:</strong></label>
+                                    <div t-if="si.bill_of_lading_type">
+                                        <span t-field="si.bill_of_lading_type"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Vessel:</strong></label>
+                                    <div t-if="si.vessel">
+                                        <span t-field="si.vessel"/>
+                                    </div>
+                                </div>
+                                <div t-attf-class="form-group col-xl-3">
+                                    <label class="col-form-label"><strong>Voyage No:</strong></label>
+                                    <div t-if="si.voyage_no">
+                                        <span t-field="si.voyage_no"/>
+                                    </div>
+                                </div>
+                                <div t-attf-class="form-group col-xl-3">
+                                     <label class="col-form-label"><strong>Oversea Ship.Agt:</strong></label>
+                                    <div t-if="si.shipping_agent">
+                                        <span t-field="si.shipping_agent"/>
+                                    </div>
+                                </div>
+                                <div t-attf-class="form-group col-xl-3">
+                                     <label class="col-form-label"><strong>Remark:</strong></label>
+                                    <div t-if="si.note">
+                                        <span t-field="si.note"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <section id="details" style="page-break-inside: auto;" class="mt32">
+                        <h4 id="details">Cargo</h4>
+                        <table class="table table-condensed table-bordered" id="container_table">
+                            <thead class="bg-100">
+                                <tr>
+                                    <t t-set="colspan" t-value="6"/>
+                                    <!--<th class="text-left">Container</th>
+                                    <th class="text-right">Commodity</th>-->
+                                    <th t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">Description</th>
+                                    <th t-if="si.cargo_type == 'fcl'" t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                        <span>Qty(Container)</span>
+                                    </th>
+                                    <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">No Of Packages</th>
+                                    <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Gross Weight(KG)</th>
+                                    <th t-if="si.cargo_type == 'lcl'" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Net Weight(KG)</th>
+                                    <th t-if="si.cargo_type == 'lcl'" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Length</th>
+                                    <th t-if="si.cargo_type == 'lcl'" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Width</th>
+                                    <th t-if="si.cargo_type == 'lcl'" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Height</th>
+                                    <th class="text-right" >
+                                        <span>Measurement(M3)</span>
+                                    </th>
+                                    <th class="text-right" t-if="si.cargo_type == 'lcl'">
+                                        <span>Shipping Mark</span>
+                                    </th>
+                                    <th class="text-right" t-if="si.cargo_type == 'fcl'">
+                                        <span>Remark</span>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                             <tbody class="container_tbody">
+                                 <t t-if="si.cargo_type == 'fcl'" >
+                                    <t t-foreach="si.fcl_line_ids" t-as="line">
+                                        <tr t-att-class="'font-weight-bold o_line_section'">
+                                                <!--<td id="container_product_id">
+                                                    <span t-field="line.container_product_id.name"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.container_commodity_id"/>
+                                                </td>-->
+                                                <td t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                     <span t-field="line.container_product_name"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.fcl_container_qty"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.packages_no"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.exp_gross_weight"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.exp_vol"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.remark"/>
+                                                </td>
+                                        </tr>
+                                    </t>
+                                 </t>
+                                 <t t-if="si.cargo_type == 'lcl'" >
+                                    <t t-foreach="si.lcl_line_ids" t-as="line">
+                                        <tr t-att-class="'font-weight-bold o_line_section'" style="background:#e0e0e0;">
+                                                <!--<td id="container_product_id">
+                                                    <span t-field="line.container_product_id.name"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.container_commodity_id"/>
+                                                </td>-->
+                                                <td t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                     <span t-field="line.container_product_name"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.packages_no"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.exp_gross_weight"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.exp_net_weight"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.dim_length"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.dim_width"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.dim_height"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.exp_vol"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.shipping_mark"/>
+                                                </td>
+                                        </tr>
+                                    </t>
+                                 </t>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <div class="row mt32">
+                    <div class="col-md-12">
+                        <h4>
+                            <strong>Message and communication history</strong>
+                        </h4>
+                    </div>
+                    <div class="col-md-10 col-md-offset-1 mt16">
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="si"/>
+                            <t t-set="chatter_mode" t-value="'json'"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+
+
+     <!-- Edit New SI -->
+    <template id="new_si_edit" name="New Shipping Instruction">
+        <t t-call="portal.portal_layout">
+             <t t-if="request.website.is_public_user()">
+                <div class="row">
+                    <div class="oe_structure text-center col-md-12 mt16">
+                        <p class="text-muted">Please,
+                            <t t-if="request.env['res.users']._get_signup_invitation_scope() == 'b2c'">
+                                <a t-attf-href="/web/signup?{{ get_redirect() }}">Sign Up</a>
+                                or
+                            </t>
+                            <a t-attf-href="/web/login?{{ get_redirect() }}">Sign In</a>
+                            to be able to view and submit SI.
+                        </p>
+                    </div>
+                </div>
+            </t>
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>
+                                    <t t-call='portal.record_pager'/>
+                                    SI - #<span t-esc="si.si_no"/>
+                                    <span t-field="si.si_status" class="pull-right label label-info" title="Current Status"/>
+                                </h4>
+                            </div>
+                        </div>
+                         <div>
+                            <a t-attf-href="/my/si/#{si.id}?{{ keep_query() }}" class="btn btn-primary btn-md"><i class="fa fa-times"/>Cancel</a>
+                        </div>
+                    </div>
+
+                    <form action="/my/si/process" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="row o_portal_details">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                      <div t-if="error_message" class="alert alert-danger" role="alert">
+                                          <t t-foreach="error_message" t-as="err"><t t-esc="err"/><br /></t>
+                                      </div>
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="booking_date"><strong>Shipping Date</strong></label>
+                                        <input t-options='{"widget": "date"}' name="booking_date" t-attf-class="form-control" t-att-value="booking_date or si.booking_date" />
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="cargo_type"><strong>Cargo Type</strong></label>
+                                        <div t-if="si.cargo_type">
+                                            <span t-field="si.cargo_type"/>
+                                        </div>
+                                        <!--<select name="cargo_type" t-attf-class="form-control" t-esc="cargo_type or si.cargo_type">
+                                            <option value="fcl">
+                                                    FCL
+                                            </option>
+                                            <option value="lcl">
+                                                    LCL
+                                            </option>
+                                        </select>-->
+                                    </div>
+                                     <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="carrier_booking_ref"><strong>Carrier Booking Ref</strong></label>
+                                        <input name="carrier_booking_ref" t-attf-class="form-control" t-att-value="carrier_booking_ref or si.carrier_booking_ref" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div t-attf-class="form-group col-xl-3">
+                                       <label class="col-form-label"><strong>Customer</strong></label>
+                                        <div>
+                                            <address t-field="si.customer_name"
+                                                     t-options='{"widget": "contact", "fields": ["name", "address", "email", "phone"], "no_marker": True}'/>
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="shipper"><strong>Shipper</strong></label>
+                                        <!--<input name="shipper" t-attf-class="form-control" t-att-value="shipper or si.shipper"/>-->
+                                        <textarea name="shipper" t-attf-class="form-control" rows="8" t-esc="shipper or si.shipper" >
+                                        </textarea>
+                                    </div>
+                                     <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="consignee"><strong>Consignee</strong></label>
+                                        <textarea name="consignee" t-attf-class="form-control" rows="8" t-esc="consignee or si.consignee"/>
+                                    </div>
+                                     <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="notify_party"><strong>Notify Party</strong></label>
+                                        <textarea name="notify_party" t-attf-class="form-control" rows="8" t-esc="notify_party or si.notify_party"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="port_of_loading_input"><strong>Port of Loading</strong></label>
+                                        <input name="port_of_loading_input" t-attf-class="form-control" t-att-value="port_of_loading_input or si.port_of_loading_input" />
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="port_of_discharge_input"><strong>Port Of Discharge</strong></label>
+                                        <input name="port_of_discharge_input" t-attf-class="form-control" t-att-value="port_of_discharge_input or si.port_of_discharge_input" />
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="place_of_delivery"><strong>Place of Delivery</strong></label>
+                                        <input name="place_of_delivery" t-attf-class="form-control" t-att-value="place_of_delivery or si.place_of_delivery" />
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="bill_of_lading_type"><strong>BOL Type</strong></label>
+                                        <select name="bill_of_lading_type" t-attf-class="form-control" t-esc="bill_of_lading_type or si.bill_of_lading_type" >
+                                             <option value="original">
+                                                    Original
+                                            </option>
+                                            <option value="telex">
+                                                    Telex
+                                            </option>
+                                            <option value="seaway">
+                                                    Seaway
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="vessel"><strong>Vessel</strong></label>
+                                        <input name="vessel" t-attf-class="form-control" t-att-value="vessel or si.vessel" />
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="voyage_no"><strong>Voyage No</strong></label>
+                                        <input name="voyage_no" t-attf-class="form-control" t-att-value="voyage_no or si.voyage_no" />
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="shipping_agent"><strong>Oversea Ship.Agt</strong></label>
+                                        <input name="shipping_agent" t-attf-class="form-control" t-att-value="shipping_agent or si.shipping_agent" />
+                                    </div>
+                                     <div t-attf-class="form-group col-xl-3">
+                                        <label class="col-form-label" for="note"><strong>Remarks</strong></label>
+                                         <t t-if='not si.note'>
+                                            <textarea name="note" t-attf-class="form-control" t-att-value="note or si.note"/>
+                                         </t>
+                                         <t t-if='si.note'>
+                                            <textarea name="note" t-attf-class="form-control" t-esc="note or si.note"/>
+                                         </t>
+                                    </div>
+                                    <input type="hidden" name="id" t-att-value="si.id"/>
+
+                                </div>
+
+                             <!--   <section id="details" style="page-break-inside: auto;" class="mt32">
+                                    <h3 id="details">Cargo</h3>
+                                    <table class="table table-sm" id="container_table">
+                                        <thead class="bg-100">
+                                            <tr>
+                                                <t t-set="colspan" t-value="6"/>
+                                                <th class="text-left">Container</th>
+                                                <th class="text-right">Commodity</th>
+                                                <th t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">Description</th>
+                                                <th t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                    <span>Quantity</span>
+                                                </th>
+                                                <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">No Of Packages</th>
+                                                <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Gross Weight</th>
+                                                <th class="text-right" >
+                                                    <span>Measurement</span>
+                                                </th>
+                                                <th class="text-right" >
+                                                    <span>Shipping Mark</span>
+                                                </th>
+                                                <th class="text-right" >
+                                                    <span>Action</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                         <tbody class="container_tbody">
+                                            <t t-foreach="si.fcl_line_ids" t-as="line">
+                                                <tr t-att-class="'bg-200 font-weight-bold o_line_section'">
+                                                        <td id="container_product_id">
+                                                            <span t-field="line.container_product_id.name"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <span t-field="line.container_commodity_id"/>
+                                                        </td>
+                                                        <td t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                             <span t-field="line.container_product_name"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <span t-field="line.fcl_container_qty"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <span t-field="line.packages_no"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <span t-field="line.exp_gross_weight"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <span t-field="line.exp_vol"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <span t-field="line.remark"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <a t-attf-href="/my/si/update_line/#{si.id}/#{line.fcl_line}?{{ keep_query() }}" class="btn btn-info"><i class="fa fa-pencil"/>Edit</a>
+                                                            <a t-attf-href="/my/si/delete_line/#{si.id}/#{line.fcl_line}?{{ keep_query() }}" class="btn btn-info"><i class="fa fa-trash"/>Delete</a>
+                                                        </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </section>-->
+                                <div class="clearfix">
+                                    <button type="submit" class="btn btn-primary float-right mb32 ">
+                                        Save/Edit Cargo Info
+                                        <span class="fa fa-long-arrow-right" />
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="row mt32">
+                    <div class="col-md-12">
+                        <h4>
+                            <strong>Message and communication history</strong>
+                        </h4>
+                    </div>
+                    <div class="col-md-10 col-md-offset-1 mt16">
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="si"/>
+                            <t t-set="chatter_mode" t-value="'json'"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+        </t>
+    </template>
+
+
+
+      <!-- Edit SI Line -->
+    <template id="new_si_line_edit" name="Shipping Instruction Container Line">
+        <t t-call="portal.portal_layout">
+             <t t-if="request.website.is_public_user()">
+                <div class="row">
+                    <div class="oe_structure text-center col-md-12 mt16">
+                        <p class="text-muted">Please,
+                            <t t-if="request.env['res.users']._get_signup_invitation_scope() == 'b2c'">
+                                <a t-attf-href="/web/signup?{{ get_redirect() }}">Sign Up</a>
+                                or
+                            </t>
+                            <a t-attf-href="/web/login?{{ get_redirect() }}">Sign In</a>
+                            to be able to view and submit SI.
+                        </p>
+                    </div>
+                </div>
+            </t>
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>
+                                    <t t-call='portal.record_pager'/>
+                                    SI - #<span t-esc="si.si_no"/>
+                                    <span t-field="si.si_status" class="pull-right label label-info" title="Current Status"/>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-12">
+
+                            <!--<section class="popup_button">-->
+                                <div>
+                                    <a id="popup_add_line_button" href="#popup" class="btn btn-info"><i class="fa fa-pencil"/>Add</a>
+                                </div>
+                               <!-- popup to add cargo details -->
+                                <div class="modal fade" id="oe_generic_popup_modal">
+                                    <div class="modal-dialog modal-content" style="border:solid 3px green; min-height:400px;max-width:600px;">
+                                        <div class="modal-body" id="pop_html">
+                                            <a href="#" class="o_popup_btn_close o_not_editable pull-right" data-dismiss="modal" style="font-size:24px">×</a>
+                                            <br/>
+                                            <h4 style="text-align:center">Add Cargo Details</h4>
+                                        </div>
+                                        <form action="/my/si/add_line" method="POST" class="form-horizontal mt4">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                          <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <label class="col-form-label" for="container_product_name"><strong>Description</strong></label>
+                                                <input name="container_product_name" t-attf-class="form-control"
+                                                       placeholder="Container Commodity Description" />
+                                            </div>
+                                          </div>
+                                          <div t-if="si.cargo_type == 'fcl'" class="form-group">
+                                            <div class="col-sm-12">
+                                               <label class="col-form-label" for="fcl_container_qty"><strong>Quantity (Container)</strong></label>
+                                                <input name="fcl_container_qty" t-attf-class="form-control" placeholder="1,2,3...Container" />
+                                            </div>
+                                          </div>
+                                            <div class="form-group">
+                                            <div class="col-sm-12">
+                                               <label class="col-form-label" for="packages_no"><strong>No Of Packages</strong></label>
+                                                <input name="packages_no" t-attf-class="form-control" placeholder="1,2,3..." />
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <div class="col-sm-12">
+                                               <label class="col-form-label" for="exp_gross_weight"><strong>Gross Weight(KG)</strong></label>
+                                                <input name="exp_gross_weight" t-attf-class="form-control" placeholder="1,2,3...in KG" />
+                                            </div>
+                                          </div>
+                                            <div t-if="si.cargo_type == 'lcl'" class="form-group">
+                                            <div class="col-sm-12">
+                                               <label class="col-form-label" for="exp_net_weight"><strong>Net Weight(KG)</strong></label>
+                                                <input name="exp_net_weight" t-attf-class="form-control" placeholder="1,2,3...in KG" />
+                                            </div>
+                                          </div>
+                                            <div t-if="si.cargo_type == 'lcl'" class="form-group">
+                                            <div class="col-sm-12">
+                                               <label class="col-form-label" for="dim_length"><strong>Length(cm)</strong></label>
+                                                <input name="dim_length" t-attf-class="form-control" placeholder="1,2,3...in cm" />
+                                            </div>
+                                          </div>
+                                            <div t-if="si.cargo_type == 'lcl'" class="form-group">
+                                            <div class="col-sm-12">
+                                               <label class="col-form-label" for="dim_width"><strong>Width(cm)</strong></label>
+                                                <input name="dim_width" t-attf-class="form-control" placeholder="1,2,3...in cm" />
+                                            </div>
+                                          </div>
+                                            <div t-if="si.cargo_type == 'lcl'" class="form-group">
+                                            <div class="col-sm-12">
+                                               <label class="col-form-label" for="dim_height"><strong>Height(cm)</strong></label>
+                                                <input name="dim_height" t-attf-class="form-control" placeholder="1,2,3...in cm" />
+                                            </div>
+                                          </div>
+                                            <div class="form-group">
+                                            <div class="col-sm-12">
+                                               <label class="col-form-label" for="exp_vol"><strong>Measurement(M3)</strong></label>
+                                                <input name="exp_vol" t-attf-class="form-control" placeholder="1,2,3...in Meter Cube" />
+                                            </div>
+                                          </div>
+                                            <div class="form-group">
+                                            <div t-if="si.cargo_type == 'lcl'" class="col-sm-12">
+                                               <label class="col-form-label" for="remark"><strong>Shipping Mark</strong></label>
+                                                <textarea name="remark" t-attf-class="form-control" placeholder="" />
+                                            </div>
+                                            <div t-if="si.cargo_type == 'fcl'" class="col-sm-12">
+                                                <label class="col-form-label" for="remark"><strong>Remark</strong></label>
+                                            <textarea name="remark" t-attf-class="form-control" placeholder="" />
+                                            </div>
+                                          </div>
+                                            <input type="hidden" name="id" t-att-value="si.id"/>
+                                          <div class="text-center">
+                                            <button type="submit" class="btn btn-primary btn-md" >
+                                              Add
+                                                <span class="fa fa-long-arrow-down" />
+                                            </button>
+                                          </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                            <div class="row o_portal_details">
+                                <div class="col-md-12">
+                                    <section id="details" style="page-break-inside: auto;" class="mt32">
+                                         <h3 id="details">Cargo</h3>
+                                        <table class="table table-condensed table-bordered" id="container_table">
+                                            <thead class="bg-100">
+                                                <tr>
+                                                    <t t-set="colspan" t-value="6"/>
+                                                    <!--<th class="text-left">Container</th>
+                                                    <th class="text-right">Commodity</th>-->
+                                                    <th t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">Description</th>
+                                                    <th t-if="si.cargo_type == 'fcl'" t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                        <span>Qty(Container)</span>
+                                                    </th>
+                                                    <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">No Of Packages</th>
+                                                    <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Gross Weight(KG)</th>
+                                                    <th t-if="si.cargo_type == 'lcl'" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Net Weight(KG)</th>
+                                                    <th t-if="si.cargo_type == 'lcl'" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Length</th>
+                                                    <th t-if="si.cargo_type == 'lcl'" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Width</th>
+                                                    <th t-if="si.cargo_type == 'lcl'" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">Height</th>
+                                                    <th class="text-right" >
+                                                        <span>Measurement(M3)</span>
+                                                    </th>
+                                                    <th class="text-right" t-if="si.cargo_type == 'lcl'">
+                                                        <span>Shipping Mark</span>
+                                                    </th>
+                                                    <th class="text-right" t-if="si.cargo_type == 'fcl'">
+                                                        <span>Remark</span>
+                                                    </th>
+                                                    <th class="text-right" >
+                                                        <span>Action</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                             <tbody class="container_tbody">
+                                                 <t t-if="si.cargo_type == 'fcl'" >
+                                                    <t t-foreach="si.fcl_line_ids" t-as="line">
+                                                        <tr t-att-class="'font-weight-bold o_line_section'">
+                                                                <!--<td id="container_product_id">
+                                                                    <span t-field="line.container_product_id.name"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.container_commodity_id"/>
+                                                                </td>-->
+                                                                <td t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                                     <span t-field="line.container_product_name"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.fcl_container_qty"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.packages_no"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.exp_gross_weight"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.exp_vol"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.remark"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                     <!--TODO  -->
+                                                                    <!--<a id="popup_edit_line_button" class="btn btn-primary btn-sm"><i class="fa fa-pencil"/>Edit</a>-->
+                                                                    <a t-attf-href="/my/si/delete_fcl_line/#{si.id}/#{line.id}?{{ keep_query() }}" class="btn btn-primary btn-sm"><i class="fa fa-trash"/>Delete</a>
+                                                                </td>
+                                                                     <!--TODO  -->
+                                                                    <div class="modal fade" id="oe_edit_line_popup_modal">
+                                                                        <div class="modal-dialog modal-content" style="border:solid 3px green; min-height:400px;max-width:600px;">
+                                                                            <div class="modal-body" id="pop_html">
+                                                                                <a href="#" class="o_popup_btn_close o_not_editable pull-right" data-dismiss="modal" style="font-size:24px">×</a>
+                                                                                <br/>
+                                                                                <h4 style="text-align:center">Edit Cargo Details</h4>
+                                                                            </div>
+                                                                            <form action="/my/si/edit_line" method="POST" class="form-horizontal mt4">
+                                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                              <div class="form-group">
+                                                                                <div class="col-sm-12">
+                                                                                    <label class="col-form-label" for="container_product_name"><strong>Description</strong></label>
+                                                                                    <input name="container_product_name" t-attf-class="form-control"
+                                                                                           t-att-value="container_product_name or line.container_product_name" />
+                                                                                </div>
+                                                                              </div>
+                                                                              <div t-if="si.cargo_type == 'fcl'" class="form-group">
+                                                                                <div class="col-sm-12">
+                                                                                   <label class="col-form-label" for="fcl_container_qty"><strong>Quantity (Container)</strong></label>
+                                                                                    <input name="fcl_container_qty" t-attf-class="form-control" t-att-value="fcl_container_qty or line.fcl_container_qty" />
+                                                                                </div>
+                                                                              </div>
+                                                                                <div class="form-group">
+                                                                                <div class="col-sm-12">
+                                                                                   <label class="col-form-label" for="packages_no"><strong>No Of Packages</strong></label>
+                                                                                    <input name="packages_no" t-attf-class="form-control" t-att-value="packages_no or line.packages_no" />
+                                                                                </div>
+                                                                              </div>
+                                                                              <div class="form-group">
+                                                                                <div class="col-sm-12">
+                                                                                   <label class="col-form-label" for="exp_gross_weight"><strong>Gross Weight(KG)</strong></label>
+                                                                                    <input name="exp_gross_weight" t-attf-class="form-control" t-att-value="exp_gross_weight or line.exp_gross_weight" />
+                                                                                </div>
+                                                                              </div>
+                                                                                <div class="form-group">
+                                                                                <div class="col-sm-12">
+                                                                                   <label class="col-form-label" for="exp_vol"><strong>Measurement(M3)</strong></label>
+                                                                                    <input name="exp_vol" t-attf-class="form-control" t-att-value="exp_vol or line.exp_vol" />
+                                                                                </div>
+                                                                              </div>
+                                                                                <div class="form-group">
+                                                                                <div class="col-sm-12">
+                                                                                    <label class="col-form-label" for="remark"><strong>Remark</strong></label>
+                                                                                    <textarea name="remark" t-attf-class="form-control" t-esc="remark or line.remark" />
+                                                                                </div>
+                                                                              </div>
+                                                                                <input type="hidden" name="id" t-att-value="si.id"/>
+                                                                                <input type="hidden" name="line_id" t-att-value="line.id"/>
+
+                                                                              <div class="text-center">
+                                                                                <button type="submit" class="btn btn-primary btn-md" >
+                                                                                  Save
+                                                                                    <span class="fa fa-long-arrow-down" />
+                                                                                </button>
+                                                                              </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                        </tr>
+                                                    </t>
+                                                 </t>
+                                                 <t t-if="si.cargo_type == 'lcl'" >
+                                                    <t t-foreach="si.lcl_line_ids" t-as="line">
+                                                        <tr t-att-class="'font-weight-bold o_line_section'" style="background:#e0e0e0;">
+                                                                <!--<td id="container_product_id">
+                                                                    <span t-field="line.container_product_id.name"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.container_commodity_id"/>
+                                                                </td>-->
+                                                                <td t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                                     <span t-field="line.container_product_name"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.packages_no"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.exp_gross_weight"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.exp_net_weight"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.dim_length"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.dim_width"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.dim_height"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.exp_vol"/>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <span t-field="line.shipping_mark"/>
+                                                                </td>
+                                                                <td class="text-right">
+<!--                                                                    <a id="popup_edit_line_button" class="btn btn-primary btn-sm"><i class="fa fa-pencil"/>Edit</a>-->
+<!--                                                                    <a t-attf-href="/my/si/delete_line/#{si.id}/#{line.id}?{{ keep_query() }}" class="btn btn-primary btn-sm"><i class="fa fa-trash"/>Delete</a>-->
+                                                                    <a t-attf-href="/my/si/delete_lcl_line/#{si.id}/#{line.id}?{{ keep_query() }}" class="btn btn-primary btn-sm"><i class="fa fa-trash"/>Delete</a>
+                                                                </td>
+                                                        </tr>
+                                                    </t>
+                                                 </t>
+                                            </tbody>
+                                        </table>
+                                    </section>
+
+                                </div>
+                            </div>
+                            <div>
+                                <!--<a t-attf-href="/my/si" class="btn btn-info">Done</a>-->
+                                <a t-attf-href="/my/si/#{si.id}?{{ keep_query() }}" class="btn btn-info">Done</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mt32">
+                    <div class="col-md-12">
+                        <h4>
+                            <strong>Message and communication history</strong>
+                        </h4>
+                    </div>
+                    <div class="col-md-10 col-md-offset-1 mt16">
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="si"/>
+                            <t t-set="chatter_mode" t-value="'json'"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+        </t>
+    </template>
+
+<!--     <template id="si_website_popup" inherit_id="website.assets_common" name="SI Pop Up">-->
+<!--        <xpath expr="." position="inside">-->
+<!--            <script type="text/javascript" src="/sci_goexcel_freight/static/src/js/website.popup.editor.js" />-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+<!--    <template id="si_website_popup_options" name="SI Popup Options" inherit_id="website.snippet_options">-->
+<!--        <xpath expr="//div" position="after">-->
+<!--            <div data-js='popup_button'-->
+<!--                data-selector=".popup_button"-->
+<!--                data-drop-in="div">-->
+<!--            </div>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+
+
+      <!--<template id="si_layout">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <t t-raw="0"/>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>-->
+
+    <!--  breadcrumb - New SI -->
+   <!-- <template id="new_si_navigation">
+        <div class="request_navigation row mt16">
+            <div class="oe_structure col-sm-12"/>
+            <div class="request_navigation_left col-12 col-sm-12 col-lg-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"/></a></li>
+                    <t t-if="request_name">
+                        <li class="breadcrumb-item active" t-if="request_name == 'new'">New</li>
+                        <li class="breadcrumb-item active" t-else=""><t t-esc="request_name"/></li>
+                    </t>
+                </ol>
+            </div>
+            <div class="request_navigation_right col-12 col-sm 12 col-lg-6">
+                <t t-raw="0"/>
+            </div>
+            <div class="oe_structure col-sm-12"/>
+        </div>
+    </template>-->
+
+
+     <!--  navigation progress bar - New SI -->
+    <!--<template id="new_si_progress" name="New SI (progress)">
+        <ul class="flow mb16">
+            <li id="step_1" t-att-class="(step=='1' and 'active') or 'text-muted'">
+                Shipment
+                <span/>
+            </li>
+            <li id="step_2" t-att-class="(step=='2' and 'active') or 'text-muted'">
+                Cargo
+                <span/>
+            </li>
+            <li id="step_2" t-att-class="(step=='3' and 'active') or 'text-muted'">
+                Done
+                <span/>
+            </li>
+        </ul>
+    </template>-->
+
+
+<!--
+    <template id="helpdesk_lite.new_ticket" name="New Ticket" page="True">
+        <t t-name="website.new_ticket">
+            <t t-call="website.layout">
+                <div class="container mt16">
+                    <div class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <div class="navbar-brand">Helpdesk</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="wrap" class="oe_structure oe_empty">
+                    <form data-success_page="ticket_thanks" data-model_name="helpdesk_lite.ticket" action="/website_form/"
+                          method="post" class="s_website_form form-horizontal container-fluid mt32"
+                          enctype="multipart/form-data">
+
+                        <input name="partner_id" required="1" type="hidden"
+                               t-att-value="partner_id" invisible="1"/>
+                        <t t-if="not partner_id">
+                            <div class="form-group form-field" attrs="{'invisible': [('partner_id','=',None)]}">
+                                <div class="col-md-3 col-sm-4 text-right">
+                                    <label class="control-label" for="contact_name">Customer Name</label>
+                                </div>
+                                <div class="col-md-7 col-sm-8">
+                                    <input class="form-control o_website_form_input"
+                                           name="contact_name" required="1" type="text"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group form-field">
+                                <div class="col-md-3 col-sm-4 text-right">
+                                    <label class="control-label" for="email_from">
+                                        Customer Email
+                                    </label>
+                                </div>
+                                <div class="col-md-7 col-sm-8">
+                                    <input class="form-control o_website_form_input" name="email_from" required="1"
+                                           type="text"/>
+                                </div>
+                            </div>
+                        </t>
+                        <div class="form-group form-field o_website_form_required">
+                            <div class="col-md-3 col-sm-4 text-right">
+                                <label class="control-label" for="name">Subject</label>
+                            </div>
+                            <div class="col-md-7 col-sm-8">
+                                <input class="form-control o_website_form_input" name="name" required="1" type="text"/>
+                            </div>
+                        </div>
+                        <div class="form-group form-field">
+                            <div class="col-md-3 col-sm-4 text-right">
+                                <label class="control-label" for="description">
+                                    Description
+                                </label>
+                            </div>
+                            <div class="col-md-7 col-sm-8">
+                                <textarea class="form-control o_website_form_input" name="description"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                                <span style="position: relative; overflow: hidden;"
+                                      class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text">Send
+                                </span>
+                                <span id="o_website_form_result"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="ticket_thanks" name="Submit Ticket">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <div class="container">
+                    <h1>Thanks!</h1>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="alert alert-success">
+                                Thank you for submitting your issue, our team will get right on it!
+                                <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                            </div>
+                            <p>
+                                We will get back to you shortly.
+                            </p>
+                            <p class="mt64">
+                                If you have an emergency, do not hesitate to contact us by phone:
+                            </p>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <i class="fa fa-phone"></i>
+                                    :
+                                    <span t-field="res_company.phone"/>
+                                </li>
+                                <li>
+                                    <i class="fa fa-envelope"></i>
+                                    :
+                                    <span t-field="res_company.email"/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <t t-call="website.company_description"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+-->
+
+</odoo>

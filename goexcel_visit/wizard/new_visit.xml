@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="visit_wizard_form_view" model="ir.ui.view">
+			<field name="name">visit.wizard.form.view</field>
+			<field name="model">visit.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Create Next Visit">
+					<group>
+						<group>
+							<field name="customer_name"/>
+							<field name="contact" />
+							<field name="visit_purpose" widget="radio" options="{'horizontal': true}"/>
+							<field name="visit_planned_start_date_time"/>
+							<field name="visit_planned_end_date_time"/>
+							<field name="priority" widget="priority"/>
+						</group>
+						<group>
+							<field name="last_visit_remark"/>
+							<field name="sales_person"/>
+							<field name="company_id"/>
+						</group>
+					</group>
+
+					<footer>
+						<button string='Save' name="create_new_visit" type="object" class="btn-primary"/>
+
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+				</form>
+			</field>
+		</record>
+		<record id="action_new_visit" model="ir.actions.act_window">
+            <field name="name">Create Next Visit</field>
+            <field name="res_model">visit.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="visit_wizard_form_view"/>
+           	<field name="target">new</field>
+        </record>
+	</data>
+</odoo>

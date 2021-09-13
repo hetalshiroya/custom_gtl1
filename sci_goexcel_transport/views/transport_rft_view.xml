@@ -1,0 +1,607 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- Tree View trip -->
+     <record id='view_tree_dispatch_trip' model='ir.ui.view'>
+        <field name="name">Dispatch Trip Tree</field>
+        <field name="model">dispatch.trip</field>
+        <field name="arch" type="xml">
+			<tree string='Dispatch Trip'>
+                <field name="trip_no"/>
+                <field name="load_type"/>
+                <field name="vehicle"/>
+                <field name="driver_id"/>
+               <!-- <field name="co_driver"/>-->
+                <field name="required_date_time" />
+                <field name="pickup_from_address_input" />
+                <field name="delivery_to_address_input" />
+                <field name="plan_departure_date_time"/>
+                <field name="plan_arrival_date_time"/>
+           <!--      <field name="plan_departure_date"/>
+                <field name="plan_arrival_date"/>-->
+               <!-- <field name="actual_departure_date_time"/>
+                <field name="actual_arrival_date_time"/>-->
+                <field name="priority" />
+                <field name="dispatch_trip_status" />
+                <field name="elapsed_day"/>
+                <!--<field name="owner"/>-->
+                <field name="create_date" />
+                <field name="shipping_instruction"/>
+               <!-- <field name="active"/>-->
+			</tree>
+		</field>
+	</record>
+    <!-- Must place before the form view button that call this -->
+      <!-- Call action window to view dispatch trip -->
+    <record id="view_dispatch_trip" model="ir.actions.act_window">
+        <field name="name">Trip History</field>
+        <field name="res_model">dispatch.trip</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_tree_dispatch_trip"/>
+		<field name="domain">[('rft_reference', '=', active_id)]</field>
+    </record>
+
+
+      <!-- Form View transport -->
+    <record id="view_form_transport_rft" model="ir.ui.view">
+        <field name="name">Transport RFT Form</field>
+        <field name="model">transport.rft</field>
+        <field name="arch" type="xml">
+           <form string="transport">
+                <header>
+                    <button name="action_dispatch_trip"
+							type="object"
+							string="Dispatch FTL"
+							class="oe_highlight" attrs="{'invisible': [('delivery_rft_status', 'not in', '02')]}"/>
+                    <button name="action_dispatch_trip_ltl"
+							type="object"
+							string="Dispatch LTL"
+							class="oe_highlight" attrs="{'invisible': [('delivery_rft_status', 'not in', '02')]}"/>
+                    <button name="%(sci_goexcel_transport.assign_ltl_wizard)d"
+							type="action"
+							string="Assign to LTL" context="{'rft_id': active_id}"
+							class="oe_highlight" attrs="{'invisible': [('delivery_rft_status', 'not in', '02')]}"/>
+                    <button name="action_cancel_rft"
+							type="object"
+							string="Cancel RFT"
+							class="oe_button"
+                            confirm="Are you sure you want to Cancel RFT?"
+                            attrs="{'invisible': [('rft_status', 'in', ['05','06'])]}"/>
+                    <button name="action_create_invoice"
+							type="object"
+							string="Invoice"
+							class="oe_highlight" attrs="{'invisible': [('delivery_rft_status', 'not in', '05')]}"/>
+-->                     <field name="rft_status" invisible="1" options='{"always_reload": True}'/>
+                        <field name="delivery_rft_status" widget="statusbar" clickable="True" statusbar_visible="01,02,03,04,05" options='{"always_reload": True}'/>
+                    <button name="action_send_rft"
+							type="object"
+							string="Send RFT"
+							class="oe_button"/>
+                    <button name="action_send_do"
+							type="object"
+							string="Send DO"
+							class="oe_button"/>
+                </header>
+                <sheet>
+                     <div class="oe_button_box"
+							name="button_box">
+                            <button name="%(sci_goexcel_transport.view_dispatch_trip)d"
+                                    type="action"
+                                    class="oe_stat_button"
+                                    icon="fa-truck"
+                                    attrs="{'invisible': [('trip_count', '=', 0)]}">
+                                    <field name="trip_count" widget="statinfo" string="FTL Trip"/>
+                            </button>
+                           <button name="operation_invoices"
+		                        type="object"
+                                class="oe_stat_button"
+                                icon="fa-credit-card"
+                                attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+	                	    </button>
+			        </div>
+                    <group>
+                        <group>
+                            <field name="rft_no" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="consignment_note_no" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="booking_no" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="direction" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="priority" widget="priority" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="booking_reference" readonly="1"/>
+                            <field name="haulage" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                        </group>
+                        <group>
+                            <field name="required_date_time" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="customer_seal" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="delivery_type" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="direct_loading" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="sq_reference" readonly="1"/>
+                            <field name="elapsed_day" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Customer Information">
+                        <group>
+                            <field name="pickup_from" context="{'show_address': 1}" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="pickup_from_address_input" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="pickup_from_contact_name" domain="[('parent_id', '=', pickup_from)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="delivery_to" domain="[('consignee', '=', True), ('type','not in',['invoice'])]" context="{'show_address': 1}" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="delivery_to_address_input" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="delivery_to_contact_name" domain="[('parent_id', '=', delivery_to)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+
+                        </group>
+                        <group>
+                            <field name="forwarding_agent" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="shipping_agent" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="billing_address" context="{'default_type':'invoice', 'show_address': 1}" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="shipper"  domain="[('shipper', '=', True)]" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="consignee"  domain="[('consignee', '=', True)]" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="requested_by" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+<!--
+                            <field name="requested_by_1" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+-->
+                            <field name="requested_by_contact_name" domain="[('parent_id', '=', requested_by)]" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="rft_note" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+
+                        </group>
+                    </group>
+
+                    <group string="Shipment Info">
+                        <group>
+                            <field name="empty_container_dropoff" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="seal_no" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="accept_hour" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="port" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="container_operator" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                        </group>
+                        <group>
+<!--
+                            <field name="commodity_type" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+-->
+                            <field name="commodity_type1" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                              <field name="commodity" domain="[('categ_id', '=', commodity_category_id)]"  invisible="1"
+                                    options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="commodity1" options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="commodity_category_id" invisible="1"/>
+                            <field name="vessel_name" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="vessel_code" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="voyage_no" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="vessel_eta_etd" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="vessel_etd" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="loading_eta" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            <field name="use_packaging" invisible="1"/>
+                            <field name="use_manpower" invisible="1"/>
+                            <field name="use_equipment" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Cargo">
+                            <field name="container_line_ids" mode="tree,kanban">
+								<tree editable="bottom" name="cargo_tree">
+                                    <field name="sequence" widget="handle" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+									<field name="container_no" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="lorry_no" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="container_id" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="trip_reference" readonly="1" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="container_product_id" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="container_product_name" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="packages_no" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="packages_no_uom" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="exp_gross_weight" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="exp_vol" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="required_date_time_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="container_operator_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="accept_hour_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="remark_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+								</tree>
+                                  <kanban class="o_kanban_mobile">
+                                   <field name="container_no"/>
+                                    <field name="container_id" />
+                                    <field name="trip_reference" readonly="1"/>
+                                    <field name="container_product_id" />
+                                    <field name="container_product_name" />
+                                    <field name="packages_no"/>
+                                    <field name="exp_gross_weight"/>
+                                    <field name="exp_vol" />
+                                    <field name="required_date_time_line"/>
+                                    <field name="container_operator_line" />
+                                    <field name="accept_hour_line"/>
+                                    <field name="remark_line"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.container_no.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.container_product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Container:
+                                                            <t t-esc="record.container_id.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Pkg No:
+                                                            <t t-esc="record.packages_no.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+						</page>
+                         <page string="Cost &amp; Profit">
+							<field name="cost_profit_ids_rft" mode="tree,kanban">
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+									<field name="product_id"/>
+                                    <field name="product_name"/>
+									<field name="sales_qty"/>
+									<field name="unit_price"/>
+									<!--<field name="uom_id" groups="uom.group_uom"/>-->
+                                    <field name="sales_amount"/>
+                                    <field name="sales_currency"/>
+                                   <!-- <field name="sales_currency_rate"/>-->
+									<field name="sales_total" sum="Total Sales"/>
+                                    <field name="cost_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_amount"/>
+                                    <field name="vendor_id"/>
+                                    <field name="cost_currency"/>
+                                    <!--<field name="cost_currency_rate"/>-->
+									<field name="cost_total" sum="Total Cost"/>
+                                    <field name="profit_total" sum="Total Profit"/>
+								</tree>
+                                <kanban class="o_kanban_mobile">
+                                    <field name="product_id"/>
+                                    <field name="product_name"/>
+									<field name="sales_qty"/>
+									<field name="unit_price"/>
+                                    <field name="sales_amount"/>
+                                    <field name="sales_currency"/>
+									<field name="sales_total" sum="Total Sales"/>
+                                    <field name="cost_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_amount"/>
+                                    <field name="vendor_id"/>
+                                    <field name="cost_currency"/>
+									<field name="cost_total" sum="Total Cost"/>
+                                    <field name="profit_total" sum="Total Profit"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.sale_total.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Cost:
+                                                            <t t-esc="record.cost_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Profit:
+                                                            <t t-esc="record.profit_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+						</page>
+                        <page string="Document Received">
+                             <group invisible="1">
+                                    <field name="do_file_name" invisible="1"/>
+                             </group>
+                             <group>
+                                 <group col='5' colspan="3">
+                                    <field name="do_attachment" filename="do_file_name" widget="FieldBinary"/>
+                                    <field name="do_to_receive_date"/>
+                                     <button name="action_schedule_reminder" type="object" string="Schedule PL Reminder"  context="{'summary': 'DO Follow Up', 'action': 'do'}" />
+                                </group>
+                            </group>
+						</page>
+                        <page string="Delivery Instruction">
+                             <group>
+                                 <field name="delivery_instruction"/>
+                             </group>
+						</page>
+                        <page string="System Info">
+                            <group>
+                                <field name="owner" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                                <field name="sales_person" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                                <field name="department" readonly="1"/>
+                                <field name="create_date"/>
+                                <field name="create_uid"/>
+                                <field name="write_date"/>
+                                <field name="write_uid"/>
+                                <field name="company_id" options="{'no_create': True}" attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+                            </group>
+						</page>
+                        <page string="Packaging" attrs="{'invisible': [('use_packaging', '=', False)]}">
+                            <field name="packaging_line_ids" >
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+									<field name="packaging_product_id"/>
+                                    <field name="packaging_product_name" />
+                                    <field name="packages_no"/>
+                                    <field name="trip_reference" readonly="1"/>
+                                    <field name="required_date_time_line"/>
+                                    <field name="remark_line"/>
+								</tree>
+							</field>
+						</page>
+                        <page string="Equipments Tools" attrs="{'invisible': [('use_equipment', '=', False)]}">
+                            <field name="equipment_line_ids" >
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+									<field name="equipment_id" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="equipment_name" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="qty" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="trip_reference" readonly="1"/>
+                                    <field name="vendor_id" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="pickup_from_address_input_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="delivery_to_address_input_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="required_date_time_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="remark_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+								</tree>
+							</field>
+						</page>
+                         <page string="Manpower" attrs="{'invisible': [('use_manpower', '=', False)]}">
+                            <field name="manpower_line_ids" >
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+									<field name="manpower_id" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="manpower_name" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="qty" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="trip_reference" readonly="1"/>
+                                    <field name="vendor_id" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="required_date_time_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                                    <field name="remark_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+								</tree>
+							</field>
+						</page>
+
+                    </notebook>
+                </sheet>
+               <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+
+        </field>
+    </record>
+
+    <!-- Tree View transport -->
+     <record id='view_tree_transport_rft' model='ir.ui.view'>
+        <field name="name">Transport RFT Tree</field>
+        <field name="model">transport.rft</field>
+        <field name="arch" type="xml">
+			<tree string='Request For Transport'>
+                <field name="rft_no" />
+				<!-- <field name="booking_no" />-->
+                <field name="required_date_time" />
+                <field name="pickup_from_address_input" />
+                <field name="delivery_to_address_input" />
+                <field name="requested_by" />
+                <!--<field name="delivery_type" />-->
+                <field name="direct_loading" />
+                <field name="billing_address" />
+                <field name="consignee" />
+                <field name="priority" />
+                <field name="delivery_rft_status" />
+                <field name="elapsed_day"/>
+                <!--<field name="owner"/>-->
+                <field name="create_date" />
+                <field name="rft_note"/>
+               <!-- <field name="active"/>-->
+			</tree>
+		</field>
+	</record>
+
+    <!-- Search View transport -->
+    <record id="view_search_transport_rft" model="ir.ui.view">
+        <field name="name">Transport Filter</field>
+        <field name="model">transport.rft</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="rft_no"/>
+                <filter string="RFT Draft" name="RFT status" domain="[('rft_status', '=', '01')]"/>
+                <filter string="RFT Confirmed" name="RFT status" domain="[('rft_status', '=', '02')]"/>
+                <filter string="Dispatched" name="RFT status" domain="[('rft_status', '=', '03')]"/>
+                <filter string="In Transit" name="RFT status" domain="[('rft_status', '=', '04')]"/>
+                <filter string="Done" name="RFT status" domain="[('rft_status', '=', '05')]"/>
+                <filter string="Cancelled" name="RFT status" domain="[('rft_status', '=', '06')]"/>
+                <filter string="Required Date" name="required_date_time" date="required_date_time"/>
+                <filter string="Vessel ETA/ETD" name="vessel_eta_etd" date="vessel_eta_etd"/>
+                <filter string="Creation Date" name="create_date" date="create_date"/>
+                <field name="pickup_from"/>
+                <field name="delivery_to"/>
+                <field name="requested_by"/>
+                <field name="shipper"/>
+                <group expand="0" string="Group By">
+                  <filter string="Required Date" name="Required Date" domain="[]" context="{'group_by':'required_date_time'}"/>
+                  <filter string="Vessel ETA/ETD" name="vessel_eta_etd" domain="[]" context="{'group_by':'vessel_eta_etd'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+     <!-- Kanban View Of transport -->
+   <record id="view_kanban_transport_rft" model="ir.ui.view">
+        <field name="name">Transport RFT KANBAN</field>
+        <field name="model">transport.rft</field>
+        <field name="arch" type="xml">
+            <kanban quick_create="false" class="o_kanban_mobile" default_group_by="rft_status" >
+                <field name="requested_by" />
+                <field name="rft_status" />
+                <field name="color" />
+                 <field name="priority" eval="100"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}} oe_kanban_global_click_edit oe_semantic_html_override">
+                            <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                <ul class="oe_dropdown_menu">
+                                    <li>
+                                        <a type="edit">Edit...</a>
+                                    </li>
+                                    <li>
+                                        <a type="delete">Delete</a>
+                                    </li>
+                                    <li>
+                                        <ul class="oe_kanban_colorpicker" data-field="color" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="oe_kanban_box_header oe_kanban_color_bgdark oe_kanban_color_border oe_kanban_draghandle">
+                                <table class="oe_kanban_table">
+                                    <tr>
+                                        <td class="oe_kanban_title1" align="left" valign="middle" style="padding-left:10px;">
+                                            <h4>
+                                                <a type="open">
+                                                    <field name="delivery_type" /> From
+                                                    <field name="pickup_from" /> To
+                                                    <field name="delivery_to" /> By:
+                                                    <field name="requested_by" />
+                                                </a>
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br />
+                            </div>
+                            <div class="oe_kanban_box_content oe_kanban_color_bglight oe_kanban_box_show_onclick_trigger oe_kanban_color_border">
+                                <table class="oe_kanban_table">
+                                    <tr width="250">
+                                        <td valign="top" align="left" style="padding-left:7px;">
+                                            <table>
+                                                 <tr>
+                                                    <td>RFT No :</td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="rft_no" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Shipper :</td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="shipper" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Consignee Name :</td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="consignee" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                 <tr>
+                                                    <td>Required Date/Time: </td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="required_date_time" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Vessel ETA/ETD: </td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="vessel_eta_etd" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_left" style="margin-left:7px;">
+                                    <br />
+                                    <a role="button" string="Edit" class="btn btn-sm btn-default fa fa-pencil" type="edit" aria-label="edit" title="edit"/>
+                                    <a role="button" string="Change Color" icon="color-picker" type="color" name="color" />
+                                </div>
+                                <div class="oe_kanban_bottom_right" style="margin-left:7px;">
+                                        <field name="priority" widget="priority"/>
+                                       <!-- <field name="activity_ids" widget="kanban_activity"/>-->
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+     <!-- Calendar View Of transport -->
+    <record id="view_calendar_transport_rft" model="ir.ui.view">
+        <field name="name">RFT Calendar</field>
+        <field name="model">transport.rft</field>
+        <field name="arch" type="xml">
+            <calendar color="rft_no" date_start="required_date_time" string="RFT" mode="week">
+                     <field name="pickup_from" />
+                     <field name="delivery_to" />
+                     <field name="rft_status" />
+            </calendar>
+        </field>
+    </record>
+
+    <act_window id="action_transport_rft"
+                name="Request For Transport"
+                res_model="transport.rft"
+                view_mode="tree,kanban,calendar,form"
+    />
+
+    <menuitem id="menu_goexcel_transport" name="GoExcel Transport" web_icon="sci_goexcel_transport,static/description/icon.png"/>
+    <menuitem id="menu_consignment_transport" name="Transport" parent="menu_goexcel_transport" sequence="1"/>
+    <menuitem id="menu_consignment_transport_rft"    name="Request For Transport"    parent="menu_consignment_transport"    action="action_transport_rft"/>
+
+
+</odoo>

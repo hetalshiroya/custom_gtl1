@@ -1,0 +1,16 @@
+<odoo>
+	<record model="ir.ui.view" id="view_sale_order_template">
+		<field name="name">Sale Order Template</field>
+		<field name="model">sale.order.template</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="sale_management.sale_order_template_view_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='number_of_days']" position="after">
+				<field name="company_id" invisible="1"/>
+			</xpath>
+
+		</field>
+	</record>
+
+</odoo>

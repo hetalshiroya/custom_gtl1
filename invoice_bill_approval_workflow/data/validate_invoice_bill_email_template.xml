@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    	<record id="invoice_bill_validate_email_template_ip" model="mail.template">
+        	<field name="name">${ctx['type']} Approval Request</field>
+            <field name="email_from">${ctx['email_from']}</field>
+            <field name="email_to">${ctx['partner_manager_email']}</field>
+            <field name="subject">New ${ctx['type']} Request for Approval</field>
+            <field name="lang">${ctx['lang']}</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="auto_delete" eval="False"/>
+	  		<field name="body_html"><![CDATA[
+                    Hello,
+
+                    <p>New <b>${ctx['type']}</b> created for <b>${ctx['customer_name']}</b> of amounting in <b>${format_amount(object.amount_total, object.currency_id)}</b> by ${ctx['partner_name']} from ${object.company_id.name}.</p>
+
+                    <p> To Approve or view ${ctx['type']} click on the following link:</p>
+                    <div style="text-align: center; margin-top: 16px;">
+                         <a href="${ctx['action_url']}" style="padding: 5px 10px; font-size: 12px; line-height: 18px; color: #FFFFFF; border-color:#875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px; font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap; background-image: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius:3px">Approve or View ${ctx['type']}</a>
+                    </div>
+                    <p>Best regards,</p>
+                    <p>${ctx['partner_name']}</p>
+                ]]>
+	  		</field>
+       	</record>
+    </data>
+</odoo>

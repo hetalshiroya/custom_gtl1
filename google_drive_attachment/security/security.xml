@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record model="ir.rule" id="multi_folder_rule">
+        <field name="name">Google Drive multi-company</field>
+        <field name="model_id" search="[('model','=','multi.folder.drive')]" model="ir.model"/>
+        <field name="global" eval="True" />
+        <field name="domain_force">['|',('company_id','=',False),('company_id','=',user.company_id.id)]</field>
+    </record>
+</odoo>

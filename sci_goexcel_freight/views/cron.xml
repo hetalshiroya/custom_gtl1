@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<odoo>
+	<data noupdate="1">
+		<record model="ir.cron" id="cron_elapsed_day">
+			<field name="name">Elapsed Day</field>
+			<field name="model_id" ref="model_freight_booking"/>
+			<field name="interval_number">6</field>
+			<field name="interval_type">hours</field>
+			<field name="numbercall">-1</field>
+			<field name="doall" eval="False"/>
+			<field name="state">code</field>
+			<field name="code">model._cron_elapsed_day()</field>
+			<field name="nextcall" >2020-01-05 13:35:59</field>
+		</record>
+	</data>
+</odoo>

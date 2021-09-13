@@ -1,0 +1,391 @@
+<odoo>
+	<record model="ir.ui.view" id="view_tree_ocean_booking_gtl">
+		<field name="name">Tree Ocean Booking gtl</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_tree_ocean_booking"/>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree[@name='view_tree_ocean_booking']" position="replace">
+				<tree name="view_tree_ocean_booking" string='Booking Job' default_order='booking_no desc'
+					  decoration-muted="shipment_booking_status=='09'" decoration-danger="shipment_booking_status=='08'">
+					<field name="booking_no"/>
+					<field name="port_of_loading"/>
+					<field name="port_of_discharge"/>
+					<field name="direction"/>
+					<field name="cargo_type"/>
+					<field name="booking_date_time"/>
+					<field name="vessel_name"/>
+					<field name="voyage_no"/>
+					<field name="shipper"/>
+					<field name="consignee" />
+					<field name="create_uid"/>
+					<field name="shipment_booking_status"/>
+				</tree>
+			</xpath>
+		</field>
+	</record>
+
+
+	<record model="ir.ui.view" id="view_tree_air_booking_gtl">
+		<field name="name">Tree Air Booking gtl</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_tree_air_booking"/>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree[@name='view_tree_air_booking']" position="replace">
+				<tree name="view_tree_air_booking" string='Booking Job' default_order='booking_no desc'
+					  decoration-muted="shipment_booking_status=='09'" decoration-danger="shipment_booking_status=='08'">
+					<field name="booking_no"/>
+					<field name="direction"/>
+					<field name="shipment_booking_status" />
+					<field name="airport_departure"/>
+					<field name="airport_destination"/>
+					<field name="customer_name"/>
+					<field name="shipper" />
+					<field name="consignee" />
+					<field name="booking_date_time" />
+					<field name="create_uid"/>
+					<field name="first_carrier_etd"/>
+					<field name="first_carrier_eta"/>
+					<field name="carrier_booking_no"/>
+					<field name="elapsed_day_booking"/>
+					<field name="sq_reference" />
+				</tree>
+			</xpath>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="view_form_booking_gtl">
+		<field name="name">Booking View gtl</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='psa_code']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='principal_agent_code']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='principal_agent_smk_code']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//button[@name='action_create_subbooking']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='booking_type']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='shipping_agent_smk_code']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='place_of_receipt_ata']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='port_of_tranship']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='port_of_tranship_eta']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//div[@name='button_box']" position="inside">
+				<button name="operation_pr"
+						type="object"
+						class="oe_stat_button"
+						icon="fa-file-text"
+						attrs="{'invisible':[('purchase_receipt_count', '=', 0)]}">
+					<field name="purchase_receipt_count" widget="statinfo" string="Purchase Receipt"/>
+				</button>
+			</xpath>
+			<!--<xpath expr="//field[@name='shipment_close_date_time']" position="attributes">
+				<attribute name="attrs">{'invisible': ('direction', '=', 'import')}</attribute>
+			</xpath>-->
+			<!--<xpath expr="//field[@name='place_of_receipt']" position="attributes">
+				<attribute name="attrs">{'invisible': ('direction', '=', 'import')}</attribute>
+			</xpath>-->
+			<!--<xpath expr="//field[@name='place_of_delivery']" position="attributes">
+				<attribute name="attrs">{'invisible': ('direction', '=', 'import')}</attribute>
+			</xpath>-->
+		<!--	<xpath expr="//field[@name='port_of_tranship_eta']" position="attributes">
+				<attribute name="attrs">{'invisible': ('direction', '=', 'import')}</attribute>
+			</xpath>-->
+		<!--	<xpath expr="//field[@name='place_of_receipt_ata']" position="attributes">
+				<attribute name="attrs">{'invisible': ('direction', '=', 'import')}</attribute>
+			</xpath>-->
+			<xpath expr="//field[@name='commodity_type']" position="attributes">
+				<attribute name="string">Cargo Type</attribute>
+			</xpath>
+			<xpath expr="//field[@name='feeder_vessel_name']" position="attributes">
+				<attribute name="string">Feeder Vessel</attribute>
+			</xpath>
+			<xpath expr="//field[@name='vessel_name']" position="attributes">
+				<attribute name="string">Mother Vessel</attribute>
+			</xpath>
+			<xpath expr="//field[@name='feeder_voyage_no']" position="attributes">
+				<attribute name="string">Feeder Voyage No</attribute>
+			</xpath>
+			<xpath expr="//field[@name='unstuff_at']" position="attributes">
+				<attribute name="string">Warehouse</attribute>
+			</xpath>
+			<xpath expr="//field[@name='manifest_no']" position="replace">
+			</xpath>
+			<xpath expr="//field[@name='scn_code']" position="after">
+				<field name="manifest_no"/>
+			</xpath>
+			<xpath expr="//field[@name='lcl_pcs']" position="before">
+				<field name="lcl_container" attrs="{'invisible': ['|',('service_type', '=', 'land'), ('cargo_type', '!=', 'lcl')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+			</xpath>
+			<xpath expr="//field[@name='laden_back_terminal']" position="attributes">
+				<attribute name="invisible">{'invisible': ('cargo_type', '=', 'lcl')}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='intended_si_cut_off']" position="replace">
+			</xpath>
+			<xpath expr="//field[@name='intended_bl_cut_off']" position="replace">
+			</xpath>
+			<xpath expr="//field[@name='terminal']" position="after">
+				<field name="intended_si_cut_off"/>
+			</xpath>
+			<xpath expr="//field[@name='terminal']" position="after">
+				<field name="intended_bl_cut_off"/>
+			</xpath>
+			 <xpath expr="//page[@name='service']" position="attributes">
+				<attribute name="string">Booking Note</attribute>
+			 </xpath>
+			 <xpath expr="//field[@name='custom_approved_date']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			 </xpath>
+			<xpath expr="//field[@name='custom_clearance']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			 </xpath>
+			<xpath expr="//field[@name='gate_in_date']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			 </xpath>
+			<xpath expr="//field[@name='warehouse_location']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			 </xpath>
+			<xpath expr="//field[@name='depot_name']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			 </xpath>
+			<xpath expr="//field[@name='custom_approved_date']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			 </xpath>
+			<xpath expr="//field[@name='custom_registration_no']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			 </xpath>
+			<xpath expr="//field[@name='customer_collection_from']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			 </xpath>
+
+			<!--<xpath expr="//field[@name='carrier_booking_no']" position="attributes">
+				<attribute name="attrs">{'invisible': ('direction', '=', 'import')}</attribute>
+			</xpath>-->
+			<xpath expr="//field[@name='warehouse_hours']" position="after">
+				<field name="instruction"/>
+			</xpath>
+			<xpath expr="//tree[@name='manifest_tree_ids']" position="replace">
+				<tree name="manifest_tree_ids">
+					<field name="sequence" widget="handle" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="container_no" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+						   options='{"always_reload": True}' attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="seal_no" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="container_product_name" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="packages_no" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+						sum="Total Packages"/>
+					<field name="packages_no_uom" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="exp_net_weight" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+						   sum="Total Net Weight"/>
+					<field name="exp_gross_weight" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+						   sum="Total Gross Weight"/>
+					<!--
+                    	<field name="dim_length" string="Length" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="dim_width" string="Width" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="dim_height" string="Height" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                    -->
+					<field name="dim_length" string="Length (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+							 sum="Total Dim Length"/>
+					<field name="dim_width" string="Width (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+							 sum="Total Dim Width"/>
+					<field name="dim_height" string="Height (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+							sum="Total Dim Height"/>
+					<field name="exp_vol" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+							sum="Total Vol"/>
+					<field name="remark" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="container_commodity_id" invisible="1" domain="[('categ_id', '=', commodity_category_id)]"
+						   options='{"always_reload": True}' attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="fcl_container_qty" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="container_category_id" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="commodity_category_id" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+				</tree>
+			</xpath>
+			<xpath expr="//tree[@name='manifest_tree_ids2']" position="replace">
+				<tree name="manifest_tree_ids2">
+					<field name="sequence" widget="handle" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="container_no" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+						   options='{"always_reload": True}' />
+					<field name="seal_no" />
+					<field name="container_product_name" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="packages_no" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+							sum="Total Packages"/>
+					<field name="packages_no_uom" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="exp_net_weight" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+							sum="Total Net Weight"/>
+					<field name="exp_gross_weight" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+						 	sum="Total Gross Weight"/>
+					<!--
+						<field name="dim_length" string="Length" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+						<field name="dim_width" string="Width" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+						<field name="dim_height" string="Height" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					-->
+					<field name="dim_length" string="Length (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+								 sum="Total Dim Length"/>
+					<field name="dim_width" string="Width (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+						   		sum="Total Dim Width"/>
+					<field name="dim_height" string="Height (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+								sum="Total Dim Height"/>
+					<field name="exp_vol" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"
+								sum="Total Vol"/>
+					<field name="shipping_mark" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="shipping_mark" string="Mark" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+					<field name="container_category_id" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+				</tree>
+			</xpath>
+
+			<xpath expr="//tree[@name='cost_profit_tree']" position="attributes">
+				<attribute name="editable"/>
+			</xpath>
+			<xpath expr="//field[@name='vendor_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='vendor_bill_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='sale_total']" position="after">
+				<field name="vendor_id" domain="[('supplier','=',True)]"/>
+				<field name="vendor_bill_id"/>
+			</xpath>
+
+			<xpath expr="//field[@name='freight_type']" position="after">
+				<field name="bl_status"/>
+			</xpath>
+			<xpath expr="//button[@name='action_create_bl']" position="replace">
+				<button name="action_create_bl"
+							type="object" class="oe_highlight"
+							string="Create BL"
+                            attrs="{'invisible': ['|', ('service_type', 'not in', 'ocean'),
+                            ('shipment_type', 'in', 'direct')]}"/>
+			</xpath>
+			<xpath expr="//field[@name='intended_si_cut_off']" position="replace">
+				<field name="intended_si_cut_off"
+					   attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])],'invisible': [('direction', 'in', 'import')]}"/>
+			</xpath>
+			<xpath expr="//field[@name='intended_bl_cut_off']" position="replace">
+				<field name="intended_bl_cut_off"
+					   attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])],'invisible': [('direction', 'in', 'import')]}"/>
+			</xpath>
+			<xpath expr="//page[@name='cost_profit']" position="attributes">
+                 <attribute name="groups">account.group_account_invoice</attribute>
+			</xpath>
+			<xpath expr="//field[@name='lcl_weight']" position="attributes">
+				<attribute name="string">LCL Weight (KG)</attribute>
+			</xpath>
+			<xpath expr="//field[@name='lcl_volume']" position="attributes">
+				<attribute name="string">LCL Volume (M3)</attribute>
+			</xpath>
+			<!-- #TS  Start -->
+			<xpath expr="//field[@name='shipment_type']" position="after">
+				<!--<field name="container_category_id" invisible="1"/>-->
+				<field name="container_qty" attrs="{'invisible': ['|', ('service_type', 'not in', 'ocean'),
+                            ('cargo_type', '!=', 'fcl')]}"/>
+				<field name="container_product_id" attrs="{'invisible': ['|', ('service_type', 'not in', 'ocean'),
+                            ('cargo_type', '!=', 'fcl')]}"/>
+<!--				<field name="container_product_id" attrs="{'invisible': ['|', ('service_type', 'not in', 'ocean'),-->
+<!--                            ('cargo_type', '!=', 'fcl')]}" domain="[('categ_id', '=', container_category_id)]"/>-->
+			</xpath>
+			 <xpath expr="//page[@name='remark']" position="after">
+                <page name="Invoices" string="Invoices">
+                    <field name="booking_invoice_lines_ids" groups="account.group_account_invoice">
+                        <tree string="Invoices" editable="bottom">
+							<field name="job_no"/>
+                            <field name="invoice_no"/>
+                            <field name="reference"/>
+                            <field name="type"/>
+                            <field name="invoice_amount"/>
+                        </tree>
+                    </field>
+                </page>
+                <page name="Inv Amt" string="Inv.Amt" groups="account.group_account_invoice">
+                    <group>
+                        <field name="pivot_sale_total" string="sales"/>
+                        <field name="pivot_cost_total" string="cost"/>
+                        <field name="pivot_profit_total" string="profit"/>
+                    </group>
+                     <group>
+                         <button name="action_reupdate_booking_invoice" string="Update All" type="object" class="btn-primary"/>
+<!--
+                         <button name="action_reupdate_booking_invoice_one" string="Update" type="object" class="btn-primary"/>
+-->
+                         <field name="inv_sales"/>
+                         <field name="inv_cost"/>
+                         <field name="inv_profit"/>
+<!--						 <field name="has_difference"/>-->
+<!--                        <field name="diff_amount"/>-->
+<!--                         <field name="diff_cost_amount"/>-->
+                    </group>
+                </page>
+            </xpath>
+			<!-- #TS  End -->
+			<!-- #Canon -->
+			<xpath expr="//field[@name='hbl_no']" position="replace">
+				<field name="hbl_no" force_save="1" attrs="{'invisible': ['|','|',('service_type', 'in', ['air','land']),('shipment_type', 'in', 'direct'),'&amp;',('direction', 'in', ['export']),('shipment_type', 'in', 'house')], 'readonly':['|',('direction', '=', 'export'), ('shipment_booking_status', 'in', ['08', '09'])]}"/>
+			</xpath>
+
+
+
+			<!-- #Canon End-->
+		</field>
+	</record>
+	<!--
+	<record model="ir.ui.view" id="view_form_booking_cost_profit_gtl">
+		<field name="name">Booking Cost Profit gtl</field>
+		<field name="model">freight.cost_profit</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_booking_cost_profit"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='vendor_bill_id']" position="after">
+				<field name="vendor_bill_ids"/>
+			</xpath>
+		</field>
+	</record>
+	-->
+
+
+
+	<!--
+	<record model="ir.ui.view" id="view_freight_booking_copy_to_rft_gtl">
+		<field name="name">Booking View GTL</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_transport.view_freight_booking_copy_to_rft"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_copy_to_rft']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+		</field>
+	</record>
+	<record model="ir.ui.view" id="view_freight_booking_dispatch_job_gtl">
+		<field name="name">Dispatch Job GTL</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_dispatch_job.view_freight_booking_dispatch_job"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_copy_to_dispatch_job']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+		</field>
+	</record>
+	-->
+
+
+</odoo>

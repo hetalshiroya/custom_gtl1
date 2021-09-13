@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="action_rft_pcl"
+            string="Request Of Transport (ROT) for PCL"
+            model="transport.rft"
+            report_type="qweb-pdf"
+            name="custom_gtl.report_rft_pcl"
+            print_report_name = "('ROT - PCL - ' + object.rft_no)"
+    />
+
+    <template id="report_rft_pcl">
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div class="row" style="margin-left:30px;">
+                        <b style="font-family:arial;font-size:15pt;">PERCEPTIVE LOGISTICS SDN.BHD. </b> (538841-D)<br/>
+                        LOT NO 4-B, LINGKARAN SULTAN MOHAMED 2<br/>
+                        KAWASAN 21 PERINDUSTRIAN BANDAR SULTAN SULEIMAN<br/>
+                        42000 PORT KLANG, SELANGOR D E<br/>
+                        TEL: 03-3176 8166  FAX: 3176 8705/ 0079<br/>
+                    </div>
+                </div>
+                <div class="page">
+                    <br/>
+                    <h3>
+                        <center><b><u>Request Of Transport (ROT)</u></b></center>
+                    </h3>
+
+
+                    <p style="text-align:right;"><b>Serial No: </b><span t-field="o.rft_no"/></p>
+                    <table border="1" style="border: 1px solid ; border-collapse: collapse; line-height: 200%;
+                                    font-size:16px; width:100%">
+
+                        <tr>
+                            <td style="padding-left: 5px;"><b>Request No / Date</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.create_date" t-field-options='{"format": "MM/dd/yyyy"}'/>
+                            </td>
+                            <td style="padding-left: 5px;"><b>Status</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.direction"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Job Type / Trip</b></td>
+                            <td style="padding-left: 5px;" class="text-left" colspan="3">
+                                <span t-field="o.job_type_trip"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <t t-foreach="o.container_line_ids" t-as="line">
+                            <td style="padding-left: 5px;"><b> Container Volume</b></td>
+                            <td style="padding-left: 5px;" class="text-left" colspan="3">
+                                <span t-esc="line.exp_vol"/>
+                            </td>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Special Handling</b></td>
+                            <td style="padding-left: 5px;" class="text-left" colspan="3">
+                                <span t-field="o.special_handling"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Vessel / Voyage</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.vessel_name.name"/>
+                            </td>
+                            <td style="padding-left: 5px;"><b> Vessel ETA</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.vessel_eta_etd"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Terminal Name</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.empty_container_dropoff.name"/>
+                            </td>
+                            <td style="padding-left: 5px;"><b> Closing Time</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Shipping Agent</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.shipping_agent.name"/>
+                            </td>
+                            <td style="padding-left: 5px;"><b> SCN/Terminal Code</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.scn_terminal_code"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Container Operator</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.container_operator.name"/>
+                            </td>
+                            <td style="padding-left: 5px;"><b> SA Booking Ref No</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.booking_no"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Commodity</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.commodity1.name"/>
+                            </td>
+                            <td style="padding-left: 5px;"><b>Discharging Port</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.port"/>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="padding-left: 5px;"><b> Forwarding Agent</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.forwarding_agent.name"/>
+                            </td>
+                            <td style="padding-left: 5px;"><b> Gross Weight</b></td>
+                            <td style="padding-left: 5px;">
+                                <t t-foreach="o.container_line_ids" t-as="line">
+                                    <span t-esc="line.exp_gross_weight"/>
+                                </t>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Request By:</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+                                <span t-field="o.requested_by"/>
+                            </td>
+                            <td style="padding-left: 5px;"><b> FA Ref No</b></td>
+                            <td style="padding-left: 5px;" class="text-left">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" rowspan="2"><b> Signature</b></td>
+                            <td style="padding-left: 5px;" class="text-left" rowspan="2">
+                                <span t-field="o.rft_no"/>
+                            </td>
+                            <td style="padding-left: 5px;" colspan="2"><b>BILL TO  </b></td>
+
+                        </tr>
+
+                        <tr>
+                            <td style="padding-left: 5px;"><b> Name</b></td>
+                            <td style="padding-left: 5px;"><b><span t-field="o.billing_address.name"/></b></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="5" colspan="2" style="vertical-align: top; padding-left: 5px;"><b> Company Chop</b></td>
+                            <td style="padding-left: 5px;" colspan="2"><b>Address </b></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"><span t-field="o.billing_address.street"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"><span t-field="o.billing_address.street2"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"><span t-field="o.billing_address.zip"/> <span t-field="o.billing_address.city"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2">Telephone: <span t-field="o.billing_address.phone"/></td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <b><u>Delivery Instruction</u></b>
+
+                    <table border="0" style="line-height: 100%; font-size:16px; width:100%">
+
+                        <tr>
+                            <td style="padding-left: 5px;">Required date / time</td>
+                            <td style="padding-left: 5px;"><span t-field="o.required_date_time"/></td>
+                            <td style="padding-left: 5px;">Off Load at Premises</td>
+                            <td style="padding-left: 5px;" class="text-left">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <t t-foreach="o.container_line_ids" t-as="line">
+                            <td style="padding-left: 5px;"></td>
+                            <td style="padding-left: 5px;">DIRECT OFFLOADING </td>
+                            <td style="padding-left: 5px;">QTY:  <span t-esc="line.packages_no"/></td>
+                            <td style="text-align:left; padding-left: 5px;">
+
+                            </td>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2">Company name and address</td>
+                            <td style="padding-left: 5px;" colspan="2">Company name and address</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"><b>KPM</b></td>
+                            <td style="padding-left: 5px;" colspan="2">AGROFLEET SDN BHD </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"></td>
+                            <td style="padding-left: 5px;" colspan="2">NO 11 JLN KPK 1/5 , KWSN PERINDUSTRIAN</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"></td>
+                            <td style="padding-left: 5px;" colspan="2">KUNDANG,KUNDANG JAYA,48020,RAWANG</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2">Telephone</td>
+                            <td style="padding-left: 5px;" colspan="2">Telephone</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"><b><u>Empty Container Drop Off / Port of Deliver</u></b> </td>
+                            <td style="padding-left: 5px;" colspan="2">03-60345784/5/6</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"></td>
+                            <td style="padding-left: 5px;" colspan="2">Shipper / Consignee</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"></td>
+                            <td style="padding-left: 5px;" colspan="2"><span t-field="o.shipper.name"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;" colspan="2"></td>
+                            <td style="padding-left: 5px;" colspan="2"><span t-field="o.consignee.name"/></td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    List of Container No assigned by Shipping or CMO issued by Shipping Agent
+                    <table style="width:100%">
+                        <t t-set="item_no" t-value="0"/>
+                        <t t-foreach="o.container_line_ids" t-as="line">
+                            <tr>
+                                <t t-set="item_no" t-value="item_no + 1" />
+                                <td style="padding-left: 5px;"><span t-esc="item_no"/></td>
+                                <td style="padding-left: 5px;"><span t-esc="line.container_no"/></td>
+                            </tr>
+                        </t>
+                    </table>
+                    <hr/>
+                    GOODS ARE ACCEPTED FOR CARRIAGE BY <b>PERCEPTIVE LOGISTICS SDN. BHD.</b>
+                    Trading will be subjected to the Haulier's Conditions of Carriage &amp; Conditions of Tariff.
+                    (Copies available at above address on request)
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

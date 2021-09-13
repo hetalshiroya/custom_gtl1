@@ -1,0 +1,44 @@
+<odoo>
+
+ 		<record id="job_cost_wizard_form" model="ir.ui.view">
+            <field name="name">job.cost.wizard.form</field>
+            <field name="model">job.cost.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Assign Job Cost">
+                    <group class="oe_title">
+                        <field name="vendor_id" readonly="1"/>
+                        <field name="booking_job_no"/>
+                        <field name="carrier_job_no"/>
+                        <field name="customer_name" readonly="1"/>
+                    </group>
+                    <group class="oe_title">
+                        <field name="select_add" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                    <group class="oe_title">
+                        <field name="job_cost_lines" nolabel="1">
+                            <tree create="false" delete="0" editable="bottom" string="Job Cost">
+                                <field name="add_to_vendor_bill"/>
+                                <field name="matched" readonly="1"/>
+                                <field name="billed" readonly="1"/>
+                                <field name="product_id" readonly="1"/>
+                                <field name="product_name" readonly="1"/>
+                                <field name="profit_qty" readonly="1"/>
+                                <field name="list_price" readonly="1"/>
+                                <field name="profit_amount" readonly="1"/>
+                                <field name="sale_total" readonly="1"/>
+                                <field name="cost_qty" readonly="1"/>
+                                <field name="cost_price" readonly="1"/>
+                                <field name="cost_amount" readonly="1"/>
+                                <field name="cost_total" readonly="1"/>
+                                <field name="profit_total" readonly="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="action_assign_job_cost" string="Assign Job Cost" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>

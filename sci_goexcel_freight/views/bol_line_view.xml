@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_form_bol_cargo" model="ir.ui.view">
+        <field name="name">BOL Cargo</field>
+        <field name="model">freight.bol.cargo</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="marks" />
+                        <field name="container_no" />
+                        <field name="container_category_id" invisible="1"/>
+                        <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+                               options='{"always_reload": True}'/>
+                        <field name="seal_no" />
+                        <field name="container_product_name" />
+                        <field name="packages_no_value"/>
+                        <field name="packages_no_uom"/>
+                        <field name="exp_net_weight"/>
+                        <field name="exp_gross_weight"/>
+                        <field name="dim_length"/>
+                        <field name="dim_width"/>
+                        <field name="dim_height"/>
+                        <field name="exp_vol" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

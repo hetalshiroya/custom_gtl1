@@ -1,0 +1,262 @@
+<odoo>
+
+    <!-- Tree View Local Job -->
+    <record id='view_tree_freight_local_job' model='ir.ui.view'>
+        <field name="name">Local Job</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+			<tree string='Local Job' decoration-muted="local_job_status=='04'">
+                <field name="local_job_status"/>
+                <field name="local_job_no"/>
+				<field name="job_category"/>
+                <field name="job_type"/>
+				<field name="customer_name"/>
+                <field name="start_date"/>
+                <field name="completion_date"/>
+                <field name="job_description"/>
+                <field name="create_date"/>
+                <field name="sq_reference"/>
+			</tree>
+		</field>
+	</record>
+
+
+    <!-- Form View Local Job -->
+     <record model="ir.ui.view" id="view_form_freight_local_job">
+        <field name="name">Local Job</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+             <form string="Local Job">
+                <header>
+                     <button name="action_cancel_local_job"
+							type="object"
+							string="Cancel Local Job"
+							class="oe_button"
+                            confirm="Are you sure you want to Cancel Local Job?"
+                            attrs="{'invisible': [('local_job_status', 'in', ['03','04'])]}"/>
+                    <button name="action_copy_to_rft" type="object" string="RFT"/>
+                    <field name="local_job_status" widget="statusbar" clickable="True" statusbar_visible="01,02,03" options='{"always_reload": True}'/>
+				</header>
+                <sheet>
+					<group string="Local Job">
+                        <group>
+                            <field name="job_category" widget="radio" options="{'horizontal': true}" invisible="1"/>
+                            <field name="job_type" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('job_category', '=', 'freight')]}"/>
+                            <field name="customer_name" domain="[('is_company','=',True)]" options='{"always_reload": True}'/>
+                            <field name="local_job_no" readonly="1" force_save="1" />
+                            <field name="sq_reference"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="completion_date"/>
+                            <field name="job_description" />
+                            <field name="note"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Manifest">
+                            <field name="operation_line_ids" mode="tree">
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="container_product_id" options='{"always_reload": True}'/>
+                                    <field name="container_commodity_id" invisible="1" options='{"always_reload": True}'/>
+                                    <field name="container_product_name"/>
+                                    <field name="container_no"/>
+                                    <field name="fcl_container_qty"/>
+                                    <field name="seal_no"/>
+                                    <field name="packages_no"/>
+                                    <field name="packages_no_uom"/>
+                                    <field name="exp_gross_weight"/>
+                                    <field name="exp_vol"/>
+                                    <field name="remark"/>
+								</tree>
+							</field>
+						</page>
+                         <page string="Cost &amp; Profit">
+                            <field name="cost_profit_ids" mode="tree,kanban">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id"/>
+                                    <field name="product_name"/>
+                                    <field name="profit_qty"/>
+                                    <field name="list_price"/>
+                                    <!--<field name="uom_id" groups="uom.group_uom"/>-->
+                                    <field name="profit_amount"/>
+                                    <field name="profit_currency"/>
+                                    <field name="profit_currency_rate"/>
+                                    <field name="sale_total" sum="Total Sale"/>
+                                    <field name="cost_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_amount"/>
+                                    <field name="vendor_id"/>
+                                    <field name="cost_currency"/>
+                                    <field name="cost_currency_rate"/>
+                                    <field name="cost_total" sum="Total Cost"/>
+                                    <field name="profit_total" sum="Total Profit"/>
+                                    <field name="invoiced"/>
+                                </tree>
+                                 <kanban class="o_kanban_mobile">
+                                    <field name="product_id"/>
+                                    <field name="product_name"/>
+                                    <field name="profit_qty"/>
+                                    <field name="list_price"/>
+                                    <field name="profit_amount"/>
+                                    <field name="profit_currency"/>
+                                    <field name="profit_currency_rate"/>
+                                    <field name="sale_total" sum="Total Sale"/>
+                                    <field name="cost_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_amount"/>
+                                    <field name="vendor_id"/>
+                                    <field name="cost_currency"/>
+                                    <field name="cost_currency_rate"/>
+                                    <field name="cost_total" sum="Total Cost"/>
+                                    <field name="profit_total" sum="Total Profit"/>
+                                     <field name="invoiced" readonly="1"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.sale_total.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Cost:
+                                                            <t t-esc="record.cost_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Profit:
+                                                            <t t-esc="record.profit_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                         <page string="Journal Items" groups="account.group_account_user">
+                            <group>
+                                <field name="account_date"/>
+                                <field name="move_id" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+             </form>
+        </field>
+    </record>
+
+
+
+      <!-- Search View Local Job -->
+    <record id="view_search_freight_local_job" model="ir.ui.view">
+        <field name="name">Dispatch Job</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="local_job_no"/>
+                <field name="customer_name"/>
+                <filter string="Consultation Job" name="Consultation Job" domain="[('job_type', '=', '01')]"/>
+                <filter string="Insurance Job" name="Insurance Job" domain="[('job_type', '=', '02')]"/>
+                <filter string="Warehousing Job" name="Warehousing Job" domain="[('job_type', '=', '03')]"/>
+                <filter string="Start Date" name="Start Date" date="start_date"/>
+                <filter string="Completion Date" name="Completion Date" date="completion_date"/>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Calendar View Local Job -->
+      <record id="view_calendar_freight_local_job" model="ir.ui.view">
+        <field name="name">Dispatch Job Calendar</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+           <calendar color="local_job_no" date_start="start_date" string="Booking" mode="week" quick_add="0"
+                      all_day="start_date">
+                     <field name="customer_name" />
+                     <field name="local_job_status" />
+                    <!-- <field name="shipment_close_date_time" />
+                     <field name="port_of_discharge_eta" />-->
+            </calendar>
+        </field>
+    </record>
+
+
+    <record id="view_pivot_freight_local_job" model="ir.ui.view">
+         <field name="name">Local Job pivot</field>
+         <field name="model">freight.booking</field>
+         <field name="arch" type="xml">
+              <pivot string="Local Job Analysis">
+                <field name="customer_name" type="row"/>
+                <field name="pivot_sale_total" type="measure"/>
+                 <field name="pivot_cost_total" type="measure"/>
+                 <field name="pivot_profit_total" type="measure"/>
+                 <field name="pivot_margin_total" type="measure"/>
+                 <field name="start_date" interval="month" type="row"/>
+                 <!--<field name="port_of_loading_eta" interval="month" type="row"/>-->
+             </pivot>
+         </field>
+    </record>
+
+    <record id="sci_goexcel_freight.action_ocean_booking" model="ir.actions.act_window">
+        <field name="domain">[('service_type','=','ocean'),('local_job_no','=',False)]</field>
+    </record>
+
+    <record id="sci_goexcel_freight.action_land_booking" model="ir.actions.act_window">
+        <field name="domain">[('service_type','=','land'),('local_job_no','=',False)]</field>
+    </record>
+
+    <record id="sci_goexcel_freight.action_air_booking" model="ir.actions.act_window">
+        <field name="domain">[('service_type','=','air'),('local_job_no','=',False)]</field>
+    </record>
+
+
+     <record id="action_local_job" model="ir.actions.act_window">
+		<field name="name">Local Job</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">freight.booking</field>
+		<field name="view_mode">tree,form,calendar,pivot</field>
+         <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_tree_freight_local_job')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_form_freight_local_job')}),
+                (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_pivot_freight_local_job')}),
+                (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_calendar_freight_local_job')})]"
+          />
+          <field name="search_view_id" ref="view_search_freight_local_job"/>
+         <field name="domain">[('job_category','=','local')]</field>
+         <field name="context">{'default_job_category': 'local'}</field>
+
+ 	</record>
+
+    <!-- <act_window id="action_local_job" name="Local Job" res_model="freight.booking" view_mode="tree,form"/>-->
+
+
+    <menuitem id="menu_local_job" name="Local Job" parent="sci_goexcel_freight.menu_freight_booking" action="action_local_job"/>
+
+
+</odoo>

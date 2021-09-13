@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template and notification section -->
+    <data noupdate="1">
+         <record id="email_template_edi_customer_statement" model="mail.template">
+            <field name="name">Statement of Account: Send by email</field>
+            <field name="model_id" ref="goexcel_customer_statement.model_res_partner"/>
+            <field name="email_from">${user.email}</field>
+            <field name="partner_to">${object.id}</field>
+            <field name="subject">Statement Of Account - As Of ${object.overdue_date or 'n/a' }</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.name},
+                        <br /><br />
+                        Please find the enclosed Statement of Account for your company, from <strong>${object.invoice_start_date or 'n/a' }</strong>
+                        to  <strong>${object.overdue_date or 'n/a' }</strong>.
+                        <br />
+                        Shall you have any doubt, do not hesitate to contact us.<br />
+                        Thanks.
+                    </p>
+                </div>
+            </field>
+            <field name="report_template" ref="report_customer_statement"/>
+            <field name="report_name">Statement of Account</field>
+            <field name="lang">${object.name.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

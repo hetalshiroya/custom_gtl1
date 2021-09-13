@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="account_dynamic_reports.analytic_report">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <style>
+                        .pims_report_content{
+                            font-size: 14px;
+                            font-family" 'Arial';
+                        }
+
+                        .pims_report_line_table {
+                            width:100%;
+                        }
+
+                        .pims_report_line_main_tr {
+                            font-weight:bold;
+                            font-size: 14px;
+                            font-family" 'Arial';
+                            border-bottom:1px solid grey;
+                        }
+
+                        .pims_report_line_initial_tr {
+                            font-style:italic;
+                        }
+
+                        .pims_report_line_data_tr {
+                            font-style:inherit;
+                        }
+
+                        .pims_report_line_subtotal {
+                            font-weight:bold;
+                            background-color: white;
+                            border:1px solid grey;
+                        }
+                    </style>
+                    <h3><span t-esc="res_company.name"/>: Analytic Report</h3>
+                    <div>
+
+                        <div class="row mt32 pims_report_content">
+
+                            <div class="col-3">
+                                <strong>Date From:</strong>
+                                <p t-esc="Filters['date_from']" t-options='{"widget": "date"}'></p>
+                            </div>
+                            <div class="col-3">
+                                <strong>Date To:</strong>
+                                <p t-esc="Filters['date_to']" t-options='{"widget": "date"}'></p>
+                            </div>
+                            <div class="col-3">
+                                <strong>Analytic Tag:</strong>
+                                <p t-esc="', '.join([ lt or '' for lt in Filters['analytic_tags'] ])"/>
+                            </div>
+                        </div>
+
+                        <div class="row pims_report_content">
+
+                            <div class="col-3">
+                                <strong>Partners:</strong>
+                                <p t-esc="', '.join([ lt or '' for lt in Filters['partners'] ])"/>
+                            </div>
+                            <div class="col-3">
+                                <strong>Analytic:</strong>
+                                <p t-esc="', '.join([ lt or '' for lt in Filters['analytics'] ])"/>
+                            </div>
+                        </div>
+                        <br></br><br></br>
+                        <table class="pims_report_line_table pims_report_content">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="text-align:left;"></th>
+                                    <th style="text-align:left;">Reference</th>
+                                    <th style="text-align:left;">Partner</th>
+                                    <th style="text-align:right;">Sales</th>
+                                    <th style="text-align:right;">Cost</th>
+                                    <th style="text-align:right;">Profit</th>
+                                </tr>
+                            </thead>
+                            <t t-foreach="Ledger_data" t-as="line">
+                                <tr class="pims_report_line_main_tr">
+                                    <td>
+                                        <span style="color: white;" t-esc="'..'"/>
+                                        <span t-esc="Ledger_data[line]['analytic_account']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="Ledger_data[line].get('reference', '')"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="Ledger_data[line].get('partner', '')"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="Ledger_data[line]['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="Ledger_data[line]['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="Ledger_data[line]['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr class="pims_report_line_main_tr">
+                                 <td></td>
+                                 <td></td>
+                                    <td></td>
+                                    <td></td>
+                                 <td>Total</td>
+                                 <td class="text-right">
+                                    <span t-esc="Final_balance" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br></br>
+                    <p style="text-align:center"> *** END OF DOCUMENT ***</p>
+                </div>
+           </t>
+        </t>
+    </template>
+
+    <report id="action_print_analytic_report"
+        model="ins.analytic.report"
+        report_type="qweb-pdf"
+        menu="False"
+        string="General Ledger"
+        name="account_dynamic_reports.analytic_report"
+        file="account_dynamic_reports.analytic_report"
+    />
+</odoo>

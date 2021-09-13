@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="si_view_form" model="ir.ui.view">
+        <field name="name">si.view.form.inherit</field>
+        <field name="model">freight.website.si</field>
+        <field name="inherit_id" ref="sci_goexcel_freight.view_form_si"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel_si']" position="after">
+                <!--
+                <button name="action_send_si_carrier"
+							type="object"
+							string="Send SI (Carrier)"
+							class="oe_highlight"/>
+							-->
+                <button name="action_shipping_instruction"
+							type="object"
+							string="Print/ Send SI"
+							class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

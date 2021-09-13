@@ -1,0 +1,53 @@
+<odoo>
+
+ 		<record id="assign_ltl_view_form" model="ir.ui.view">
+            <field name="name">rft.assign.ltl.form</field>
+            <field name="model">rft.assign.ltl</field>
+            <field name="arch" type="xml">
+                <form string="Assign to LTL">
+                  <!--  <group class="oe_title">
+                        <field name=""/>
+                        <field name="required_date_time"/>
+                    </group>-->
+                    <group>
+     <!--                   <field name="load_lines" nolabel="1">
+
+                            <tree create="false" editable="bottom" default_order="date">-->
+                        <field name="trip_lines" nolabel="1">
+                            <tree create="false" delete="0" editable="bottom" string="Dispatch Trip" default_order="required_date_time">
+                                <field name="trip_no" readonly="True"/>
+                                <field name="add_to_trip"/>
+                                <field name="vehicle" readonly="True"/>
+                                <field name="driver_id" readonly="True"/>
+                                <field name="required_date_time" readonly="True"/>
+                                <field name="pickup_from_address_input" readonly="True"/>
+                                <field name="delivery_to_address_input" readonly="True"/>
+                                <field name="plan_departure_date_time" readonly="True"/>
+                                <field name="plan_arrival_date_time" readonly="True"/>
+                                <field name="dispatch_trip_status" readonly="True"/>
+                                <field name="elapsed_day" readonly="True"/>
+                                <!--<field name="owner"/>-->
+                               <!-- <field name="create_date" readonly="True"/>-->
+                                <field name="trip_route" readonly="True"/>
+
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="action_do_nothing" string="Done" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="assign_ltl_wizard" model="ir.actions.act_window">
+            <field name="name">Assign to LTL</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rft.assign.ltl</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="assign_ltl_view_form"/>
+            <field name="target">new</field>
+        </record>
+
+</odoo>

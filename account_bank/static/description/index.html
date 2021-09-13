@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+
+     .bs-example ul {
+        max-width: 650px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    ul {
+        list-style-image: url('arrow.png');
+    }
+    .mb16 {
+    margin-bottom: 16px !important;
+    margin-top: 16px !important;
+} 
+
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+            var activeTab = $(e.target).text(); // Get the name of active tab
+            var previousTab = $(e.relatedTarget).text(); // Get the name of previous tab
+            $(".active-tab span").html(activeTab);
+            $(".previous-tab span").html(previousTab);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        // Add minus icon for collapse element which is open by default
+        $(".collapse.show").each(function(){
+            $(this).prev(".card-header").find(".fa").addClass("fa-arrow-circle-o-up").removeClass("fa-arrow-circle-o-down");
+        });
+        
+        // Toggle plus minus icon on show hide of collapse element
+        $(".collapse").on('show.bs.collapse', function(){
+            $(this).prev(".card-header").find(".fa").removeClass("fa-arrow-circle-o-down").addClass("fa-arrow-circle-o-up");
+        }).on('hide.bs.collapse', function(){
+            $(this).prev(".card-header").find(".fa").removeClass("fa-arrow-circle-o-up").addClass("fa-arrow-circle-o-down");
+        });
+    });
+</script>
+</head>
+<body style="font-family:Calibri">
+
+    <div class="container">
+    <section class="oe_container">
+       <div class="row mt92 o_equal_col_sm">
+          <div class="" style="display:block;margin:0 auto;width: 500px;">
+             <div style="display: inline-block;width: 240px;">
+                <a href="http://www.fossinfotech.com/" target="_blank" style="width: 100%;display: inline-block;">
+                    <img class="img img-responsive mt16" src="foss-logo.png" style="display: block;margin: 0 auto; width:200px;height:50px">
+                </a>
+             </div>
+             <div style="width: 2px;height: 105px;background-image: -webkit-linear-gradient(transparent, #dce2e6, transparent);display: inline-block;vertical-align: top;"></div>
+             <div style="display: inline-block;width: 240px;">
+                <a href="http://www.fossinfotech.com/foss-infotech-pvt-ltd-is-now-odoo-gold-partner/" target="_blank" style="width: 100%;display: inline-block;">
+                    <img class="img img-responsive mt16" src="foss_odoo_partner.png" style="margin: 0 auto;display: block;">
+                </a>
+             </div>
+          </div>
+       </div>
+    </section>
+
+     <br>
+     <br>
+    <section class="oe_container">
+   <div class="mt64 mb64 pt32">
+      <h2 class="oe_slogan" style="color: #091E42;font-family: &quot;Montserrat&quot;;font-weight: 500;text-align:center;text-transform: uppercase;">
+         <b>Bank Reconciliation - Automatic Bank statement creation (similar to Tally)</b>
+      </h2>
+      <br>
+      <p class="mb16 text-center text-black-dark" style="font-family: Roboto;font-weight: initial;color: #091E42;text-align:center;">
+          This Module further simplifies the default Bank Reconciliation process of Odoo 12 by automatically creating Bank statements based on Payment entry and reconciles against the same.
+
+      </p>
+   </div>
+</section>
+<br>
+<section class="oe_container">
+   <div class="mt64 mb64">
+      <h2 style="color: #091E42;font-family: &quot;Montserrat&quot;;text-align: center;margin: 25px auto;text-transform: uppercase;" class="oe_slogan">
+         <b>Highlights</b>
+      </h2>
+      <br>
+      <div class="row">
+         <div class="col-md-6 col-sm-12 mt32">
+            <div class="container" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);border-radius: 10px;padding: 10px 0px; height: 130px;">
+               <div class="col-md-3" style="float: left;">
+                  <img class="img img-responsive" src="images/calendar.jpeg" style="width:100px;height:100px">
+               </div>
+               <div class="col-md-9" style="padding-left:0;float: left;width: 70%;">
+                  <h3 class="mt16 mb0" style="font-family: Roboto;font-weight: 500;font-size: 22px;"><b>Bank Statement Reconciliation made simple.</b></h3>
+                  <p class=" mt8" style="font-family: Roboto;">
+                     Simplifies Bank Reconciliation process of Odoo 12 by creating & reconciling statements automatically.
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-6 col-sm-12 mt32">
+            <div class="container" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);border-radius: 10px;padding: 10px 0px; height: 130px;">
+               <div class="col-md-3" style="
+                  float: left;
+                  ">
+                  <img class="img img-responsive" src="images/task.jpg" style="width:100px;height:100px">
+               </div>
+               <div class="col-md-9" style="padding-left:0;float: left;">
+                  <h3 class="mt16 mb0" style="font-family: Roboto;font-weight: 500;font-size: 22px;"><b>Similar to Tally</b></h3>
+                  <p class=" mt8" style="font-family: Roboto;">
+                    Bank Reconciliation is made similar to Tally process.
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <br>
+      <div class="row">
+         <div class="col-md-6 col-sm-12 mt32">
+            <div class="container" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);border-radius: 10px;padding: 10px 0px; height: 130px;">
+               <div class="col-md-3" style="
+                  float: left;
+                  ">
+                  <img class="img img-responsive" src="images/link.png" style="width:100px;height:100px">
+               </div>
+               <div class="col-md-9" style="padding-left:0;float: left;">
+                  <h3 class="mt16 mb0" style="font-family: Roboto;font-weight: 500;font-size: 22px;"><b>Link to the Original Record</b></h3>
+                  <p class=" mt8" style="font-family: Roboto;">
+                    Provides Link between Payments and respective Bank statement (Automatically created)
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-6 col-sm-12 mt32">
+            <div class="container" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);border-radius: 10px;padding: 10px 0px; height: 130px;">
+               <div class="col-md-3" style="
+                  float: left;
+                  ">
+                  <img class="img img-responsive" src="images/sc_calendar.png" style="width:100px;height:100px">
+               </div>
+               <div class="col-md-9" style="padding-left:0;float: left;">
+                  <h3 class="mt16 mb0" style="font-family: Roboto;font-weight: 500;font-size: 22px;"><b>Supports Single & Bulk Reconciliation</b></h3>
+                  <p class=" mt8" style="font-family: Roboto;">
+                    This module supports both Single & Bulk Reconciliation of Payments.
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+    </br>
+      <div class="col-md-6 col-sm-12 mt32">
+            <div class="container" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);border-radius: 10px;padding: 10px 0px; height: 130px;">
+               <div class="col-md-3" style="
+                  float: left;
+                  ">
+                  <img class="img img-responsive" src="images/images.png" style="width:100px;height:100px">
+               </div>
+               <div class="col-md-9" style="padding-left:0;float: left;">
+                  <h3 class="mt16 mb0" style="font-family: Roboto;font-weight: 500;font-size: 22px;"><b>Default Bank Reconciliation</b></h3>
+                  <p class=" mt8" style="font-family: Roboto;">
+                    Default odoo 12 Bank Reconciliation process is unchanged & works as usual.
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <br>
+      
+         
+      </div>
+   </div>
+</section>
+<div class="bs-example" style="padding:64px 0px;margin: 100px 0px;background-color:#F0F4F7;">
+    <ul id="myTab" class="nav nav-tabs" role="tablist" style="
+         border: none;
+         background: unset;
+         padding-left: 300px;
+         ">
+        <li class="nav-item" style="border-top-right-radius: 6px;border-top-left-radius: 6px;background: linear-gradient(to top, #3D8F17, #ffffff);margin-right: 1px;padding-bottom: 2px;">
+            <a href="#ept_features" class="nav-link active" data-toggle="tab" aria-expanded="true" style="font-family: Roboto;text-transform: uppercase;font-weight: 600;font-size: 15px;letter-spacing: 1px;padding: 10px 20px;border-top-left-radius: 5px;border-top-right-radius: 5px;color: #2b2b2b;">Features</a>
+        </li>
+        <li class="nav-item" style="border-top-right-radius: 6px;border-top-left-radius: 6px;background: linear-gradient(to top, #3D8F17, #ffffff);margin-right: 1px;padding-bottom: 2px;">
+            <a href="#ept_screenshots" class="nav-link" data-toggle="tab" aria-expanded="true"  style="font-family: Roboto;text-transform: uppercase;font-weight: 600;font-size: 15px;letter-spacing: 1px;padding: 10px 20px;border-top-left-radius: 5px;border-top-right-radius: 5px;color: #2b2b2b;">Screenshots</a>
+        </li>
+        <li class="nav-item" style="border-top-right-radius: 6px;border-top-left-radius: 6px;background: linear-gradient(to top, #3D8F17, #ffffff);margin-right: 1px;padding-bottom: 2px;">
+            <a href="#ept_userguid" class="nav-link" data-toggle="tab" aria-expanded="true" data-toggle="tab" style="font-family: Roboto;text-transform: uppercase;font-weight: 600;font-size: 15px;letter-spacing: 1px;padding: 10px 20px;border-top-left-radius: 5px;border-top-right-radius: 5px;color: #2b2b2b;">User Guide</a>
+        </li>
+        <li class="nav-item" style="border-top-right-radius: 6px;border-top-left-radius: 6px;background: linear-gradient(to top, #3D8F17, #ffffff);margin-right: 1px;padding-bottom: 2px;">
+            <a href="#ept_faqs" class="nav-link" data-toggle="tab" aria-expanded="true" data-toggle="tab" style="font-family: Roboto;text-transform: uppercase;font-weight: 600;font-size: 15px;letter-spacing: 1px;padding: 10px 20px;border-top-left-radius: 5px;border-top-right-radius: 5px;color: #2b2b2b;">FAQs</a>
+        </li>
+    </ul>
+    <div class="tab-content" style="background: #fff;border-radius: 10px;padding: 2%;margin: 0% 2%;padding-top:4%;">
+        <div class="tab-pane fade show active" id="ept_features">
+            <section id="other-legal-references">
+                <h3 class="text-center alert" style="font-family: Roboto;font-weight:500;color: #091E42;background: #F0F4F7;border-radius: 10px; text-transform: uppercase;"><b>Advantages</b></h3>
+                           <ul style="border-radius: 10px;padding: 2%;margin: 0% 2%;padding-top:1%;">
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                  Simplifies the default Bank Reconciliation process of Odoo 12 by Creating & Reconciling bank statements automatically.
+                              </li>
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                  Revised process is made similar to Bank Reconciliation in Tally. Payments are reconciled by just providing Date when the payment is reflected in bank statement.
+                              </li>
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                  Provides Link between Payments and respective Bank statement by automatically creating Bank statement Name with concatenating (Journal name + Date Time when reconciled) </br>
+                                  Note: If no Time zone is mapped to respective user who does reconciliation, system will take server time zone.
+                              </li>
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                  Supports both Single & Bulk Reconciliation of Payments.
+                              </li>
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                  Reconciles both Payment's and respective auto created Bank statement.
+                              </li>
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                  Provision to Revert / Cancel payements is provided which automatically Unreconciles journal entries of payments and respective bank statement.
+                              </li>
+                           </ul>
+
+                  <h3 class="text-center alert" style="font-family: Roboto;font-weight:500;color: #091E42;background: #F0F4F7;border-radius: 10px;text-transform: uppercase;"><b>Benefits</b></h3>
+                           <ul style="border-radius: 10px;padding: 2%;margin: 0% 2%;padding-top:1%;">
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                No Configurations required. Can be used out of the box.</br>
+                                Note: Default conditions already available- Journal(s) and respective Accounts mapped to them must be of type Bank / Cash.
+                              </li>
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                Creation , Updation, Cancellation & Deletion from the Original record (Bank Statement) is fully automated.
+                              </li>
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                 Bank Reconciliation (Single & Bulk reconciliation) works for all the below transaction types,</br>
+                                 -> Customer Invoices</br>
+                                 -> Vendor Bills</br>
+                                 -> Internal Transfers</br>
+                              </li>
+                              <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                                 Cancel or Revert option provided, which automatically Unreconciles journal entries of both Payment and Bank statement.</br>
+
+                              </li>
+                           </ul>       
+                     </section>
+         </div>
+        <!-- </div> -->
+        <!-- <div class="tab-pane fade" id="profile"> -->
+           <div class="tab-pane fade" id="ept_screenshots">
+            <section class="oe_container">
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:300; font-size: 1.625rem;">1. Customer Invoice Reconcilation</h3>
+                  <li class="mb8" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Go to 'Accounts' module -> Under 'Sales' menu select 'Payments' -> Choose payment type as 'Receive money' -> Enter all required details including the newly added field 'Bank Date'</br>
+                                  
+                      </li>
+                  <br>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/1.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Single payment Reconciliation process</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  
+                                Step 1 : Filter and select only 'Posted' State Entries as they can only be reconciled.</br>
+                                Step 2 : In Payments Screen, 'Bank Date' is a mandatory in order to
+                        reconcile.</br>
+
+                                Step 3 : Click on the 'Reconcile' Button visible in payments form.</br>
+                                Step 4 : In Wizard, specify the 'Starting Balance' for the Journal
+                        first time alone.</br>
+                                Step 5 : Click on 'Reconcile' button to reconcile the entries.</br>
+
+                        NOTE : In Pop-Up Wizard, Specify the Starting balance for all the Journals only
+                        once (First time) and while processing the next transaction, kindly don't provide the
+                        starting balance for the same journal as current balance will be auto calculated and
+                        considered.</br>
+
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/2.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bulk payment Reconciliation Process</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                        Step 1 : Group by 'Payment Type' & 'Journal' in 'Payments' Screen.</br>
+                        Step 2 : Only 'Posted' State Entries can be reconciled.</br>
+                        Step 3 : In 'Payments' Screen, 'Bank Date' is mandatory in order to
+                  reconcile.</br>
+
+                        Step 4 : Select multiple Payment(s) from list view --> Click 'Action' menu --> Click 'Reconcile' Button</br>
+                        Step 5 : In Wizard, specify the 'Starting Balance' for the Journal
+                  first time alone.</br>
+
+                        Step 6 : Click on Reconcile button to reconcile the entries.</br>
+                  (first time only, as it will be calulated and updated automatically there after.)</br>
+                                  
+                      </p>
+                    </br>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/3.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+               <div style="margin-bottom:4%;">
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bank Statement created automatically</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Automatically created Bank statement can be viewed in respective Journal's bank statement master. </br>
+                                  Note:</br> Bank statement Name auto created with concatenating (Journal name + Date Time when reconciled) </br>
+                                  Respective Payment Name(sequence) is passed as Reference in Bank statement line.</br>
+                                'Memo' field from a payment form is passed in 'Label' field in respective auto created Bank statement's line item.</br>
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/4.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Cancel / Revert option</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  In order to Cancel or Revert confirmed Bank reconcilition(s) -> Go to respective Payment and click on 'Cancel' button </br>
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/5.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bank Statement auto cancelled</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Once a Payment is cancelled -> Respective Journal items are first Unreconciled and then automatically removed from bank statement's line item.</br>
+                  Note: When a 'Payment' entry is cancelled and 'Reset to draft' -> When it is subjected to Reconciliation again, a new Bank statement will be created.
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/6.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+
+
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:300; font-size: 1.625rem;">2. Vendor Bills Reconcilation</h3>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Go to 'Accounts' module -> Under 'Purchase' menu select 'Payments' -> Choose payment type as 'Send money' -> Enter all required details including the newly added field 'Bank Date'</br>
+                                  
+                      </p>
+                  <br>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/7.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+
+                <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Single payment Reconciliation process</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  
+                                Step 1 : Filter and select only 'Posted' State Entries as they can only be reconciled.</br>
+                                Step 2 : In Payments Screen, 'Bank Date' is a mandatory in order to
+                        reconcile.</br>
+
+                                Step 3 : Click on the 'Reconcile' Button visible in payments form.</br>
+                                Step 4 : In Wizard, specify the 'Starting Balance' for the Journal
+                        first time alone.</br>
+                                Step 5 : Click on 'Reconcile' button to reconcile the entries.</br>
+
+                        NOTE : In Pop-Up Wizard, Specify the Starting balance for all the Journals only
+                        once (First time) and while processing the next transaction, kindly don't provide the
+                        starting balance for the same journal as current balance will be auto calculated and
+                        considered.</br>
+
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/8.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bulk payment Reconciliation Process</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                        Step 1 : Group by 'Payment Type' & 'Journal' in 'Payments' Screen.</br>
+                        Step 2 : Only 'Posted' State Entries can be reconciled.</br>
+                        Step 3 : In 'Payments' Screen, 'Bank Date' is mandatory in order to
+                  reconcile.</br>
+
+                        Step 4 : Select multiple Payment(s) from list view --> Click 'Action' menu --> Click 'Reconcile' Button</br>
+                        Step 5 : In Wizard, specify the 'Starting Balance' for the Journal
+                  first time alone.</br>
+
+                        Step 6 : Click on Reconcile button to reconcile the entries.</br>
+                  (first time only, as it will be calulated and updated automatically there after.)</br>
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/9.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+               <div style="margin-bottom:4%;">
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bank Statement created automatically</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Automatically created Bank statement can be viewed in respective Journal's bank statement master. </br>
+                  Note:</br> Bank statement Name auto created with concatenating (Journal name + Date Time when reconciled) </br>
+                                  Respective Payment Name(sequence) is passed as Reference in Bank statement line.</br>
+                                'Memo' field from a payment form is passed in 'Label' field in respective auto created Bank statement's line item.</br>
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/10.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Cancel / Revert option</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  In order to Cancel or Revert confirmed Bank reconcilition(s), Go to respective Payment and click on 'Cancel' button </br>
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/11.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bank Statement auto cancelled</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Once a Payment is cancelled -> respective Journal items are first Unreconciled and then automatically removed from bank statement's line item.</br>
+                  Note: When a 'Payment' entry is cancelled and 'Reset to draft' -> When it is subjected to Reconciliation again, a new Bank statement will be created.
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/12.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+                <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:300; font-size: 1.625rem;">3. Internal Transfers</h3>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Go to 'Accounts' module -> Under 'Sales / Purchase' menu select 'Payments' -> Choose payment type as 'Internal Transfer' -> Enter all required details including the newly added field 'Bank Date'</br>
+                                  Note: Here Source and Destination Journal has to be mapped.
+                      </p>
+                  <br>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/13.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+                <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Single payment Reconciliation process</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  
+                                Step 1 : Filter and select only 'Posted' State Entries as they can only be reconciled.</br>
+                                Step 2 : In Payments Screen, 'Bank Date' is a mandatory in order to
+                        reconcile.</br>
+
+                                Step 3 : Click on the 'Reconcile' Button visible in payments form.</br>
+                                Step 4 : In Wizard, specify the 'Starting Balance' for the Journal
+                        first time alone.</br>
+                                Step 5 : Click on 'Reconcile' button to reconcile the entries.</br>
+
+                        NOTE : In Pop-Up Wizard, Specify the Starting balance for all the Journals only
+                        once (First time) and while processing the next transaction, kindly don't provide the
+                        starting balance for the same journal as current balance will be auto calculated and
+                        considered.</br>
+
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/14.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bulk payment Reconciliation Process</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                        Step 1 : Group by 'Payment Type' & 'Journal' in 'Payments' Screen.</br>
+                        Step 2 : Only 'Posted' State Entries can be reconciled.</br>
+                        Step 3 : In 'Payments' Screen, 'Bank Date' is mandatory in order to
+                  reconcile.</br>
+
+                        Step 4 : Select multiple Payment(s) from list view --> Click 'Action' menu --> Click 'Reconcile' Button</br>
+                        Step 5 : In Wizard, specify the 'Starting Balance' for the Journal
+                  first time alone.</br>
+
+                        Step 6 : Click on Reconcile button to reconcile the entries.</br>
+                  (first time only, as it will be calulated and updated automatically there after.)</br>
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/15.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+               <div style="margin-bottom:4%;">
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bank Statement created automatically</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  In Internal Transfers two bank statements are automatically created and can be viewed in respective Journal(s) bank statement master. </br>
+                </br> Amount is debited from the Source Journal & credited in Destination Journal</br> 
+                  Note:</br> Bank statement Name auto created with concatenating (Journal name + Date Time when reconciled) </br>
+                                  Respective Payment Name(sequence) is passed as Reference in Bank statement line.</br>
+                                'Memo' field from a payment form is passed in 'Label' field in respective auto created Bank statement's line item.</br>
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/16.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Cancel / Revert option</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  In order to Cancel or Revert confirmed Bank reconcilition(s), Go to respective Payment and click on 'Cancel' button </br>
+                                  Note: As there are 2 Journal entries created for Internal Transfers, we have to manually Unreconcile both journal entries in order to cancel the Payment which in turn will automatically cancel the bank statement respectively.</br>
+
+                  </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/17.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class=" text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Unreconcile Journal Entries Manually</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  To Unreconcile respective Payment's Journal entries, copy the transaction id from the warning message -> Search & select the same in Journal entries (removing all filters) -> Go to 'Reconciled Entries' -> Select all entries, click on 'Unreconcile Entries' option under 'Action' menu.</br>
+                  </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/18.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:400;">Bank Statement manually cancelled</h3>
+                  <br>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Go to respective Payment and click on 'Cancel' button</br>
+                  
+                  Note: When a 'Payment' entry is cancelled and 'Reset to draft' -> When it is subjected to Reconciliation again, a new Bank statement will be created.
+                                  
+                      </p>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/19.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:300; font-size: 1.625rem;">4. Bank Reconciliation Report - Before Reconciliation</h3>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Go to 'Accounts' module -> Under respective Journal's dashboard menu-> select 'Reconciliation Report' 
+                      </p>
+                  <br>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/20.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+
+               <div style="margin-bottom:4%;">
+                  <h3 class="text-center mb32" style="letter-spacing: -1px !important;font-family: Roboto;font-weight:300; font-size: 1.625rem;">5. Bank Reconciliation Report - After Reconciliation</h3>
+                  <p class="text-center mb32" style="font-family: Roboto;color:#091E42;list-style-type: square;">
+                  Go to 'Accounts' module -> Under respective Journal's dashboard menu-> select 'Reconciliation Report' 
+                      </p>
+                  <br>
+                  <div class="mt16 mb16" style="vertical-align:middle; text-align:center">
+                     <img src="screens/21.png" class="img img-responsive center-block" style="width:1021.2px;height:524.917px;">
+                  </div>
+               </div>
+               
+            </section>
+        </div>
+        <div class="tab-pane fade" id="ept_userguid">
+            <div class="container mb32">
+               <hr style="border-top: 1px solid #eee;margin: 5px 0px;padding: 0;">
+               <div style="padding: 10px 15px;">
+                  <a href="http://www.fossinfotech.com/portfolio/bank-reconciliation-3/" style="color: #091E42; text-decoration: none;" target="_blank">
+                     <p class="mb0" style="color: #091E42;"><img src="images/user_guide.png" style="width: 40px;margin-right: 15px;"><span style="font-size: 20px"><b>Read User Guide</b></span><img src="images/Redirect.png" style="width: 40px;margin-left: 15px;"></p>
+                  </a>
+               </div>
+               <!-- <hr style="border-top: 1px solid #eee;margin: 5px 0px;padding: 0;"> -->
+<!--             <div style="padding: 10px 15px;">
+                  <a href="" style="color: #091E42; text-decoration: none;" target="_blank">
+                     <p class="mb0" style="color: #091E42;"><img src="images/video.jpg" style="width: 40px;margin-right: 15px;"><span style="font-size: 20px"><b>Watch Video Tutorial</b></span><img src="images/Redirect.png" style="width: 40px;margin-left: 15px;"></p>
+                  </a>
+               </div> -->
+            </div>
+        </div>
+        <div class="tab-pane fade" id="ept_faqs">
+            <section class="oe_container">
+               <div class="s_faq mt32 mb32" style="background-color: transparent !important;">
+                  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                     <!-- 1 -->
+                     <div class="panel-group" style="border: 1px solid #ddd;border-radius: 10px;margin-bottom: 20px;">
+                        <div class="panel panel-default" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);padding: 15px 15px;border-radius: 10px;">
+                           <div class="card-header" style="border:1px solid transparent !important;">
+                              <h4 class="panel-title" style="
+                                 margin: 0;
+                                 ">
+                                 <a class="collapsed" style="color: #000;font-size: 20px;font-weight: 500;font-family: Roboto; text-decoration: none;"data-toggle="collapse" href="#collapse1" aria-expanded="false">
+                                    <!-- <i class="fa fa-arrow-circle-o-down" style="color:green"></i> -->
+                                 <span class="panelcontent" style="padding: 0% 2%;">
+                                         Is this app compatible with Odoo Enterprise as well as Community?
+                                 </span>
+                                 </a>
+                              </h4>
+                           </div>
+                           <div id="collapse1" class="panel-collapse mt16 collapse" style="">
+                              <div class="card-body">
+                                 <p class="mb32" style="border-left: 4px dotted #e6e8ea;height: auto;padding-left: 3%;margin-left: 2%;font-family: Roboto;">
+                                    Yes, the app works perfectly well with Odoo Enterprise as well as Odoo Community. 
+                           Odoo Online (Cloud) does not allow installation of third-party apps and hence this app cannot be 
+                           installed on Odoo Online.
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- 2 -->                 
+                     <div class="panel-group" style="border: 1px solid #ddd;border-radius: 10px;margin-bottom: 20px;">
+                        <div class="panel panel-default" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);padding: 15px 15px;border-radius: 10px;">
+                           <div class="card-header" style="border:1px solid transparent !important;">
+                              <h4 class="panel-title" style="
+                                 margin: 0;
+                                 ">
+                                 <a class="collapsed" style="color: #000;font-size: 20px;font-weight: 500;font-family: Roboto; text-decoration: none;"data-toggle="collapse" href="#collapse2" aria-expanded="false">
+                                    <!-- <i class="fa fa-arrow-circle-o-down" style="color:green"></i> -->
+                                 <span class="panelcontent" style="padding: 0% 2%;">
+                                        I need an extra feature in this app. How can I request it?
+                                 </span>
+                                 </a>
+                              </h4>
+                           </div>
+                           <div id="collapse2" class="panel-collapse mt16 collapse" style="">
+                              <div class="card-body">
+                                 <p class="mb32" style="border-left: 4px dotted #e6e8ea;height: auto;padding-left: 3%;margin-left: 2%;font-family: Roboto;">
+                              You can <a style="color: #000;text-decoration: underline;" target="_blank" href="http://www.fossinfotech.com/contact-us/">contact us</a>
+                                          to request a customization in the app or you can write to us at <a href = "mailto: sales@fossinfotech.com">sales@fossinfotech.com</a>
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                    <!-- 3 -->
+                      <div class="panel-group" style="border: 1px solid #ddd;border-radius: 10px;margin-bottom: 20px;">
+                        <div class="panel panel-default" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);padding: 15px 15px;border-radius: 10px;">
+                           <div class="card-header" style="border:1px solid transparent !important;">
+                              <h4 class="panel-title" style="
+                                 margin: 0;
+                                 ">
+                                 <a class="collapsed" style="color: #000;font-size: 20px;font-weight: 500;font-family: Roboto; text-decoration: none;"data-toggle="collapse" href="#collapse3" aria-expanded="false">
+                                    <!-- <i class="fa fa-arrow-circle-o-down" style="color:green"></i> -->
+                                 <span class="panelcontent" style="padding: 0% 2%;">
+                                        Do I get Free Support ?
+                                 </span>
+                                 </a>
+                              </h4>
+                           </div>
+                           <div id="collapse3" class="panel-collapse mt16 collapse" style="">
+                              <div class="card-body">
+                                 <p class="mb32" style="border-left: 4px dotted #e6e8ea;height: auto;padding-left: 3%;margin-left: 2%;font-family: Roboto;">
+                                      Yes, You will get 4 hours Of Free Support, You can write your queries to <a href = "mailto: sales@fossinfotech.com">support@fossinfotech.com</a>
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                
+                     <!-- 4 -->
+                     <div class="panel-group" style="border: 1px solid #ddd;border-radius: 10px;margin-bottom: 20px;">
+                        <div class="panel panel-default" style="box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);padding: 15px 15px;border-radius: 10px;">
+                           <div class="card-header" style="border:1px solid transparent !important;">
+                              <h4 class="panel-title" style="
+                                 margin: 0;
+                                 ">
+                                 <a class="collapsed" style="color: #000;font-size: 20px;font-weight: 500;font-family: Roboto; text-decoration: none;"data-toggle="collapse" href="#collapse4" aria-expanded="false">
+                                    <!-- <i class="fa fa-arrow-circle-o-down" style="color:green"></i> -->
+                                 <span class="panelcontent" style="padding: 0% 2%;">
+                                      Can one perform Bulk Reconciliations?
+                                 </span>
+                                 </a>
+                              </h4>
+                           </div>
+                           <div id="collapse4" class="panel-collapse mt16 collapse" style="">
+                              <div class="card-body">
+                                 <p class="mb32" style="border-left: 4px dotted #e6e8ea;height: auto;padding-left: 3%;margin-left: 2%;font-family: Roboto;">
+                                    Yes, You can Bulk Reconcile payments of same 'Payment type' & 'Journal'.
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- 5 -->
+                     
+                    
+                     <!--end-->
+                  </div>
+               </div>
+            </section>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>                            

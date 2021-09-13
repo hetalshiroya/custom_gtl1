@@ -1,0 +1,1203 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Kanban View Of Booking -->
+   <record id="view_kanban_booking" model="ir.ui.view">
+        <field name="name">Booking KANBAN</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+            <kanban quick_create="false" class="o_kanban_mobile" default_group_by="shipment_booking_status" >
+                <field name="customer_name" />
+                <field name="shipment_booking_status" />
+                <field name="color" />
+                 <field name="priority" eval="100"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}} oe_kanban_global_click_edit oe_semantic_html_override">
+                            <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                <ul class="oe_dropdown_menu">
+                                    <li>
+                                        <a type="edit">Edit...</a>
+                                    </li>
+                                    <li>
+                                        <a type="delete">Delete</a>
+                                    </li>
+                                    <li>
+                                        <ul class="oe_kanban_colorpicker" data-field="color" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="oe_kanban_box_header oe_kanban_color_bgdark oe_kanban_color_border oe_kanban_draghandle">
+                                <table class="oe_kanban_table">
+                                    <tr>
+                                        <td class="oe_kanban_title1" align="left" valign="middle" style="padding-left:10px;">
+                                            <h4>
+                                                <a type="open">
+                                                    <field name="direction" />
+                                                    <field name="service_type" />
+                                                    <field name="cargo_type" />
+                                                    <field name="booking_no" /> By:
+                                                    <field name="customer_name" />
+                                                </a>
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br />
+                            </div>
+                            <div class="oe_kanban_box_content oe_kanban_color_bglight oe_kanban_box_show_onclick_trigger oe_kanban_color_border">
+                                <table class="oe_kanban_table">
+                                    <tr width="250">
+                                        <td valign="top" align="left" style="padding-left:7px;">
+                                            <table>
+                                                <tr>
+                                                    <td>Shipper :</td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="shipper" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Consignee Name :</td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="consignee" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Booking Date : </td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="booking_date_time" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Carrier Booking No : </td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="carrier_booking_no" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Port of Loading : </td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="port_of_loading" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Port of Discharge : </td>
+                                                    <td style="padding-left:7px;">
+                                                        <b>
+                                                            <field name="port_of_discharge" />
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                           <!-- <div class="oe_kanban_buttons_set oe_kanban_color_border oe_kanban_color_bglight oe_kanban_box_show_onclick">
+                                <div class="oe_kanban_left" style="margin-left:7px;">
+                                    <br />
+                                    <a role="button" string="Edit" class="btn btn-sm btn-default fa fa-pencil" type="edit" aria-label="edit" title="edit"/>
+                                    <a role="button" string="Change Color" icon="color-picker" type="color" name="color" />
+                                </div>
+                                <br class="oe_kanban_clear" />
+                            </div>-->
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_left" style="margin-left:7px;">
+                                    <br />
+                                    <a role="button" string="Edit" class="btn btn-sm btn-default fa fa-pencil" type="edit" aria-label="edit" title="edit"/>
+                                    <a role="button" string="Change Color" icon="color-picker" type="color" name="color" />
+                                </div>
+                                <div class="oe_kanban_bottom_right" style="margin-left:7px;">
+                                        <field name="priority" widget="priority"/>
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Tree View Ocean Booking -->
+    <record id='view_tree_ocean_booking' model='ir.ui.view'>
+        <field name="name">Booking</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+			<tree name="view_tree_ocean_booking" string='Booking Job'
+                  decoration-muted="shipment_booking_status=='09'" decoration-danger="shipment_booking_status=='08'">
+                <!--<field name="priority"/>-->
+                <field name="shipment_booking_status"/>
+				<field name="booking_no"/>
+                <field name="direction"/>
+				<field name="service_type"/>
+                <field name="cargo_type"/>
+				<field name="customer_name"/>
+                <field name="shipper"/>
+                <field name="consignee" />
+                <field name="booking_date_time"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="port_of_loading"/>
+                <field name="port_of_discharge"/>
+                <field name="carrier_booking_no"/>
+                <field name="sq_reference"/>
+                <field name="elapsed_day_booking"/>
+			</tree>
+		</field>
+	</record>
+
+
+    <!-- Tree View Land Booking -->
+    <record id='view_tree_land_booking' model='ir.ui.view'>
+        <field name="name">Booking</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+			<tree string='Booking Job' decoration-muted="shipment_booking_status=='09'" decoration-danger="shipment_booking_status=='08'">
+                <!--<field name="priority"/>-->
+                <field name="shipment_booking_status" />
+				<field name="booking_no"/>
+				<field name="service_type"/>
+                <field name="land_cargo_type"/>
+                <field name="land_type"/>
+                <field name="pickup_from_address_input"/>
+                <field name="delivery_to_address_input"/>
+               <!-- <field name="pickup_from" context="{'show_address':1}"/>-->
+				<field name="customer_name"/>
+                <field name="shipper" />
+                <field name="consignee" />
+                <field name="booking_date_time" />
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="carrier_booking_no"/>
+                <field name="sq_reference" />
+                 <field name="elapsed_day_booking"/>
+			</tree>
+		</field>
+	</record>
+
+
+    <!-- Tree View Air Booking -->
+    <record id='view_tree_air_booking' model='ir.ui.view'>
+        <field name="name">Booking</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+			<tree name="view_tree_air_booking" string='Booking Job' decoration-muted="shipment_booking_status=='09'" decoration-danger="shipment_booking_status=='08'">
+                <!--<field name="priority"/>-->
+                <field name="shipment_booking_status" />
+				<field name="booking_no"/>
+                <field name="direction"/>
+				<field name="service_type"/>
+                <field name="airport_departure"/>
+                <field name="airport_destination"/>
+				<field name="customer_name"/>
+                <field name="shipper" />
+                <field name="consignee" />
+                <field name="booking_date_time" />
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="first_carrier_etd"/>
+                <field name="first_carrier_eta"/>
+                <field name="carrier_booking_no"/>
+                <field name="elapsed_day_booking"/>
+                <field name="sq_reference" />
+			</tree>
+		</field>
+	</record>
+
+
+    <!-- Must place before the form view button that call this -->
+     <!-- Call action window to view freight booking -->
+   <record id="view_subbooking_freight" model="ir.actions.act_window">
+        <field name="name">Freight Job History</field>
+        <field name="res_model">freight.booking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_tree_ocean_booking"/>
+		<field name="domain">[('master_booking', '=', active_id)]</field>
+    </record>
+
+
+    <!-- Form View Booking -->
+    <record id="view_form_booking" model="ir.ui.view">
+        <field name="name">Booking</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+            <form string="Booking Job">
+                <header>
+                    <button name="action_send_booking_confirmation"
+							type="object" class="oe_highlight"
+							string="Send Booking Conf."
+							attrs="{'invisible': ['|', ('shipment_booking_status', 'not in', ['01','02','03']), ('service_type', 'not in', 'ocean'), ('direction', 'not in', 'export')]}"/>
+                    <button name="action_create_si"
+							type="object" class="oe_highlight"
+							string="Create SI"
+							attrs="{'invisible': ['|', ('shipment_booking_status', 'not in', ['01','02','03']), ('service_type', 'not in', 'ocean'), ('direction', 'not in', 'export')]}"/>
+                    <button name="action_create_bl"
+							type="object" class="oe_highlight"
+							string="Create BL"
+                            attrs="{'invisible': [('service_type', 'not in', 'ocean')]}"/>
+                    <button name="action_invoice"
+							type="object" class="oe_highlight"
+							string="Invoice"
+							attrs="{'invisible': [('shipment_booking_status', '=', '01')]}"/>
+                    <button name="action_create_vendor_bill"
+							type="object" class="oe_highlight"
+							string="Vendor Bill"
+							attrs="{'invisible': [('shipment_booking_status', '=', '01')]}"/>
+                    <button name="action_cancel_booking"
+							type="object" class="oe_button"
+							string="Cancel Booking"
+                            confirm="Are you sure you want to Cancel Booking?"
+                            attrs="{'invisible': [('shipment_booking_status', 'in', ['08','09','10','11'])]}"/>
+                    <button name="action_send_do"
+                            type="object"
+							string="Send DO"
+							class="oe_highlight" attrs="{'invisible': ['|', ('shipment_booking_status', 'not in', ['02','07']), ('service_type', '!=', 'land')]}"/>
+                    <button name="action_create_subbooking"
+							type="object" string="Sub-Job" class="oe_highlight"
+                            attrs="{'invisible': ['|', '|', '|', ('shipment_booking_status', 'in', ['08','07','09','04','05','06']), ('cargo_type', '=', 'fcl'),
+                                        ('booking_type', '=', 'sub'), ('service_type', '!=', 'ocean')]}"/>
+
+
+                    <field name="shipment_booking_status" invisible="1"/>
+                    <field name="status_export" widget="statusbar" clickable="True" attrs="{'invisible': ['|', ('direction', 'not in', 'export'), ('service_type', 'not in', 'ocean')]}" statusbar_visible="01,02,03,04,08"/>
+                    <field name="status_import" widget="statusbar" clickable="True" attrs="{'invisible': ['|', ('direction', 'not in', 'import'), ('service_type', 'not in', 'ocean')]}" statusbar_visible="01,02,05,07,08"/>
+                    <field name="air_status_export" widget="statusbar" clickable="True" attrs="{'invisible': ['|', ('direction', 'not in', 'export'), ('service_type', 'not in', 'air')]}" statusbar_visible="01,02,06,08"/>
+                    <field name="air_status_import" widget="statusbar" clickable="True" attrs="{'invisible': ['|', ('direction', 'not in', 'import'), ('service_type', 'not in', 'air')]}" statusbar_visible="01,02,06,07,08"/>
+                    <field name="land_status" widget="statusbar" clickable="True" attrs="{'invisible': [('service_type', '!=', 'land')]}" statusbar_visible="01,02,07,08"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+						<button name="operation_invoices"
+		                        type="object"
+                                class="oe_stat_button"
+                                icon="fa-credit-card"
+                                attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+	                	</button>
+
+	                	<button name="operation_bill"
+		                        type="object"
+		                        class="oe_stat_button"
+	    	                    icon="fa-credit-card-alt"
+                                attrs="{'invisible':[('vendor_bill_count', '=', 0)]}">
+                            <field name="vendor_bill_count" widget="statinfo" string="Vendor Bill"/>
+	                	</button>
+
+                        <button name="%(sci_goexcel_freight.view_subbooking_freight)d"
+		                        type="action"
+		                        class="oe_stat_button"
+	    	                    icon="fa-cubes"
+                                attrs="{'invisible':[('subbooking_count', '=', 0)]}">
+                            <field name="subbooking_count" widget="statinfo" string="Sub Job"/>
+                        </button>
+
+                        <button name="operation_master_booking"
+                                type="object"
+		                        class="oe_stat_button"
+	    	                    icon="fa-cubes"
+                                attrs="{'invisible':[('master_booking_count', '=', 0)]}">
+                            <field name="master_booking_count" widget="statinfo" string="Mster Job"/>
+                        </button>
+
+                        <button name="operation_si"
+                                type="object"
+		                        class="oe_stat_button"
+	    	                    icon="fa-file-text"
+                                attrs="{'invisible':[('si_count', '=', 0)]}">
+                            <field name="si_count" widget="statinfo" string="SI"/>
+	                	</button>
+
+                        <button name="operation_bol"
+		                        type="object"
+		                        class="oe_stat_button"
+	    	                    icon="fa-copy"
+                                attrs="{'invisible':[('bol_count', '=', 0)]}">
+                            <field name="bol_count" widget="statinfo" string="HBL"/>
+	                	</button>
+	                </div>
+
+                    <group>
+                        <group>
+                            <field name="service_type" widget="radio" options="{'horizontal': true}"  attrs="{'readonly':[('shipment_booking_status', 'not in', '01')]}"/>
+                            <field name="direction" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('shipment_booking_status', 'not in', '01')]}"/>
+                            <field name="booking_no"/>
+                            <field name="awb_no" force_save="1" attrs="{'invisible': [('service_type', 'in', ['ocean','land'])], 'readonly':['|',('shipment_type', '!=', 'house'), ('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="booking_type" readonly="1" attrs="{'invisible': [('service_type', 'in', ['air','land'])]}"/>
+<!--
+                            <field name="sq_reference" attrs="{'readonly':['|',('shipment_booking_status', 'not in', '01'),('id', '=', False)]}"/>
+-->
+                            <field name="sq_reference"/>
+                            <field name="invoice_status" readonly="1"/>
+                            <field name="invoice_paid_status" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="cargo_type"  widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('service_type', '!=', 'ocean')],'readonly':[('shipment_booking_status', 'not in', '01')]}" />
+                            <field name="booking_date_time" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}" />
+                            <field name="carrier_booking_no" attrs="{'invisible': [('direction', '=', 'import')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="elapsed_day_booking" invisible="1"/>
+                            <field name="hbl_no" force_save="1" attrs="{'invisible': ['|',('service_type', 'in', ['air','land']),('shipment_type', 'in', 'direct')], 'readonly':['|',('direction', '=', 'export'), ('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="obl_no" attrs="{'invisible': [('service_type', 'in', ['air','land'])], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="mawb_no" attrs="{'invisible': [('service_type', 'in', ['ocean','land'])] , 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]} "/>
+                            <field name="master_booking"  invisible="1"/>
+                           <!-- <field name="master_booking_id"  invisible="1"/>-->
+                            <field name="shipment_type"  widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('service_type', '=', 'land')] , 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="land_cargo_type" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('service_type', '!=', 'land')] , 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="land_type" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('service_type', '!=', 'land')] , 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="trip_type" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('service_type', '!=', 'land')] , 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="customer_seal" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('service_type', '!=', 'land')] , 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="delivery_type" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('service_type', '!=', 'land')] , 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="direct_loading" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('service_type', '!=', 'land')] , 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="manifest_no" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="unstuff_at" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                    </group>
+
+                    <group string="Customer Information" name="customer_information">
+                        <group>
+                            <field name="customer_name" domain="[('customer','=',True), ('type','not in',['invoice','delivery'])]" context="{'search_default_customer':1, 'show_address': 1, 'show_email': 1}"
+                                   options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="contact_name" domain="[('parent_id', '=', customer_name)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="contact_name" invisible="1" domain="[('parent_id', '=', customer_name)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <!--    <field name="phone"  context="{'default_type':'phone'}" options='{"always_reload": True}'/>
+                            <field name="fax"/>
+                            <field name="email"/>-->
+                            <field name="billing_address" domain="['|', ('customer','=',True), ('type','=','invoice')]" context="{'default_type':'invoice', 'show_address': 1, 'show_email': 1}" options='{"always_reload": True, "no_create": True, "no_create_edit":True}'
+                                   attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="land_port" attrs="{'invisible': [('service_type', '!=', 'land')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}" />
+                        </group>
+                        <group>
+                            <field name="pickup_from" domain="[('customer','=',True), ('type','not in',['invoice'])]" context="{'search_default_customer':1}" options='{"always_reload": True}' attrs="{'invisible': [('service_type', '!=', 'land')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                             <field name="pickup_from_address_input" attrs="{'invisible': [('service_type', '!=', 'land')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}" options='{"always_reload": True}'/>
+                            <!--  <field name="pickup_from_contact_name" domain="[('parent_id', '=', pickup_from)]" options='{"always_reload": True}' attrs="{'invisible': [('service_type', '!=', 'land')]}"/>-->
+                            <field name="delivery_to" domain="[('customer','=',True), ('type','not in',['invoice'])]" context="{'search_default_customer':1}" options='{"always_reload": True}' attrs="{'invisible': [('service_type', '!=', 'land')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                          <!--  <field name="delivery_to_contact_name" domain="[('parent_id', '=', delivery_to)]" options='{"always_reload": True}' attrs="{'invisible': [('service_type', '!=', 'land')]}"/>-->
+                             <field name="delivery_to_address_input" attrs="{'invisible': [('service_type', '!=', 'land')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}" options='{"always_reload": True}'/>
+                            <field name="payment_term" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="shipper" domain="[('shipper', '=', True)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}'
+                                   attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="shipper_address_input" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="incoterm" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <!--<field name="shipper_address"/>-->
+                            <field name="priority" widget="priority" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                    </group>
+                    <!--
+                    <group string="B/L Info">
+                        <group>
+                            <field name="company_name"/>
+                            <field name="contact_name" domain="[('parent_id', '=', company_name)]"/>
+                        </group>
+                        <group>
+                            <field name="payment_term"/>
+                            <field name="incoterm"/>
+                        </group>
+                    </group>
+                    -->
+                    <!--
+                    <group colspan="4">
+                        <group>
+                            <label for="street" string="Billing Address" />
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street2..." class="o_address_street"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country,oe_no_button" required="1" options="{&quot;no_open&quot;: True}"/>
+                                <field name="city" placeholder="City" class="o_address_city" required="1"/>
+                                <field name="state_id" class="o_address_state" domain="[('country_id','=',country_id)]" placeholder="State" options="{&quot;no_open&quot;: True}" required="1" />
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="phone" placeholder="Phone Number"/>
+                            <field name="fax" placeholder="Fax Number"/>
+                            <field name="email" placeholder="Email Address" String="Email"/>
+                        </group>
+                    </group>
+                    -->
+                    <group string="" attrs="{'invisible': [('service_type', '=', 'air')]}">
+                        <group>
+                            <field name="consignee" domain="[('consignee', '=', True)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="consignee_address_input" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="notify_party" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="notify_party_address_input" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <!-- <field name="consignee_address"/>-->
+                            <field name="carrier" domain="[('carrier', '=', True)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'invisible': [('service_type', '=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="carrier" domain="[('carrier', '=', True)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' string="Airline" attrs="{'invisible': [('service_type', '!=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="coloader" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'invisible': [('service_type', '=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+
+                            <field name="accept_hour" attrs="{'invisible': [('service_type', '!=', 'land')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                        <group>
+                            <field name="commodity_type" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="hs_code" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="commodity_dg" attrs="{'invisible': [('hide_commodity_dg', '=', True)], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                             <field name="commodity" domain="[('categ_id', '=', commodity_category_id)]" invisible="1"
+                                    options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="commodity1" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="commodity_category_id" invisible="1"/>
+                             <field name="hide_commodity_dg" invisible="1"/>
+                            <!--<field name="income_acc_id"/>
+                            <field name="expence_acc_id"/>-->
+                            <field name="oversea_agent" context="{'show_address': 1, 'show_email': 1}" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="air_agent" context="{'show_address': 1, 'show_email': 1}" options='{"always_reload": True}' attrs="{'invisible': [('service_type', '!=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="freight_type" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="other_charges" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                    </group>
+
+                    <group string="HAWB Data" attrs="{'invisible': [('service_type', '!=', 'air')]}">
+                        <group>
+                            <field name="consignee" domain="[('consignee', '=', True)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="consignee_address_input" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="notify_party" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="notify_party_address_input" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <!-- <field name="consignee_address"/>-->
+                            <field name="carrier" domain="[('carrier', '=', True)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'invisible': [('service_type', '=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="carrier" domain="[('carrier', '=', True)]" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' string="Airline" attrs="{'invisible': [('service_type', '!=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="coloader" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'invisible': [('service_type', '=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+
+                            <field name="accept_hour" attrs="{'invisible': [('service_type', '!=', 'land')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                        <group>
+                            <field name="commodity_type" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="hs_code" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="commodity_dg" attrs="{'invisible': [('hide_commodity_dg', '=', True)], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                             <field name="commodity" domain="[('categ_id', '=', commodity_category_id)]" invisible="1"
+                                    options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="commodity1" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="commodity_category_id" invisible="1"/>
+                             <field name="hide_commodity_dg" invisible="1"/>
+                            <!--<field name="income_acc_id"/>
+                            <field name="expence_acc_id"/>-->
+                            <field name="oversea_agent" context="{'show_address': 1, 'show_email': 1}" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="air_agent" context="{'show_address': 1, 'show_email': 1}" options='{"always_reload": True}' attrs="{'invisible': [('service_type', '!=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="freight_type" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="other_charges" widget="radio" options="{'horizontal': true}" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                    </group>
+
+                    <group col="6" colspan="4" string="" attrs="{'invisible': ['|', ('cargo_type', '!=', 'lcl'), ('service_type', '=', 'air')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}">
+                        <field name="lcl_pcs" attrs="{'invisible': ['|',('service_type', '=', 'land'), ('cargo_type', '!=', 'lcl')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="lcl_weight" attrs="{'invisible': ['|',('service_type', '=', 'land'), ('cargo_type', '!=', 'lcl')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="lcl_volume" attrs="{'invisible': ['|',('service_type', '=', 'land'), ('cargo_type', '!=', 'lcl')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                    </group>
+
+                    <group string="Airway Shipment Info" attrs="{'invisible': [('service_type', '!=', 'air')]}">
+                         <group>
+                            <field name="airport_departure" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                          </group>
+                          <group>
+                             <field name="airport_destination" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                          </group>
+                    </group>
+
+                     <group col="8" colspan="6"  string="" attrs="{'invisible': [('service_type', '!=', 'air')]}">
+                        <field name="first_carrier_to" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="first_carrier_flight_no" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="first_carrier_etd" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="first_carrier_eta" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                         <field name="second_carrier_to" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="second_carrier_flight_no" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="second_carrier_etd" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="second_carrier_eta" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                         <field name="third_carrier_to" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="third_carrier_flight_no" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="third_carrier_etd" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        <field name="third_carrier_eta" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                    </group>
+                    <!--
+                    <group attrs="{'invisible': [('service_type', '!=', 'air')]}">
+                        <field name="airlines_ids" widget="many2many_tags" />
+                        <field name="weight_ids" widget="many2many_tags" options="{'limit': 3,'create': false, 'create_edit': false}"/>
+                        <field name="airlines_weight_ids" />
+                    </group>
+                    -->
+                    <group string="Shipment Info" attrs="{'invisible': [('service_type', '!=', 'ocean')]}">
+                        <group>
+                            <field name="place_of_receipt" attrs="{'invisible': [('direction', '=', 'import')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_loading" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_loading_input" invisible="1" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_tranship" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_tranship_input"  invisible="1" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_discharge" options='{"always_reload": True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_discharge_input"  invisible="1" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="place_of_delivery" attrs="{'invisible': [('direction', '=', 'import')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+
+                        </group>
+                        <group>
+                            <field name="place_of_receipt_ata" attrs="{'invisible': [('direction', '=', 'import')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_loading_eta" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_tranship_eta" attrs="{'invisible': [('direction', '=', 'import')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="port_of_discharge_eta" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="shipment_close_date_time" attrs="{'invisible': [('direction', '=', 'import')], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                    </group>
+
+                    <group attrs="{'invisible': [('service_type', '!=', 'ocean')]}">
+                        <group>
+                            <field name="vessel_name" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="vessel_id" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="psa_code" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="scn_code" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                        <group>
+                            <field name="voyage_no" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="feeder_vessel_name" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="feeder_voyage_no" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="terminal" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                           <!-- <field name="pre_carriage_by"/>-->
+                        </group>
+                    </group>
+                    <group attrs="{'invisible': [('service_type', '!=', 'ocean')]}">
+                        <group>
+                            <field name="principal_agent_code" options='{"always_reload": True, "no_create": True, "no_create_edit":True}'
+                                   attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="principal_agent_smk_code" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <!--<field name="vessel_close_date_time"/>-->
+                        </group>
+                        <group>
+                            <field name="shipping_agent_code" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                            <field name="shipping_agent_smk_code" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Manifest" attrs="{'invisible': ['|', ('cargo_type', '=', 'lcl'), ('land_cargo_type', '=', 'ltl')]}">
+                            <field name="operation_line_ids" mode="tree,kanban">
+								<tree editable="bottom" name="manifest_tree_ids">
+                                    <field name="sequence" widget="handle" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="container_no" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+                                        options='{"always_reload": True}' attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="seal_no" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="container_product_name" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="packages_no" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="packages_no_uom" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="exp_net_weight" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}" sum="Total Net"/>
+                                    <field name="exp_gross_weight" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}" sum="Total Gross"/>
+                                    <!--
+                                    <field name="dim_length" string="Length" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="dim_width" string="Width" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="dim_height" string="Height" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    -->
+                                    <field name="dim_length" string="Length (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="dim_width" string="Width (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="dim_height" string="Height (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+
+                                    <field name="exp_vol" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}" sum="Total Vol"/>
+                                    <field name="remark" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+
+                                    <field name="container_commodity_id" invisible="1" domain="[('categ_id', '=', commodity_category_id)]"
+                                        options='{"always_reload": True}' attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="fcl_container_qty" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="container_category_id" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="commodity_category_id" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+								</tree>
+                                <kanban class="o_kanban_mobile">
+                                    <field name="container_no"/>
+
+                                    <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+                                                options='{"always_reload": True}' />
+                                    <field name="container_commodity_id" invisible="1" domain="[('categ_id', '=', commodity_category_id)]"
+                                                options='{"always_reload": True}' />
+                                    <field name="seal_no" />
+                                    <field name="container_product_name" />
+                                    <field name="packages_no"/>
+                                    <field name="packages_no_uom" />
+                                    <field name="exp_net_weight"/>
+                                    <field name="exp_gross_weight"/>
+                                    <field name="dim_length"/>
+                                    <field name="dim_width"/>
+                                    <field name="dim_height"/>
+                                    <field name="exp_vol"/>
+                                    <field name="remark"/>
+
+                                    <field name="container_category_id" invisible="1" />
+                                    <field name="commodity_category_id" invisible="1" />
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.container_product_id.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.container_product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Qty:
+                                                            <t t-esc="record.fcl_container_qty.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Ctn no:
+                                                            <t t-esc="record.container_no.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+						</page>
+                       <!-- <page string="Manifest" attrs="{'invisible': [('cargo_type', '=', 'fcl')]}">-->
+                        <page string="Manifest" attrs="{'invisible': ['|', ('cargo_type', '=', 'fcl') , ('land_cargo_type', '=', 'ftl')]}">
+                            <field name="operation_line_ids2" mode="tree,kanban">
+								<tree editable="bottom" name="manifest_tree_ids2">
+                                    <field name="sequence" widget="handle" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="container_no" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]"
+                                                options='{"always_reload": True}' />
+                                    <field name="seal_no" />
+                                    <field name="container_product_name" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="packages_no" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="packages_no_uom" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="exp_net_weight" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="exp_gross_weight" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <!--
+                                    <field name="dim_length" string="Length" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="dim_width" string="Width" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="dim_height" string="Height" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    -->
+                                    <field name="dim_length" string="Length (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="dim_width" string="Width (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="dim_height" string="Height (CM)" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+
+                                    <field name="exp_vol" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="shipping_mark" attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="shipping_mark" string="Mark" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="container_category_id" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+
+                                    <!--
+                                    <field name="container_lcl_id" domain="[('categ_id', '=', container_category_id)]"
+                                        options='{"always_reload": True}' attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="container_commodity_id" domain="[('categ_id', '=', commodity_category_id)]"
+                                                options='{"always_reload": True}' attrs="{'column_invisible': [('parent.service_type', '=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="subjob" readonly="1" attrs="{'column_invisible': [('parent.service_type', '!=', 'ocean')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="commodity_category_id" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="volumetric_weight" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="chargeable_weight" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')], 'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    -->
+								</tree>
+                                 <kanban class="o_kanban_mobile">
+                                     <field name="container_no"/>
+                                  <!--  <field name="container_product_id" />-->
+                                    <field name="container_commodity_id" domain="[('categ_id', '=', commodity_category_id)]"
+                                                options='{"always_reload": True}'/>
+                                     <field name="container_lcl_id" domain="[('categ_id', '=', container_category_id)]"
+                                            options='{"always_reload": True}'/>
+                                     <field name="container_category_id" invisible="1" attrs="{'readonly':[('parent.shipment_booking_status', 'in', ['08', '09'])]}"/>
+
+                                     <field name="commodity_category_id" invisible="1" />
+                                    <field name="container_product_name" />
+                                    <field name="subjob" readonly="1"/>
+                                    <field name="packages_no"/>
+                                     <field name="exp_gross_weight"/>
+                                    <field name="exp_net_weight" />
+                                     <field name="dim_length" attrs="{'column_invisible': [('parent.service_type', '=', 'land')]}"/>
+                                     <field name="dim_width" attrs="{'column_invisible': [('parent.service_type', '=', 'land')]}"/>
+                                     <field name="dim_height" attrs="{'column_invisible': [('parent.service_type', '=', 'land')]}"/>
+                                    <field name="exp_vol" />
+                                     <field name="volumetric_weight" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')]}"/>
+                                    <field name="chargeable_weight" attrs="{'column_invisible': [('parent.service_type', '!=', 'air')]}"/>
+                                    <field name="shipping_mark"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.container_product_id.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.container_product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Gross Weight:
+                                                            <t t-esc="record.exp_gross_weight"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Pkg No:
+                                                            <t t-esc="record.packages_no.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+						</page>
+
+                        <page name="cost_profit" string="Cost &amp; Profit">
+                            <field name="sale_order_template_id"/>
+<!--
+                            <button name="action_untick_invoiced" string="Untick Invoiced" type="object" class="btn-primary" groups="account.group_account_manager"/>
+-->
+							<field name="cost_profit_ids" mode="tree,kanban">
+								<tree editable="bottom" name="cost_profit_tree">
+                                    <field name="sequence" widget="handle"/>
+									<field name="product_id"/>
+                                    <field name="product_name"/>
+									<field name="profit_qty"/>
+									<field name="list_price"/>
+                                    <!--<field name="tax_id" widget="many2many_tags" options="{'no_create': True}" context="{'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>-->
+									<!--<field name="uom_id" groups="uom.group_uom"/>-->
+                                    <field name="profit_amount"/>
+                                    <field name="profit_currency"/>
+                                    <field name="profit_currency_rate"/>
+									<field name="sale_total" sum="Total Sale"/>
+                                    <field name="cost_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_amount"/>
+                                    <field name="vendor_id" domain="[('supplier','=',True)]"/>
+                                    <field name="vendor_bill_id"/>
+                                    <field name="cost_currency"/>
+                                    <field name="cost_currency_rate"/>
+									<field name="cost_total" sum="Total Cost"/>
+                                    <field name="profit_total" sum="Total Profit"/>
+                                    <field name="added_to_invoice" attrs="{'readonly':[('invoiced_readonly', '=', True)]}"/>
+                                    <field name="invoice_paid" readonly="1"/>
+                                    <field name="invoiced_readonly" invisible="1"/>
+                                    <field name="invoiced" attrs="{'readonly':[('invoiced_readonly', '=', True)]}"/>
+                                    <field name="paid" readonly="1"/>
+                                   <!-- <field name="bill_line_id"/>-->
+								</tree>
+                                 <kanban class="o_kanban_mobile">
+                                    <field name="product_id"/>
+                                    <field name="product_name"/>
+									<field name="profit_qty"/>
+									<field name="list_price"/>
+                                    <field name="profit_amount"/>
+                                    <field name="profit_currency"/>
+                                    <field name="profit_currency_rate"/>
+									<field name="sale_total" sum="Total Sale"/>
+                                    <field name="cost_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_amount"/>
+                                    <field name="vendor_id"/>
+                                    <field name="cost_currency"/>
+                                    <field name="cost_currency_rate"/>
+									<field name="cost_total" sum="Total Cost"/>
+                                    <field name="profit_total" sum="Total Profit"/>
+                                     <field name="added_to_invoice" readonly="1"/>
+                                    <field name="invoice_paid" readonly="1"/>
+                                    <field name="invoiced" readonly="1"/>
+                                    <field name="paid" readonly="1"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.sale_total.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Cost:
+                                                            <t t-esc="record.cost_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Profit:
+                                                            <t t-esc="record.profit_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+						</page>
+
+
+                        <page name="service" string="Service">
+                            <group>
+                                <group>
+                                  <!--  <field name="haulage"/>-->
+                                   <!-- <field name="haulage_address" attrs="{'invisible': [('haulage', '!=', True)]}"/>-->
+                                    <field name="custom_clearance" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="forwarding_agent_code" attrs="{'invisible': [('custom_clearance', '!=', True)], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="custom_registration_no" attrs="{'invisible': [('custom_clearance', '!=', True)], 'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="custom_approved_date"/>
+                                    <field name="unstuff_discharge_date" invisible="1"/>
+                                    <field name="gate_in_date"/>
+                                </group>
+                                <group>
+                                    <field name="insurance" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="fumigation" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="cpc" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="coo" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="warehouse_hours" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="warehouse_location" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="depot_name" domain="[('container_operator', '=', True)]" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                </group>
+                            </group>
+						</page>
+
+                        <page string="Transportation" attrs="{'invisible': [('service_type', '=', 'land')]}">
+                            <group>
+                                <group>
+                                    <field name="transporter_company" domain="[('transporter', '=', True)]" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="pickup_date_time" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="delivery_instruction" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <!--<field name="transport_company" domain="[('transporter', '=', True)]"/>-->
+                                </group>
+                                <group>
+                                    <!-- <field name="transport_address"/>-->
+                                    <field name="customer_collection_from" domain="[('customer','=',True), ('type','=','delivery')]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="delivery_to_address" domain="[('customer','=',True), ('type','=','delivery')]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}' attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                </group>
+                            </group>
+						</page>
+<!--                         <page string="Sub-Job" attrs="{'invisible': [('booking_type', '!=', 'master')]}">-->
+                      <!--  <page string="Sub-Job">
+                             <field name="subbooking_ids">
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="subbooking_id"/>
+                                    <field name="customer_name"/>
+                                    <field name="cargo_type"/>
+								</tree>
+							</field>
+						</page>-->
+                        <page name="remark" string="Booking Remark">
+                            <field name="note" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+						</page>
+                        <page string="Shipping Instruction Remark" invisible="1">
+                            <field name="shipping_instruction_remark" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+						</page>
+                        <page name="cmo" string="CMO" attrs="{'invisible': ['|',('direction', '=', 'import'),('service_type', '=', 'air')]}">
+                            <group>
+                                <group>
+                                    <!--
+                                    <field name="empty_pick_up_location" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="empty_pick_up_address" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="empty_pick_up_telephone" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="full_return_location" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="full_return_address" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="full_return_telephone" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    -->
+                                    <field name="laden_back_terminal" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                </group>
+                                <group>
+                                    <field name="cargo_nature" invisible="1" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="required_document" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="due_date" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="responsible_parties" invisible="1" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="intended_vgm_cut_off" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="intended_cy_cut_off" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="intended_si_cut_off" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                    <field name="intended_bl_cut_off" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                </group>
+                            </group>
+
+						</page>
+                        <page string="Document Received" attrs="{'invisible': [('service_type', '!=', 'ocean')]}">
+                            <group>
+                                <field name="pl_file_name" invisible="1"/>
+                                <field name="si_file_name" invisible="1"/>
+                                <field name="ci_file_name" invisible="1"/>
+                                <field name="obl_file_name" invisible="1"/>
+                                <field name="cc_file_name" invisible="1"/>
+                            </group>
+                            <group>
+                                <group col='5' colspan="3">
+                                    <field name="pl_attachment" filename="pl_file_name" widget="FieldBinary"/>
+                                    <field name="pl_to_receive_date"/>
+                                    <button name="action_schedule_reminder" type="object" string="Schedule Reminder"  context="{'summary': 'PL Follow Up', 'action': 'pl'}" />
+                                </group>
+                                <group col='5' colspan="3">
+                                    <field name="si_attachment" filename="si_file_name" widget="FieldBinary"/>
+                                    <field name="si_to_receive_date"/>
+                                    <button name="action_schedule_reminder" type="object" string="Schedule Reminder"  context="{'summary': 'SI Follow Up', 'action': 'si'}" />
+                                </group>
+                                <group col='5' colspan="3">
+                                    <field name="ci_attachment" filename="ci_file_name" widget="FieldBinary"/>
+                                     <field name="ci_to_receive_date"/>
+                                    <button name="action_schedule_reminder" type="object" string="Schedule Reminder"  context="{'summary': 'CI Follow Up', 'action': 'ci'}" />
+                                </group>
+                                <group col='5' colspan="3">
+                                    <field name="obl_attachment" filename="obl_file_name" widget="FieldBinary"/>
+                                    <field name="obl_to_receive_date"/>
+                                    <button name="action_schedule_reminder" type="object" string="Schedule Reminder"  context="{'summary': 'OBL Follow Up','action': 'obl'}" />
+                                </group>
+                                <group col='5' colspan="3">
+                                    <field name="cc_attachment" filename="obl_file_name" widget="FieldBinary" attrs="{'invisible': [('custom_clearance', '!=', True)]}"/>
+                                    <field name="cc_to_receive_date" attrs="{'invisible': [('custom_clearance', '!=', True)]}"/>
+                                    <button name="action_schedule_reminder" type="object" string="Schedule Reminder"  context="{'summary': 'CC Follow Up','action': 'cc'}" attrs="{'invisible': [('custom_clearance', '!=', True)]}"/>
+                                </group>
+                            </group>
+						</page>
+                        <page string="System Info">
+                            <group>
+                                <field name="owner" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                <field name="sales_person" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                <field name="department" readonly="1" force_save="1" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                <field name="create_date" readonly="1"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="write_date" readonly="1"/>
+                                <field name="write_uid" readonly="1"/>
+                                <field name="status_date_time" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                <field name="company_id" options="{'no_create': True}" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                                <field name="analytic_account_id" readonly="1"/>
+                            </group>
+						</page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+     <!-- Search View Booking -->
+    <record id="view_search_booking" model="ir.ui.view">
+        <field name="name">Booking Filter</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="booking_no"/>
+                <filter string="Ocean Booking" name="ocean_booking" domain="[('service_type', '=', 'ocean')]"/>
+                <filter string="Land Booking" name="land_booking" domain="[('service_type', '=', 'land')]"/>
+                <filter string="Air Booking" name="air_booking" domain="[('service_type', '=', 'air')]"/>
+                <filter string="Import" name="import" domain="[('direction', '=', 'import')]"/>
+                <filter string="Export" name="export" domain="[('direction', '=', 'export')]"/>
+                <filter string="Booking Draft" name="booking status" domain="[('shipment_booking_status', '=', '01')]"/>
+                <filter string="Booking Confirmed" name="booking status" domain="[('shipment_booking_status', '=', '02')]"/>
+                <filter string="SI Received" name="booking status" domain="[('shipment_booking_status', '=', '03')]"/>
+                <filter string="BL Confirmed" name="booking status" domain="[('shipment_booking_status', '=', '04')]"/>
+                <filter string="OBL confirmed" name="booking status" domain="[('shipment_booking_status', '=', '05')]"/>
+                <filter string="AWB Confirmed" name="booking status" domain="[('shipment_booking_status', '=', '06')]"/>
+                <filter string="Shipment Arrived" name="booking status" domain="[('shipment_booking_status', '=', '07')]"/>
+                <filter string="Done" name="booking status" domain="[('shipment_booking_status', '=', '08')]"/>
+                <filter string="Invoiced" name="booking status" domain="[('shipment_booking_status', '=', '10')]"/>
+                <filter string="Paid" name="booking status" domain="[('shipment_booking_status', '=', '11')]"/>
+                <filter string="FCL" name="fcl" domain="[('cargo_type', '=', 'fcl')]"/>
+                <filter string="LCL" name="lcl" domain="[('cargo_type', '=', 'lcl')]"/>
+                <field name="customer_name"/>
+                <field name="hbl_no"/>
+                <field name="obl_no"/>
+                <field name="customer_name"/>
+                <field name="carrier_booking_no"/>
+                <field name="port_of_loading"/>
+                <field name="port_of_discharge"/>
+                <field name="booking_type"/>
+                <field name="operation_line_ids" string="FCL Container No" filter_domain="[('operation_line_ids.container_no','ilike',self)]"/>
+                <field name="operation_line_ids2" string="LCL Container No" filter_domain="[('operation_line_ids2.container_no','ilike',self)]"/>
+                <field name="cost_profit_ids" string="Invoiced" filter_domain="[('cost_profit_ids.invoiced','ilike',self)]"/>
+                <filter string="Loading ETA" name="port_loading_eta" date="port_of_loading_eta"/>
+                <filter string="ETA/ETD Date" name="filter_booking_date" date="booking_date_time"/>
+                <filter string="Closing Date Time" name="closing_date" date="shipment_close_date_time"/>
+                <group expand="0" string="Group By">
+                    <filter string="ETA/ETD Date" name="booking_month" domain="[]" context="{'group_by':'booking_date_time'}"/>
+                    <filter string="Loading ETA" name="loading_eta" domain="[]" context="{'group_by':'port_of_loading_eta'}"/>
+                    <filter string="Shipment Mode" name="service_type" domain="[]" context="{'group_by':'service_type'}"/>
+                    <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by':'sales_person'}"/>
+                    <filter string="Owner" name="owner" domain="[]" context="{'group_by':'owner'}"/>
+                    <filter string="Customer" name="customer_name" domain="[]" context="{'group_by':'customer_name'}"/>
+                    <filter string="Port of Loading" name="port_of_loading" domain="[]" context="{'group_by':'port_of_loading'}"/>
+                    <filter string="Port of Discharge" name="port_of_discharge" domain="[]" context="{'group_by':'port_of_discharge'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_calendar_booking" model="ir.ui.view">
+        <field name="name">Booking Job Calendar</field>
+        <field name="model">freight.booking</field>
+        <field name="arch" type="xml">
+            <calendar color="booking_no" date_start="booking_date_time" string="Booking" mode="week" quick_add="0"
+                      all_day="booking_date_time">
+                     <field name="customer_name" />
+                     <field name="shipment_booking_status" />
+                    <!-- <field name="shipment_close_date_time" />
+                     <field name="port_of_discharge_eta" />-->
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_freight_booking_pivot" model="ir.ui.view">
+         <field name="name">freight.booking.pivot</field>
+         <field name="model">freight.booking</field>
+         <field name="arch" type="xml">
+             <pivot string="Freight Booking Analysis">
+                 <field name="booking_date_time" interval="month" type="row"/>
+                <field name="customer_name" type="row"/>
+                <field name="pivot_sale_total" type="measure" groups="account.group_account_user"/>
+                 <field name="pivot_cost_total" type="measure" groups="account.group_account_user"/>
+                 <field name="pivot_profit_total" type="measure" groups="account.group_account_user"/>
+                 <field name="pivot_margin_total" type="measure" groups="account.group_account_user"/>
+
+                 <!--<field name="port_of_loading_eta" interval="month" type="row"/>-->
+             </pivot>
+         </field>
+    </record>
+
+
+    <record id="view_freight_booking_graph" model="ir.ui.view">
+         <field name="name">freight.booking.graph</field>
+         <field name="model">freight.booking</field>
+         <field name="arch" type="xml">
+             <graph string="Freight Booking Line Graph" type="line">
+                 <field name="customer_name" type="col"/>
+                 <field name="pivot_sale_total" type="measure"/>
+                 <field name="pivot_cost_total" type="measure"/>
+                 <field name="pivot_profit_total" type="measure"/>
+                 <field name="pivot_margin_total" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <record id="view_form_booking_cost_profit" model="ir.ui.view">
+        <field name="name">Booking Cost Profit</field>
+        <field name="model">freight.cost_profit</field>
+        <field name="arch" type="xml">
+            <form string="Cost Profit">
+				<group>
+					<field name="product_id"/>
+					<field name="product_name"/>
+                </group>
+                <group>
+                    <group>
+                        <field name="profit_qty"/>
+                        <field name="list_price"/>
+                        <field name="profit_amount"/>
+                        <field name="profit_currency"/>
+                        <field name="profit_currency_rate"/>
+                        <field name="sale_total" sum="Total Sale"/>
+                    </group>
+                    <group>
+                        <field name="cost_qty"/>
+                        <field name="cost_price"/>
+                        <field name="cost_amount"/>
+                        <field name="cost_currency"/>
+                        <field name="cost_currency_rate"/>
+                        <field name="cost_total" sum="Total Cost"/>
+                    </group>
+                </group>
+                <group>
+
+                    <field name="vendor_id" domain="[('supplier','=',True)]"/>
+                    <field name="vendor_bill_id"/>
+					<field name="profit_total" sum="Total Profit"/>
+					<field name="added_to_invoice" attrs="{'readonly':[('invoiced_readonly', '=', True)]}"/>
+					<field name="invoice_paid" readonly="1"/>
+					<field name="invoiced_readonly" invisible="1"/>
+					<field name="invoiced" attrs="{'readonly':[('invoiced_readonly', '=', True)]}"/>
+					<field name="paid" readonly="1"/>
+				</group>
+			</form>
+		</field>
+	</record>
+
+
+
+   <!-- <act_window id="action_booking"
+        name="Freight Booking"
+        res_model="freight.booking"
+        view_mode="tree,kanban,form,calendar,pivot,graph"
+    />-->
+
+    <record id="action_ocean_booking" model="ir.actions.act_window">
+		<field name="name">Ocean Booking Job</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">freight.booking</field>
+		<field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+        <field name="view_id" ref="view_tree_ocean_booking"/>
+       <!-- <field name="context">{"search_default_ocean_booking":1}</field>-->
+        <field name="domain">[('service_type','=','ocean')]</field>
+ 	</record>
+
+
+     <record id="action_land_booking" model="ir.actions.act_window">
+		<field name="name">Land Booking Job</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">freight.booking</field>
+		<field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+        <field name="view_id" ref="view_tree_land_booking"/>
+       <!-- <field name="act_window_id" ref="action_booking_view_id2"/>-->
+        <!--<field name="context">{"search_default_land_booking":1}</field>-->
+          <field name="domain">[('service_type','=','land')]</field>
+ 	</record>
+
+
+     <record id="action_air_booking" model="ir.actions.act_window">
+		<field name="name">Air Booking Job</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">freight.booking</field>
+		<field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+        <field name="view_id" ref="view_tree_air_booking"/>
+      <!--  <field name="act_window_id" ref="action_booking_view_id3"/>-->
+       <!-- <field name="context">{"search_default_air_booking":1}</field>-->
+         <field name="domain">[('service_type','=','air')]</field>
+ 	</record>
+
+
+
+    <menuitem id="menu_freight" name="GoExcel Freight" web_icon="sci_goexcel_freight,static/description/icon.png"/>
+    <menuitem id="menu_freight_booking" name="Booking Job" parent="menu_freight" sequence="1"/>
+    <menuitem id="menu_freight_ocean_booking" name="Ocean Booking" parent="menu_freight_booking" action="action_ocean_booking" sequence="2"/>
+    <menuitem id="menu_freight_land_booking" name="Land Booking" parent="menu_freight_booking" action="action_land_booking"  sequence="3"/>
+    <menuitem id="menu_freight_air_booking" name="Air Booking" parent="menu_freight_booking" action="action_air_booking" sequence="4"/>
+
+
+</odoo>

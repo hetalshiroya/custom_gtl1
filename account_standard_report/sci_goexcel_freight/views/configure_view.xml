@@ -1,0 +1,699 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Commodity -->
+    <record id='view_tree_commodity' model='ir.ui.view'>
+        <field name="name">Commodity List</field>
+        <field name="model">freight.commodity</field>
+        <field name="arch" type="xml">
+			<tree string='Commodity'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_commodity" model="ir.ui.view">
+        <field name="name">Commodity Form</field>
+        <field name="model">freight.commodity</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="code" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_commodity" model="ir.ui.view">
+        <field name="name">Commodity Filter</field>
+        <field name="model">freight.commodity</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- DG Commodity -->
+    <record id='view_tree_dg' model='ir.ui.view'>
+        <field name="name">DG List</field>
+        <field name="model">freight.dangerous.goods</field>
+        <field name="arch" type="xml">
+			<tree string='Dangerous Goods'>
+				<field name="name"/>
+				<field name="un_class"/>
+                <field name="division"/>
+                <field name="classification"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_dg" model="ir.ui.view">
+        <field name="name">Dangerous Goods Form</field>
+        <field name="model">freight.dangerous.goods</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="un_class" required="1"/>
+                        <field name="division"/>
+                        <field name="classification"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_dg" model="ir.ui.view">
+        <field name="name">Dangerous Goods Filter</field>
+        <field name="model">freight.dangerous.goods</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Shipment Booking Status -->
+    <record id='view_tree_status_shipment' model='ir.ui.view'>
+        <field name="name">Shipment Booking Status</field>
+        <field name="model">freight.status.shipment</field>
+        <field name="arch" type="xml">
+			<tree string='Shipment'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_status_shipment" model="ir.ui.view">
+        <field name="name">Shipment Booking Status Form</field>
+        <field name="model">freight.status.shipment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="code" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_status_shipment" model="ir.ui.view">
+        <field name="name">Shipment Booking Status Filter</field>
+        <field name="model">freight.status.shipment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Liner Booking Status -->
+    <record id='view_tree_status_liner' model='ir.ui.view'>
+        <field name="name">Liner Booking Status</field>
+        <field name="model">freight.status.liner</field>
+        <field name="arch" type="xml">
+			<tree string='Shipment'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_status_liner" model="ir.ui.view">
+        <field name="name">Liner Booking Status Form</field>
+        <field name="model">freight.status.liner</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="code" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_status_liner" model="ir.ui.view">
+        <field name="name">Liner Booking Status Filter</field>
+        <field name="model">freight.status.liner</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Port -->
+    <record id='view_tree_port' model='ir.ui.view'>
+        <field name="name">Ports</field>
+        <field name="model">freight.ports</field>
+        <field name="arch" type="xml">
+			<tree string='Shipment'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="country_id"/>
+                <field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_port" model="ir.ui.view">
+        <field name="name">Ports Form</field>
+        <field name="model">freight.ports</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="country_id"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_port" model="ir.ui.view">
+        <field name="name">Ports Filter</field>
+        <field name="model">freight.ports</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                 <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Airports -->
+    <record id='view_tree_airport' model='ir.ui.view'>
+        <field name="name">Airport</field>
+        <field name="model">freight.airport</field>
+        <field name="arch" type="xml">
+			<tree string='Airport'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="country_id"/>
+                <field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_airport" model="ir.ui.view">
+        <field name="name">Airport Form</field>
+        <field name="model">freight.airport</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="country_id"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_airport" model="ir.ui.view">
+        <field name="name">Airport Filter</field>
+        <field name="model">freight.airport</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                 <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id='view_tree_flight' model='ir.ui.view'>
+        <field name="name">Flight</field>
+        <field name="model">airline.flight</field>
+        <field name="arch" type="xml">
+			<tree string='Airport'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="airline"/>
+                <field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+
+    <record id="view_search_flight" model="ir.ui.view">
+        <field name="name">Flight Filter</field>
+        <field name="model">airline.flight</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                 <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="view_form_flight" model="ir.ui.view">
+        <field name="name">Flight Form</field>
+        <field name="model">airline.flight</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="airline"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <!-- Incoterm -->
+    <record id='view_tree_incoterm' model='ir.ui.view'>
+        <field name="name">Incoterm</field>
+        <field name="model">freight.incoterm</field>
+        <field name="arch" type="xml">
+			<tree string='Shipment'>
+				<field name="name"/>
+				<field name="code"/>
+                <field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_incoterm" model="ir.ui.view">
+        <field name="name">Incoterm Form</field>
+        <field name="model">freight.incoterm</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_incoterm" model="ir.ui.view">
+        <field name="name">Incoterm Filter</field>
+        <field name="model">freight.incoterm</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                 <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+
+
+
+    <!-- Container -->
+    <!--<record id='view_tree_containers' model='ir.ui.view'>
+        <field name="name">Container</field>
+        <field name="model">freight.containers</field>
+        <field name="arch" type="xml">
+			<tree string='Container'>
+				<field name="name"/>
+				<field name="code"/>
+                <field name="status"/>
+                <field name="size"/>
+                <field name="size_uom_id"/>
+                <field name="volume"/>
+                <field name="weight"/>
+               &lt;!&ndash; <field name="is_container"/>&ndash;&gt;
+			</tree>
+		</field>
+	</record>-->
+
+  <!--  <record id="view_form_containers" model="ir.ui.view">
+        <field name="name">Container Form</field>
+        <field name="model">freight.containers</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="status"/>
+                        <field name="size"/>
+                        <field name="size_uom_id"/>
+                        <field name="volume"/>
+                        <field name="weight"/>
+                       &lt;!&ndash; <field name="is_container"/>&ndash;&gt;
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>-->
+
+  <!--  <record id="view_search_containers" model="ir.ui.view">
+        <field name="name">Container Filter</field>
+        <field name="model">freight.containers</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                 <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>-->
+
+    <!-- Vessel -->
+    <record id='view_tree_vessels' model='ir.ui.view'>
+        <field name="name">Vessels</field>
+        <field name="model">freight.vessels</field>
+        <field name="arch" type="xml">
+			<tree string='Vessels'>
+				<field name="name"/>
+				<field name="code"/>
+                <field name="liner_vessel" domain="[('carrier', '=', True)]"/>
+                <field name="country_id"/>
+                <field name="note"/>
+                <field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_vessels" model="ir.ui.view">
+        <field name="name">Vessels Form</field>
+        <field name="model">freight.vessels</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="liner_vessel" domain="[('carrier', '=', True)]"/>
+                        <field name="country_id"/>
+                        <field name="note"/>
+                        <field name="active"/>
+                       <!-- <field name="transport"/>-->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_vessels" model="ir.ui.view">
+        <field name="name">Vessels Filter</field>
+        <field name="model">freight.vessels</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                 <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+
+        <!-- Accept Hour -->
+    <record id='view_tree_accept_hour' model='ir.ui.view'>
+        <field name="name">Accept Hour List</field>
+        <field name="model">accept.hour</field>
+        <field name="arch" type="xml">
+			<tree string='Accept Hour'>
+				<field name="name"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_accept_hour" model="ir.ui.view">
+        <field name="name">Accept Hour Form</field>
+        <field name="model">accept.hour</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_accept_hour" model="ir.ui.view">
+        <field name="name">Accept Hour Filter</field>
+        <field name="model">accept.hour</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+
+     <record id='view_tree_freight_product_category' model='ir.ui.view'>
+        <field name="name">Product Category List</field>
+        <field name="model">freight.product.category</field>
+        <field name="arch" type="xml">
+			<tree string='Freight Product Category'>
+				 <field name="type" required="1"/>
+                <field name="product_category" required="1"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_freight_product_category" model="ir.ui.view">
+        <field name="name">Product Category Form</field>
+        <field name="model">freight.product.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="type" required="1"/>
+                        <field name="product_category" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Booking Confirmation Remark -->
+    <record id='view_tree_remark' model='ir.ui.view'>
+        <field name="name">Booking Confirmation Remark</field>
+        <field name="model">freight.booking.confirmation.remark</field>
+        <field name="arch" type="xml">
+			<tree string='Remark'>
+				<field name="type"/>
+				<field name="booking_confirmation_remark"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_remark" model="ir.ui.view">
+        <field name="name">Booking Confirmation Remark</field>
+        <field name="model">freight.booking.confirmation.remark</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="type"/>
+				        <field name="booking_confirmation_remark"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_remark" model="ir.ui.view">
+        <field name="name">Booking Confirmation Remark Filter</field>
+        <field name="model">freight.booking.confirmation.remark</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="type"/>
+            </search>
+        </field>
+    </record>
+
+
+    <act_window id="action_configure_freight_product_category" name="Product Category" res_model="freight.product.category"
+                 view_mode="tree,form"/>
+
+
+    <act_window id="action_configure_commodity"
+        name="Commodity Type"
+        res_model="freight.commodity"
+        view_mode="tree,form"
+    />
+
+     <act_window id="action_configure_dg"
+        name="Dangerous Goods"
+        res_model="freight.dangerous.goods"
+        view_mode="tree,form"
+    />
+
+
+    <act_window id="action_configure_status_shipment"
+        name="Shipment Booking Status"
+        res_model="freight.status.shipment"
+        view_mode="tree,form"
+    />
+
+    <act_window id="action_configure_status_liner"
+        name="Liner Booking Status"
+        res_model="freight.status.liner"
+        view_mode="tree,form"
+    />
+
+    <act_window id="action_configure_ports"
+        name="Ports"
+        res_model="freight.ports"
+        view_mode="tree,form"
+    />
+
+    <act_window id="action_configure_airport"
+        name="Airport"
+        res_model="freight.airport"
+        view_mode="tree,form"
+    />
+
+     <act_window id="action_configure_flight"
+        name="Flight"
+        res_model="airline.flight"
+        view_mode="tree,form"
+    />
+
+    <act_window id="action_configure_accept_hour"
+        name="Accepy Hour"
+        res_model="accept.hour"
+        view_mode="tree,form"
+    />
+
+   <!-- <act_window id="action_configure_container"
+        name="Container"
+        res_model="freight.containers"
+        view_mode="tree,form"
+    />-->
+
+    <act_window id="action_configure_incoterm"
+        name="Incoterm"
+        res_model="freight.incoterm"
+        view_mode="tree,form"
+    />
+
+    <act_window id="action_configure_container"
+        name="Container"
+        res_model="freight.containers"
+        view_mode="tree,form"
+    />
+
+    <act_window id="action_configure_vessels"
+        name="Vessels"
+        res_model="freight.vessels"
+        view_mode="tree,form"
+    />
+
+    <act_window id="action_configure_remark"
+        name="Booking Confirmation Remark"
+        res_model="freight.booking.confirmation.remark"
+        view_mode="tree,form"
+    />
+
+
+
+
+    <menuitem id="menu_freight_configure"    name="Configuration"    parent="menu_freight" sequence="5"/>
+    <menuitem id="menu_freight_configure_commodity"    name="Commodity"    parent="menu_freight_configure"    action="action_configure_commodity"/>
+    <menuitem id="menu_freight_configure_dg"    name="Dangerous Goods"    parent="menu_freight_configure"    action="action_configure_dg"/>
+
+    <!--    <menuitem id="menu_freight_configure_status_shipment"    name="Shipment Booking Status"    parent="menu_freight_configure"    action="action_configure_status_shipment"/>
+    <menuitem id="menu_freight_configure_status_liner"    name="Liner Booking Status"    parent="menu_freight_configure"    action="action_configure_status_liner"/>-->
+    <menuitem id="menu_freight_configure_ports"    name="Ports"    parent="menu_freight_configure"    action="action_configure_ports"/>
+    <menuitem id="menu_freight_configure_airport"    name="Airport"    parent="menu_freight_configure"    action="action_configure_airport"/>
+    <menuitem id="menu_freight_configure_flight"    name="Flight"    parent="menu_freight_configure"    action="action_configure_flight"/>
+    <menuitem id="menu_freight_configure_incoterm"    name="Incoterm"    parent="menu_freight_configure"    action="action_configure_incoterm"/>
+    <!--<menuitem id="menu_freight_configure_container"    name="Container"    parent="menu_freight_configure"    action="action_configure_container"/>-->
+    <menuitem id="menu_freight_configure_vessels"    name="Vessels"    parent="menu_freight_configure"    action="action_configure_vessels"/>
+    <menuitem id="menu_freight_configure_accept_hour"    name="Accept Hour"    parent="menu_freight_configure"    action="action_configure_accept_hour"/>
+    <menuitem id="menu_freight_configure_product_category"    name="Product Category"    parent="menu_freight_configure"    action="action_configure_freight_product_category"/>
+    <menuitem id="menu_freight_configure_remark"    name="Booking Confirmation Remark"    parent="menu_freight_configure"    action="action_configure_remark"/>
+
+</odoo>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="action_rft_synhee"
+            string="Request Of Transport (ROT) for Syn Hee"
+            model="transport.rft"
+            report_type="qweb-pdf"
+            name="custom_gtl.report_rft_synhee"
+            print_report_name = "('ROT - Syn Hee - ' + object.rft_no)"
+    />
+
+    <template id="report_rft_synhee">
+        <link rel='stylesheet' href="/custom_gtl/static/src/css/style.css"/>
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div class="row" style="margin-left:30px;">
+                        <b style="font-family:arial;font-size:15pt;">SYN HEE LOGISTICS SDN. BHD. </b> (1273618-K)<br/>
+
+                        No. 109A &amp; 109B, Lintang Sultan Mohd 1B,<br/>
+                        Pusat Perdagangan Bandar Sultan Suleiman,<br/>
+                        42000 Pelabuhan Klang, Selangor Darul Ehsan.<br/>
+                        Tel: 603-3176 4622 / 3176 3728 Fax: 603-3176 4616<br/>
+                    </div>
+
+                </div>
+                <div class="page">
+                    <div class="row">
+                        <p style="text-align: justify">Container is accepted for carriage, not withstanding any other clause to the contray, subject to the provisions of the STANDARD CONDITIONS OF CARRIAGE OF SYN HEE CONTAINER SERVICE SDN. BHD. copies of which are available at the above address. PLEASE REFER OVERLEAF.</p>
+                    </div>
+                    <br/>
+                    <h3>
+                        <center><b>REQUEST FOR TRANSPORT</b></center>
+                    </h3>
+
+
+                    <p style="text-align:right;"><b>RFT No. </b><span t-field="o.rft_no"/></p>
+                    <table border="1" style="border-collapse: collapse; line-height: 150%;
+                                    font-size:14px; width:100%;">
+                        <tr>
+                            <td colspan="2" style="width:50%; padding-left: 5px;">
+                                1. FROM<br/>
+                                <span t-field="o.pickup_from.name"/><br/>
+                                <span t-field="o.pickup_from.street"/><br/>
+                                <span t-field="o.pickup_from.street2"/><br/>
+                                <span t-field="o.pickup_from.zip"/> <span t-field="o.pickup_from.city"/> <span t-field="o.pickup_from.state_id.name"/><br/><br/>
+                                ATTN: <span t-field="o.pickup_from_contact_name.name"/>  TEL: <span t-field="o.pickup_from_contact_name.phone"/>
+                            </td>
+                            <td colspan="2" style="width:50%; padding-left: 5px;">
+                                2. To<br/>
+                                <span t-field="o.delivery_to.name"/><br/>
+                                <span t-field="o.delivery_to.street"/><br/>
+                                <span t-field="o.delivery_to.street2"/><br/>
+                                <span t-field="o.delivery_to.zip"/> <span t-field="o.delivery_to.city"/> <span t-field="o.delivery_to.state_id.name"/><br/><br/>
+                                ATTN: <span t-field="o.delivery_to_contact_name.name"/>  TEL: <span t-field="o.delivery_to_contact_name.phone"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">3. BOOKING REFERENCE</td>
+                            <td style="padding-left: 5px;"><span t-field="o.booking_reference"/></td>
+                            <td style="padding-left: 5px;">6. CONTAINER OPERATOR</td>
+                            <td style="padding-left: 5px;"><span t-field="o.container_operator"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">4. ACTUAL CONTAINER NO.</td>
+                            <td style="padding-left: 5px;">
+                                <t t-foreach="o.container_line_ids" t-as="line">
+                                    <span t-esc="line.container_no"/>
+                                </t>
+                            </td>
+                            <td style="padding-left: 5px;">7. CONTAINER SIZE/TYPE</td>
+                            <td style="padding-left: 5px;">
+                                <t t-foreach="o.container_line_ids" t-as="line">
+                                    <span t-esc="line.exp_vol"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">5. REPLACEMENT CONTAINER NO.</td>
+                            <td style="padding-left: 5px;"></td>
+                            <td style="padding-left: 5px;">8. GROSS WT</td>
+                            <td style="padding-left: 5px;">
+                                <t t-foreach="o.container_line_ids" t-as="line">
+                                    <span t-esc="line.exp_gross_weight"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">9. SEAL NO.</td>
+                            <td style="padding-left: 5px;"><span t-field="o.seal_no"/></td>
+                            <td style="padding-left: 5px;">CLOSING DATE/TIME</td>
+                            <td style="padding-left: 5px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">10. CONTENTS</td>
+                            <td colspan="3" style="padding-left: 5px;"><span t-field="o.commodity1.name"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">11. VESSEL NAME/ VOY</td>
+                            <td style="padding-left: 5px;"><span t-field="o.vessel_name.name"/></td>
+                            <td style="padding-left: 5px;">15. TEMPERATURE SETTING</td>
+                            <td style="padding-left: 5px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">12. ETA</td>
+                            <td style="padding-left: 5px;"><span t-field="o.vessel_eta_etd"/></td>
+                            <td style="padding-left: 5px;">16. TRANSHIPMENT/ DESTINATION PORT</td>
+                            <td style="padding-left: 5px;"><span t-field="o.port.name"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">13. VESSEL CODE</td>
+                            <td style="padding-left: 5px;"><span t-field="o.vessel_code"/></td>
+                            <td style="padding-left: 5px;">17. PORT CODE</td>
+                            <td style="padding-left: 5px;"><span t-field="o.port.code"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">14. STATUS</td>
+                            <td style="padding-left: 5px;"><span t-field="o.direction"/></td>
+                            <td style="padding-left: 5px;">18. OVERHEIGHT</td>
+                            <td style="padding-left: 5px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">19. FORWARDING AGENT</td>
+                            <td colspan="3" style="padding-left: 5px;"><span t-field="o.forwarding_agent.name"/></td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">20. SHIPPING AGENT</td>
+                            <td colspan="3" style="padding-left: 5px;"><span t-field="o.shipping_agent.name"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">21. SHIPPER/ CONSIGNEE</td>
+                            <td colspan="3" style="padding-left: 5px;"><span t-field="o.shipper.name"/>/ <span t-field="o.consignee.name"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 5px;">22. OFF LOAD AT PREMISES</td>
+                            <td style="padding-left: 5px;"><span t-field="o.off_load_at_premises"/></td>
+                            <td colspan="2" style="padding-left: 5px;">LIST OF CONTAINER NO.</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4" colspan="2" style="padding-left: 5px;">
+                                23. EMPTY CONTAINER DROP OFF/ PORT TO DELIVER (KCT, KPM, KMT)
+                                AGENT STAMP/ SIGNATURE
+                            </td>
+                            <t t-foreach="o.container_line_ids" t-as="line">
+                            <td colspan="2" style="padding-left: 5px;">1) <span t-esc="line.container_no"/></td>
+                            </t>
+
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">2) </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">3) </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">4) </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">DELIVERY INSTRUCTIONS</td>
+                            <td colspan="2" style="padding-left: 5px;">5) </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" colspan="2" style="padding-left: 5px;">
+
+                                24. REQUIRED DATE: <span t-esc="datetime.datetime.strptime(str(o.required_date_time), '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')"/><br/>
+                                TIME: <span t-esc="datetime.datetime.strptime(str(o.required_date_time), '%Y-%m-%d %H:%M:%S').strftime('%H:%M:%S')"/>
+                            </td>
+                            <td colspan="2" style="padding-left: 5px;">6) </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">7) </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="6" colspan="2" style="padding-left: 5px;">
+                                Requested By: <br/>
+                                Name <span t-field="o.requested_by"/><br/>
+                                I.C No. <br/>
+                                Tel No <br/>
+                                Company Stamp GLOBAL TRACK LINES (M) SDN BHD<br/>
+                                Signature: <br/>
+                            </td>
+                            <td colspan="2" style="padding-left: 5px;">8) </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">9) </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">10) </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" colspan="2" style="padding-left: 5px;">11) </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+
+
+            </t>
+        </t>
+    </template>
+</odoo>

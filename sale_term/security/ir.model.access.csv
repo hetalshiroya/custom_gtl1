@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_letter_template,sale.letter.template,model_sale_letter_template,sales_team.group_sale_salesman,1,1,1,1
+access_sale_letter_template_partner_manager,account.sale.term.partner.manager,model_sale_letter_template,base.group_user,1,0,0,0
+access_sale_letter_template_manager,account.sale.term,model_sale_letter_template,sales_team.group_sale_manager,1,1,1,1

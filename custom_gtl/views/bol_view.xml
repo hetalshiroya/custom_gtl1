@@ -1,0 +1,163 @@
+<odoo>
+
+     <record model="ir.ui.view" id="view_form_freight_bol_gtl">
+         <field name="name">freight.bol.gtl</field>
+         <field name="model">freight.bol</field>
+         <field name="inherit_id" ref="sci_goexcel_freight.view_form_bol"/>
+         <field name="arch" type="xml">
+             <!--
+             <xpath expr="//field[@name='cargo_line_ids']/tree[1]/field[@name='container_no']" position="replace">
+
+             </xpath>
+              <xpath expr="//field[@name='cargo_line_ids']/tree[1]/field[@name='container_product_id']" position="replace">
+
+              </xpath>
+             <xpath expr="//field[@name='cargo_line_ids']/tree[1]/field[@name='seal_no']" position="replace">
+
+             </xpath>
+             <xpath expr="//field[@name='cargo_line_ids']/tree[1]/field[@name='marks']" position="after">
+                 <field name="container_no"/>
+                 <field name="seal_no"/>
+                 <field name="container_product_id"/>
+             </xpath>
+             -->
+             <xpath expr="//field[@name='unstuff_at']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//page[@name='freight_charges']" position="attributes">
+                 <attribute name="attrs">{'invisible': ('direction', '=', 'import')}</attribute>
+             </xpath>
+             <xpath expr="//field[@name='bol_no']" position="attributes">
+                 <attribute name="string">HBL No.</attribute>
+             </xpath>
+             <xpath expr="//field[@name='bol_no']" position="after">
+                 <field name="hbl_no" readonly="False"/>
+                 <field name="sn_no" readonly="True" attrs="{'invisible': [('direction', 'not in', 'export')]}"/>
+             </xpath>
+             <xpath expr="//tree[@name='manifest_tree']" position="replace">
+                 <tree name="manifest_tree">
+                     <field name="sequence" widget="handle"/>
+                     <field name="marks" />
+                     <field name="container_no"/>
+                     <field name="seal_no"/>
+                     <field name="container_product_id"/>
+                     <field name="container_category_id" invisible="1"/>
+                     <field name="container_product_name" />
+                     <field name="packages_no_value"/>
+                     <field name="packages_no_uom"/>
+                     <field name="exp_net_weight"/>
+                     <field name="exp_gross_weight"/>
+                     <field name="dim_length" attrs="{'column_invisible': [('parent.service_type', 'in', 'ocean')]}"/>
+                     <field name="dim_width" attrs="{'column_invisible': [('parent.service_type', 'in', 'ocean')]}"/>
+                     <field name="dim_height" attrs="{'column_invisible': [('parent.service_type', 'in', 'ocean')]}"/>
+                     <field name="exp_vol" />
+                 </tree>
+             </xpath>
+             <!--
+             <xpath expr="//tree[@name='cost_profit_tree']" position="replace">
+                 <tree name="cost_profit_tree">
+                     <field name="sequence" widget="handle"/>
+                     <field name="product_id"/>
+                     <field name="product_name"/>
+                     <field name="profit_qty"/>
+                     <field name="list_price"/>
+                     <field name="profit_amount"/>
+                     <field name="profit_currency"/>
+                     <field name="profit_currency_rate"/>
+                     <field name="sale_total" sum="Total Sale"/>
+                     <field name="cost_qty"/>
+                     <field name="cost_price"/>
+                     <field name="cost_amount"/>
+                     <field name="vendor_id" domain="[('supplier','=',True)]"/>
+                     <field name="cost_currency"/>
+                     <field name="cost_currency_rate"/>
+                     <field name="cost_total" sum="Total Cost"/>
+                     <field name="profit_total" sum="Total Profit"/>
+                     <field name="added_to_invoice" readonly="1"/>
+                     <field name="invoice_paid" readonly="1"/>
+                     <field name="billed" readonly="1"/>
+                     <field name="paid" readonly="1"/>
+                 </tree>
+             </xpath>
+             <xpath expr="//tree[@name='freight_charge_tree']" position="replace">
+                 <tree name="freight_charge_tree">
+                     <field name="sequence" widget="handle"/>
+                     <field name="freight_charges"/>
+                     <field name="revenue_tons"/>
+                     <field name="rate"/>
+                     <field name="per"/>
+                     <field name="amount"/>
+                     <field name="prepaid"/>
+                     <field name="collect"/>
+                     <field name="payable_at_by" />
+                 </tree>
+             </xpath>
+             -->
+             <xpath expr="//field[@name='invoice_paid_status']" position="after">
+                 <field name="bl_status"/>
+                 <field name="freight_type"/>
+             </xpath>
+             <xpath expr="//button[@name='action_send_bl']" position="replace">
+                 <button name="action_send_bl"
+                         type="object"
+                         string="Send BL"
+                         class="oe_highlight"
+                         attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//button[@name='action_create_si']" position="replace">
+                 <button name="action_create_si"
+                         type="object"
+                         string="Create SI"
+                         class="oe_highlight"
+                         attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//field[@name='doc_form_no']" position="replace">
+                 <field name="doc_form_no"
+                        attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//field[@name='service_contract_no']" position="replace">
+                 <field name="service_contract_no"
+                        attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//field[@name='date_laden_on_board']" position="replace">
+                 <field name="date_laden_on_board"
+                        attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//field[@name='place_of_issue']" position="replace">
+                 <field name="place_of_issue"
+                        attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//field[@name='fa_reference']" position="replace">
+                 <field name="fa_reference"
+                        attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//field[@name='point_country_origin']" position="replace">
+                 <field name="point_country_origin"
+                        attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//field[@name='shipper_load']" position="replace">
+                 <field name="shipper_load"
+                        attrs="{'invisible': [('direction', 'in', 'import')]}"/>
+             </xpath>
+             <xpath expr="//page[@name='cost_profit_page']" position="attributes">
+                 <attribute name="groups">account.group_account_user</attribute>
+             </xpath>
+			 <xpath expr="//field[@name='manifest_no']" position="after">
+                 <field name="unstuff_date"/>
+             </xpath>
+              <!-- #Canon -->
+             <xpath expr="//field[@name='date_of_issue']" position="replace">
+                 <field name="date_of_issue" attrs="{'invisible': [('direction', 'not in', 'export')]}"/>
+             </xpath>
+             <xpath expr="//field[@name='export_reference']" position="replace">
+                 <field name="export_reference" attrs="{'invisible': [('direction', 'not in', 'export')]}"/>
+             </xpath>
+             <!-- #Canon End-->
+
+			 
+        </field>
+    </record>
+
+
+
+</odoo>

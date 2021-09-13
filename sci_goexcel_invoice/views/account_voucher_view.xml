@@ -1,0 +1,19 @@
+<odoo>
+    <!-- Inherited the vendor bill view and add freight booking id -->
+	<!--<record model="ir.ui.view" id="view_account_voucher_booking">
+		<field name="name">Freight Booking</field>
+		<field name="model">account.voucher</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+		<field name="arch" type="xml">
+            &lt;!&ndash;<xpath expr="//field[@name='line_ids']/tree/field[@name='account_analytic_id']"
+                   position="before">
+               <button name="action_assign_job_cost"
+                        type="object" string="Cost" class="oe_highlight" context="{'invoice_line_id': active_id}"
+                        attrs="{'invisible': [('freight_booking', '=', [])]}"/>
+                <field name="freight_booking"/>
+            </xpath>&ndash;&gt;
+		</field>
+	</record>-->
+</odoo>

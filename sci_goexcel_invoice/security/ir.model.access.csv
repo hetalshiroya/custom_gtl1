@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_freight_booking_job_cost,Dispatch Job Manager,model_freight_booking_job_cost,job_cost_group_manager,1,1,1,1
+access_freight_booking_job_cost,Dispatch Job User,model_freight_booking_job_cost,job_cost_group_user,1,1,1,1
+access_freight_booking_job_cost,Dispatch Job Own,model_freight_booking_job_cost,job_cost_group_own,1,1,1,1
+access_document_attachment,access_document_attachment,model_document_attachments,,1,1,1,1
+access_multi_folder_drive,access_multi_folder_drive,google_drive_attachment.model_multi_folder_drive,,1,1,1,1

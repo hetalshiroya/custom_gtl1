@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <report id="action_letter_of_demand_report"
+            string="Letter of Demand Report"
+            model="res.partner"
+            report_type="qweb-pdf"
+            name="custom_gtl.report_letter_of_demand_report"/>
+
+    <template id="report_letter_of_demand_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page justify-content-end">
+                        <p><b>FINAL REMINDER LETTER</b></p>
+                        <p>Date: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></p>
+                        <p>
+                            <span t-field="o.name"/><br/>
+                            <span t-field="o.street"/><br/>
+                            <span t-field="o.street2"/><br/>
+                            <span t-field="o.zip"/><span t-field="o.city"/><br/>
+                            <span t-field="o.state_id.name"/><br/>
+                        </p>
+                        <p>Dear Sirs,</p>
+                        <p>
+                            Re: Final Reminder For <span t-field="o.name"/> <br/>
+                            Account Number: <br/>
+                            <u>AMOUNT OUTSTANDING: RM <span t-field="o.credit"/> as at <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></u>
+                        </p>
+                        <p>
+                            We refer to our repeated reminders and telephone calls for settlement of the amount outstanding.
+                            Regretfully, we have no response or payment from you.<br/>
+
+                            Please take note that we shall be offering ourselves as trade referee on the conduct of your account
+                            with us to CTOS Data Systems Sdn Bhd (CTOS) within fourteen (14) days or less from date of this letter.<br/>
+
+                            As you are aware, CTOS Data Systems Sdn Bhd is a registered Credit Reporting Agency which is
+                            widely used by financial institutions and the business community. We shall remain as the trade
+                            referee on you/ your company as long as the uncollectable accounts receivables to us from you
+                            remains unsettled.<br/>
+
+                            We look forward to your prompt response within fourteen days from the date of this letter failing
+                            which your name will be submitted to CTOS Data Systems Sdn Bhd.<br/>
+
+                            Please contact us should you have any further queries.
+                        </p>
+                        <p>
+                            Yours Faithfully,<br/>
+                            Global Track Lines (M) Sdn Bhd
+                        </p>
+                        <br/><br/><br/><br/>
+                        ________________________
+                        Name: Eric Ng
+                        Director
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

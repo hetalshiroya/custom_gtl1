@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <report id="action_booking_information_report"
+            string="Booking Confirmation"
+            model="freight.booking"
+            report_type="qweb-pdf"
+            name="sci_goexcel_freight.report_booking_confirmation"
+            print_report_name = "('Booking Confirmation - ' + object.booking_no)"
+     />
+          <!--    paperformat="paperformat_A4_portrait_report"/>
+           file="sci_goexcel_freight.report_booking_confirmation" -->
+    <template id="report_booking_confirmation">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">  <!-- define in general settings -> document template, for logo, address -->
+                    <div class="page" style="font-size:10px;">
+                        <t t-if="not o.service_type == 'air'">
+                        <!-- Report header content -->
+                            <br/>
+                            <h3 style="border-left:1pt solid black;border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;background-color:#E0E0E0;width:100%">
+                                <center><span t-field="o.cargo_type"/><span>&#160;Booking Confirmation </span></center>
+                            </h3>
+                            <br/>
+                            <table style="line-height: 150%; font-size:10px; width:100%;">
+                                <tr>
+                                    <th style="width:20%;">TO</th>
+                                    <th style="width:2%;">:</th>
+                                    <td style="width:26%;"><span t-field="o.customer_name"/></td>
+                                    <th style="width:5%;"></th>
+                                    <th style="width:20%;">BOOKING NO</th>
+                                    <th style="width:2%;">:</th>
+                                    <td style="width:25%;"><span t-field="o.booking_no"/></td>
+                                </tr>
+                                <tr>
+                                    <th>ATTN</th>
+                                    <th>:</th>
+                                    <td><span t-esc="o.contact_name" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/></td>
+                                    <th ></th>
+                                    <th>ETA/ETD Date</th>
+                                    <th>:</th>
+                                    <td><span t-esc="o.booking_date_time" t-options='{"widget": "date"}'/></td>
+                                </tr>
+                                <tr>
+                                    <th>TEL</th>
+                                    <th>:</th>
+                                    <td>
+                                    <div t-field="o.customer_name"
+                                    t-options='{"widget": "contact", "fields": ["phone"], "no_marker": True, "phone_icons": True}'/>
+                                    </td>
+                                   <!-- <td><span t-field="o.contact_name"/></td>-->
+                                    <th></th>
+                                    <th>DATE PRINTED</th>
+                                    <th>:</th>
+                                    <td>
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>FAX</th>
+                                    <th>:</th>
+                                    <td>
+                                    <div t-field="o.customer_name"
+                                    t-options='{"widget": "contact", "fields": ["fax"], "no_marker": True}'/>
+                                    </td>
+                                    <th></th>
+                                    <th>CARRIER REFERENCE NO</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.carrier_booking_no"/></td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <td></td>
+                                    <th></th>
+                                    <th>PREPARED BY</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.owner"/></td>
+                                </tr>
+	                	    </table>
+                            <br/>
+                            <span>WE ARE PLEASED TO CONFIRM YOUR BOOKING AS PER FOLLOWING:</span>
+                            <br/>
+                            <br/>
+                            <table style="line-height: 150%; font-size:10px; width:100%;">
+                                <tr style="background-color:#E0E0E0;">
+                                    <th style="width:20%;">SHIPPER</th>
+                                    <th style="width:2%;">:</th>
+                                    <td style="width:26%;"><span t-field="o.shipper"/></td>
+                                    <th style="width:5%;"></th>
+                                    <th style="width:20%;">CARRIER</th>
+                                    <th style="width:2%;">:</th>
+                                    <td style="width:25%;"><span t-field="o.carrier"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>FORWARDING AGENT</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.forwarding_agent_code"/></td>
+                                    <th></th>
+                                    <th style="height:35px">FEEDER/DIRECT VESSEL</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.vessel_name.name"/>/<span t-field="o.vessel_id"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>PLACE OF RECEIPT</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.place_of_receipt"/></td>
+                                    <th></th>
+                                    <th>RECEIPT ETA</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.place_of_receipt_ata"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>PORT OF LOADING</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.port_of_loading"/></td>
+                                    <th></th>
+                                    <th>LOADING ETD</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.port_of_loading_eta"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                     <th>PORT OF TRANSHIP</th>
+                                     <th>:</th>
+                                     <td><span t-field="o.port_of_tranship"/></td>
+                                     <th></th>
+                                     <th>TRANSHIP ETA</th>
+                                     <th>:</th>
+                                     <td><span t-field="o.port_of_tranship_eta"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>PORT OF DISCHARGE</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.port_of_discharge"/></td>
+                                    <th></th>
+                                    <th style="height:35px">LOADING ETA</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.port_of_discharge_eta"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>CLOSING DATE / TIME</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.shipment_close_date_time"/></td>
+                                    <th></th>
+                                    <th>FREIGHT TERM</th>
+                                    <th>:</th>
+                                    <td>FREIGHT&#160;<span t-field="o.freight_type"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0;">
+                                     <th>CARGO DELIVERY TO</th>
+                                     <th>:</th>
+                                     <td><span t-field="o.delivery_to"/></td>
+                                     <th></th>
+                                     <th style="height:35px"></th>
+                                     <th></th>
+                                     <td></td>
+                                </tr>
+                                <t t-set="container" t-value="0"/>
+                                <t t-set="weight" t-value="0"/>
+                                <t t-set="volume" t-value="0"/>
+                                <t t-set="package" t-value="0"/>
+                                <t t-set="container_type" t-value=""/>
+                                <t t-if="o.cargo_type == 'fcl'" t-foreach="o.operation_line_ids" t-as="line">
+                                    <t t-set="container" t-value="container + 1"/>
+                                    <t t-set="weight" t-value="weight + line.exp_net_weight"/>
+                                    <t t-set="volume" t-value="volume + line.exp_vol"/>
+                                    <t t-set="package" t-value="package + line.packages_no"/>
+                                    <t t-set="container_type" t-value="line.container_id.name"/>
+                                </t>
+                                <t t-if="o.cargo_type == 'lcl'" t-foreach="o.operation_line_ids2" t-as="line">
+                                    <t t-set="container" t-value="container + 1"/>
+                                    <t t-set="weight" t-value="weight + line.exp_net_weight"/>
+                                    <t t-set="volume" t-value="volume + line.exp_vol"/>
+                                    <t t-set="package" t-value="package + line.packages_no"/>
+                                    <t t-set="container_type" t-value="line.container_id.name"/>
+                                </t>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>COMMODITY</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.commodity1.name"/></td>
+                                    <th></th>
+                                    <th>CONTAINER</th>
+                                    <th>:</th>
+                                    <td><t t-esc="container"/>&#160;X&#160;<t t-esc="container_type"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>WEIGHT</th>
+                                    <th>:</th>
+                                    <td><t t-esc="weight"/></td>
+                                    <th></th>
+                                    <th>NO OF PACKAGES</th>
+                                    <th>:</th>
+                                    <td><t t-esc="package"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9">
+                                    <th>VOLUME</th>
+                                    <th>:</th>
+                                    <td><t t-esc="volume"/></td>
+                                    <th></th>
+                                    <th style="height:35px"></th>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>SMK SA CODE</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.shipping_agent_smk_code"/></td>
+                                    <th></th>
+                                    <th>PSA CODE</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.psa_code"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>VESSEL ID</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.vessel_id"/></td>
+                                    <th></th>
+                                    <th>SCN CODE</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.scn_code"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0;">
+                                    <th>TERMINAL</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.terminal"/></td>
+                                    <th></th>
+                                    <th style="height:35px"></th>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <!-- GTL -->
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>EMPTY PICK UP LOCATION</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.empty_pick_up_location"/></td>
+                                    <th></th>
+                                    <th>FULL RETURN LOCATION</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.full_return_location"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>EMPTY PICK UP ADDRESS</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.empty_pick_up_address"/></td>
+                                    <th></th>
+                                    <th>FULL RETURN ADDRESS</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.full_return_address"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>EMPTY PICK UP TELEPHONE</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.empty_pick_up_telephone"/></td>
+                                    <th></th>
+                                    <th>FULL RETURN TELEPHONE</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.full_return_telephone"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0">
+                                    <th>NOTE</th>
+                                    <th>:</th>
+                                    <td colspan="5"><span t-field="o.required_document"/></td>
+                                </tr>
+                                <tr style="background-color:#E0E0E0">
+                                    <th>Pick Up Empty Date</th>
+                                    <th>:</th>
+                                    <td colspan="5"><span t-field="o.due_date"/></td>
+                                </tr>
+                                <!--
+                                <tr style="background-color:#E0E0E0">
+                                    <th>RESPONSIBLE PARTIES:</th>
+                                    <td colspan="3"><span t-field="o.responsible_parties"/></td>
+                                </tr>
+                                -->
+                                <!--
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>CARGO NATURE:</th>
+                                    <td colspan="3"><span t-field="o.cargo_nature"/></td>
+                                </tr>
+                                -->
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>CARGO DESCRIPTION</th>
+                                    <th>:</th>
+                                    <td colspan="5"><span t-field="o.commodity1.name"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>INTENDED VGM CUT-OFF</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.intended_vgm_cut_off"/></td>
+                                    <th></th>
+                                    <th>INTENDED SI CUT-OFF</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.intended_si_cut_off"/></td>
+                                </tr>
+                                <tr style="background-color:#F8F9F9;">
+                                    <th>INTENDED <span t-field="o.cargo_type"/> CY CUT-OFF</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.intended_cy_cut_off"/></td>
+                                    <th></th>
+                                    <th>INTENDED BL CUT-OFF</th>
+                                    <th>:</th>
+                                    <td><span t-field="o.intended_bl_cut_off"/></td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <b>
+                            REMARK:
+                            </b><br/>
+                            <span t-field="o.note"/>
+                            <br/><br/><br/> <!-- Report footer content -->
+                            <center>Vessel is subject to change with/without prior notice from carrier/agent.</center>
+                            We provide worldwide marine insurance coverage upon your request/instruction. Please note that
+                            it is your responsibility to ensure the adequate marine insurance coverage for ALL shipment
+                            on transit via airfreight/seafreight from origin to final destination at all time. <br/>
+                            <center>E &amp; OE</center>
+                            ALL BUSINESS TRANSACTION ARE SUBJECTED TO OUR COMPANY STANDARD TRADING CONDITIONS.
+                        </t>
+                        <t t-if="o.service_type == 'air'">
+                            <br/>
+                            <h3 style="border-left:1pt solid black;border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;background-color:#E0E0E0;width:100%">
+                                <center>BOOKING CONFIRMATION BY AIR FREIGHT</center>
+                            </h3>
+                            <br/>
+                            <t t-set="gross_weight" t-value="0"/>
+                            <t t-set="net_weight" t-value="0"/>
+                            <t t-set="measurement" t-value="0"/>
+                            <t t-set="package_no" t-value="0"/>
+                            <t t-set="length" t-value="0"/>
+                            <t t-set="width" t-value="0"/>
+                            <t t-set="height" t-value="0"/>
+                            <t t-if="o.cargo_type == 'fcl'">
+                                <t t-foreach="o.operation_line_ids" t-as="line">
+                                    <t t-set="gross_weight" t-value="gross_weight + line.exp_gross_weight" />
+                                    <t t-set="net_weight" t-value="net_weight + line.exp_net_weight" />
+                                    <t t-set="measurement" t-value="measurement + line.exp_vol" />
+                                    <t t-set="package_no" t-value="package_no + line.packages_no" />
+                                    <t t-set="length" t-value="length + line.dim_length"/>
+                                    <t t-set="width" t-value="width + line.dim_width"/>
+                                    <t t-set="height" t-value="height + line.dim_height"/>
+                                </t>
+                            </t>
+                            <t t-if="o.cargo_type == 'lcl'">
+                                <t t-foreach="o.operation_line_ids2" t-as="line">
+                                    <t t-set="gross_weight" t-value="gross_weight + line.exp_gross_weight" />
+                                    <t t-set="net_weight" t-value="net_weight + line.exp_net_weight" />
+                                    <t t-set="measurement" t-value="measurement + line.exp_vol" />
+                                    <t t-set="package_no" t-value="package_no + line.packages_no" />
+                                    <t t-set="length" t-value="length + line.dim_length"/>
+                                    <t t-set="width" t-value="width + line.dim_width"/>
+                                    <t t-set="height" t-value="height + line.dim_height"/>
+                                </t>
+                            </t>
+                            <table style="line-height: 300%; font-size:10px; width:100%;">
+                                <tr>
+                                    <td style="width:20%; padding-left: 5px;">
+                                        DATE
+                                    </td>
+                                    <td style="width:2%; padding-left: 5px;">
+                                        :
+                                    </td>
+                                    <td style="width:78%; padding-left: 5px;">
+                                        <span t-field="o.booking_date_time"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">TO</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.customer_name.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">ATTENTION</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.contact_name.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding-left: 5px;">WE ARE PLEASED TO CONFIRM YOUR BOOKING AS FOLLOW :-</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">BOOKING REF</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.booking_no"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">SHIPPER</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.shipper.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">CARRIER</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.carrier.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">DESTINATION</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.airport_destination"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">FLIGHT NO.</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.first_carrier_flight_no.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">MAWB NO.</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.mawb_no"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">HAWB NO.</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.awb_no"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">TOTAL</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;">
+                                        <span t-esc="package_no"/> /
+                                        <span t-esc="net_weight"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">TERMS</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-field="o.freight_type"/></td>
+                                </tr>
+                            </table>
+                            <table style="line-height: 300%; font-size:10px; width:100%;">
+                                <tr>
+                                    <td style="width:20%; padding-left: 5px;">
+                                        COMMODITY
+                                    </td>
+                                    <td style="width:2%; padding-left: 5px;">
+                                        :
+                                    </td>
+                                    <td style="width:23%; padding-left: 5px;">
+                                        <span t-field="o.commodity1.name"/>
+                                    </td>
+                                    <td style="width:5%; padding-left: 5px;">
+                                        <span t-field="o.commodity1.name"/>
+                                    </td>
+                                    <td style="width:20%; padding-left: 5px;">
+                                    </td>
+                                    <td style="width:2%; padding-left: 5px;">
+                                    </td>
+                                    <td style="width:28%; padding-left: 5px;">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding-left: 5px;">CHARGE WEIGHT</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-esc="net_weight"/></td>
+                                    <td style="padding-left: 5px;"></td>
+                                    <td style="padding-left: 5px;">GROSS WEIGHT</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td style="padding-left: 5px;"><span t-esc="gross_weight"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">PACKAGES</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td colspan="4" style="padding-left: 5px;"><span t-esc="package_no"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 5px;">DIMENSION</td>
+                                    <td style="padding-left: 5px;">:</td>
+                                    <td colspan="4" style="padding-left: 5px;"><span t-esc="length"/>*<span t-esc="width"/>*<span t-esc="height"/></td>
+                                </tr>
+                            </table>
+                            <br/><br/><br/>
+                            BEST REGARDS
+                            <span t-esc="user.name"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

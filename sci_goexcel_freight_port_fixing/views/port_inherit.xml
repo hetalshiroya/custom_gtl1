@@ -1,0 +1,27 @@
+<odoo>
+
+	 <!--Invoice Form-->
+	<record model="ir.ui.view" id="view_form_booking_inherit">
+		<field name="name">Booking Inherit</field>
+		<field name="model">freight.ports</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_port"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+
+			<xpath expr="//field[@name='name']" position="after">
+				<button name="action_copy_old2new"
+						type="object"
+						string="Old 2 New"
+						class="oe_highlight"/>
+				<button name="action_copy_new2old"
+						type="object"
+						string="New 2 Old"
+						class="oe_highlight"/>
+			</xpath>
+
+		</field>
+	</record>
+
+
+
+</odoo>

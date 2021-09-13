@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="module_job_cost_category"
+            model="ir.module.category">
+        <field name="name">job_cost</field>
+    </record>
+
+    <!-- job cost Own Record -->
+    <record id="job_cost_group_own" model="res.groups">
+        <field name="name">Own Records</field>
+        <field name="category_id" ref="module_job_cost_category"/>
+    </record>
+    <!-- job cost User Department -->
+    <record id="job_cost_group_user" model="res.groups">
+        <field name="name">My Team's Record</field>
+        <field name="category_id" ref="module_job_cost_category"/>
+        <field name="implied_ids" eval="[(4, ref('job_cost_group_own'))]"/>
+    </record>
+     <!-- job cost Manager Group -->
+    <record id="job_cost_group_manager" model="res.groups">
+        <field name="name">All Records</field>
+        <field name="category_id" ref="module_job_cost_category"/>
+        <field name="implied_ids" eval="[(4, ref('job_cost_group_user'))]"/>
+    </record>
+
+    <!-- job cost Own Record Group rule -->
+    <record id="job_cost_own_rule" model="ir.rule">
+        <field name="name">Own Records</field>
+        <field ref="model_freight_booking_job_cost" name="model_id"/>
+        <field name="domain_force">[('owner','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('job_cost_group_own'))]"/>
+    </record>
+
+    <!-- job_cost Own Department rule -->
+    <record id="job_cost_user_rule" model="ir.rule">
+        <field name="name">My Team's Records</field>
+        <field ref="model_freight_booking_job_cost" name="model_id"/>
+        <field name="domain_force">['|', ('department.member_ids.user_id', 'in', [user.id]),('department.parent_id.member_ids.user_id', 'in', [user.id])]</field>
+        <field name="groups" eval="[(4, ref('job_cost_group_user'))]"/>
+    </record>
+
+    <!-- job_cost All rule -->
+    <record id="job_cost_manager_rule" model="ir.rule">
+        <field name="name">All Records</field>
+        <field ref="model_freight_booking_job_cost" name="model_id"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('job_cost_group_manager'))]"/>
+    </record>
+
+    <!-- Portal All rule -->
+     <record id="job_cost_portal_rule" model="ir.rule">
+            <field name="name">Portal user: Own records</field>
+            <field ref="model_freight_booking_job_cost" name="model_id"/>
+            <field name="domain_force">[('owner','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+     </record>
+
+</odoo>

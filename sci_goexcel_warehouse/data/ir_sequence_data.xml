@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+		<record id="sequence_tallysheet" model="ir.sequence">
+            <field name="name">tallysheet</field>
+            <field name="code">tallysheet</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">JS-%(y)s%(month)s-</field>
+            <field name="sequence_size">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field eval="True" name="use_date_range"/>
+            <field name="company_id" eval="False"/>
+		</record>
+
+        <record id="sequence_loadingplan" model="ir.sequence">
+            <field name="name">loadingplan</field>
+            <field name="code">loadingplan</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">LP-%(y)s%(month)s-</field>
+            <field name="sequence_size">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field eval="True" name="use_date_range"/>
+            <field name="company_id" eval="False"/>
+		</record>
+
+         <record id="sequence_gatepass" model="ir.sequence">
+            <field name="name">gatepass</field>
+            <field name="code">gatepass</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">GP-%(y)s%(month)s-</field>
+            <field name="sequence_size">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+             <field eval="True" name="use_date_range"/>
+            <field name="company_id" eval="False"/>
+		</record>
+
+	</data>
+</odoo>

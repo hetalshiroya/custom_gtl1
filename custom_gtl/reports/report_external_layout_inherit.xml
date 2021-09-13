@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_external_layout_inherit" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[@class='row']" position="replace">
+            <div class="row">
+                <div class="col-2.5 mb4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 90px; max-width: 150px;" alt="Logo"/>
+                </div>
+                <div style="font-size: 14px;">
+                    <t t-if="company.partner_id">
+                        &#160;&#160;<b><span t-field="company.partner_id.name" style="font-family:arial;"/></b>
+                <span t-field="company.company_registry"/><br/>
+                &#160;&#160;<span t-field="company.partner_id.street"/><br/>
+                &#160;&#160;<span t-field="company.partner_id.zip"/>
+                <span t-field="company.partner_id.city"/>,
+                <span t-field="company.partner_id.state_id.name"/>,
+                <span t-field="company.partner_id.country_id.name"/><br/>
+                &#160;&#160;Hunting Line: <span t-field="company.partner_id.phone"/>
+                <![CDATA[&nbsp;&nbsp;]]>
+                <br/><span style="font-size: 12px;">
+                &#160;&#160;Email : </span><span style="font-size: 12px;" t-field="company.partner_id.email"/>
+                <![CDATA[&nbsp;]]><span style="font-size: 12px;">
+                        Website : </span><span style="font-size: 12px;" t-field="company.partner_id.website"/>
+                    </t>
+                </div>
+                <div class="col-2.5 mb4">
+                    &#160;&#160;&#160;<img t-if="company.iso_image" t-att-src="image_data_uri(company.iso_image)" style="max-height: 90px; max-width: 150px;" alt="Iso"/>
+                </div>
+
+            </div>
+        </xpath>
+        <xpath expr="//div[@class='row zero_min_height']" position="replace">
+        </xpath>
+        <xpath expr="//div[@name='company_address']" position="replace">
+        </xpath>
+        <xpath expr="//div[@class='footer o_standard_footer']" position="replace">
+            <div class="footer o_standard_footer">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <div name="financial_infos">
+                        <span t-field="company.report_footer"/>
+                    </div>
+
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+
+
+        </xpath>
+    </template>
+
+</odoo>

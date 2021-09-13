@@ -1,0 +1,15 @@
+<odoo>
+	 <!-- SQ Form -->
+	<record model="ir.ui.view" id="view_sales_quotation_view_booking">
+		<field name="name">Partner Product Creation</field>
+		<field name="model">sale.order</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="sci_goexcel_sq.view_sales_quotation_view_booking"/>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_unlock']" position="after">
+				<button name="action_partner_product_creation" type="object" string="Master Data Creation"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>

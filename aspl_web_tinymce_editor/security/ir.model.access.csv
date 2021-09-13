@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ir_config_parameter_tinymce,access_ir_config_parameter_tinymce,base.model_ir_config_parameter,base.group_user,1,1,1,1
+access_ir_config_parameter_tinymce_editor,access_ir_config_parameter_tinymce_editor,base.model_ir_config_parameter,,1,1,1,1

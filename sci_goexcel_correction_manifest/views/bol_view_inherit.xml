@@ -1,0 +1,21 @@
+<odoo>
+
+	 <!--Invoice Form-->
+	<record model="ir.ui.view" id="view_form_bl_cm_inherit">
+		<field name="name">Bill Of Lading</field>
+		<field name="model">freight.bol</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_bol"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_create_vendor_bill']" position="after">
+				<button name="action_correction_manifest"
+							type="object"
+							string="Correction Manifest"
+							class="oe_highlight" attrs="{'invisible': ['|', ('direction', '!=', 'import'), ('service_type', 'not in', 'ocean')]}"/>
+			</xpath>
+		</field>
+	</record>
+
+
+
+</odoo>

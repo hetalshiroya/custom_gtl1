@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-extend="UserMenu.Actions">
+		<t t-jquery="a:last-child" t-operation="before">
+			<a role="menuitem" href="#" class="dropdown-item" data-menu="impersonate">Impersonate</a>
+			<a role="menuitem" href="#" class="dropdown-item" data-menu="impersonate_stop">Stop Impersonation</a>
+		</t>
+	</t>
+
+	<t t-name="Impersonate.SystrayMenu">
+		<li>
+			<a role="button" href="#" aria-label="Stop Impersonation" title="Stop Impersonation">
+				<i aria-label="Stop Impersonation" class="fa fa-user-secret text-warning" role="img"/>
+			</a>
+		</li>
+	</t>
+
+</templates>

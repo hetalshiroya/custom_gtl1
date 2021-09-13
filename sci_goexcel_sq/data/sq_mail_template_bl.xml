@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template and notification section -->
+    <data noupdate="1">
+         <record id="email_template_sq_booking_note" model="mail.template">
+            <field name="name">Sales Quotation: Booking Note Information</field>
+            <field name="model_id" ref="sci_goexcel_sq.model_sale_order"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <field name="email_to">test@gmail.com</field>
+            <field name="subject">Sales Quotation ${object.name or ''} : Booking Note Information</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Here is the Sales Quotation for <strong>${object.name or ''}</strong>.
+                        <br/>Carrier Booking No : ${object.carrier_booking_no or 'n/a' }
+                        <br/>Shipper : ${object.shipper.name or 'n/a' }
+                        <br/>Consignee Name : ${object.consignee.name or 'n/a' }
+                        <br/>Forwarding Agent : ${object.forwarding_agent_code.name or 'n/a' }
+                        <br/>HS Code : ${object.hs_code.name or 'n/a' }
+                        <br/>Container : ${object.container_product_id.name or 'n/a' }
+                        <br/>Qty : ${object.container_qty or 'n/a' }
+                        <br/>Transporter Company : ${object.transporter_company.name or 'n/a' }
+                        <br/>C.O.O : ${object.coo or 'n/a' }
+                        <br/>Insurance : ${object.insurance or 'n/a' }
+                        <br/>Fumigation : ${object.fumigation or 'n/a' }
+                        <br/>Container Packing Certificate : ${object.cpc or 'n/a' }
+                        <br/>Warehouse Hours : ${object.warehouse_hours.name or 'n/a' }
+                        <br/><br/>
+                        Do not hesitate to contact us if you have any question.
+                        Thanks.
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

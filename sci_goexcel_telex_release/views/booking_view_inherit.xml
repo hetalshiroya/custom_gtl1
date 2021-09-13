@@ -1,0 +1,21 @@
+<odoo>
+
+	 <!--Invoice Form-->
+	<record model="ir.ui.view" id="view_form_booking_tr_inherit">
+		<field name="name">Booking Inherit</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_cancel_booking']" position="after">
+				<button name="action_telex_release"
+						type="object"
+						string="Telex Release"
+						class="oe_highlight"/>
+			</xpath>
+		</field>
+	</record>
+
+
+
+</odoo>

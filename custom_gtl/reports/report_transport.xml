@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="sci_goexcel_transport.action_door_to_door_delivery_order_report"
+            string="Transport DO"
+            model="transport.rft"
+            report_type="qweb-pdf"
+            name="sci_goexcel_transport.report_door_to_door_delivery_order"
+            print_report_name = "('DO - '+ object.rft_no)"
+     />
+
+    <report id="sci_goexcel_transport.action_delivery_order_report"
+            string="Delivery Order"
+            model="transport.rft"
+            report_type="qweb-pdf"
+            name="sci_goexcel_transport.report_delivery_order"
+            menu="False"/>
+
+    <report id="sci_goexcel_transport.action_rft"
+            string="Request Of Transport (ROT)"
+            model="transport.rft"
+            report_type="qweb-pdf"
+            name="sci_goexcel_transport.report_rft"
+            menu="False"/>
+
+</odoo>

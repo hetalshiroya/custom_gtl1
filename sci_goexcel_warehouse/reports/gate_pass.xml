@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--     <record id="paperformat_gate_pass" model="report.paperformat">-->
+<!--        <field name="name">Gate Pass A4</field>-->
+<!--        <field name="default" eval="True" />-->
+<!--        <field name="format">custom</field>-->
+<!--        <field name="page_height">297</field>-->
+<!--        <field name="page_width">210</field>-->
+<!--        <field name="orientation">Portrait</field>-->
+<!--        <field name="margin_top">10</field>-->
+<!--        <field name="margin_bottom">28</field>-->
+<!--        <field name="margin_left">7</field>-->
+<!--        <field name="margin_right">7</field>-->
+<!--        <field name="header_line" eval="False" />-->
+<!--        <field name="header_spacing">20</field>-->
+<!--        <field name="dpi">90</field>-->
+<!--    </record>-->
+<!--    -->
+
+    <report id="action_gate_pass_report"
+             model="warehouse.gate.pass.line"
+            string="Gate Pass"
+            report_type="qweb-pdf"
+            name="sci_goexcel_warehouse.report_gate_pass"
+            file="sci_goexcel_warehouse.report_gate_pass"
+            print_report_name="'Gate Pass %s' % (object.job_no)"
+    />
+
+     <!--paperformat="paperformat_gate_pass"-->
+
+    <template id="report_gate_pass">
+        <t t-call="web.html_container">
+             <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:11pt;font-family:sans-serif">
+                        <h3>
+                            <center><b><span>Warehouse Gate Pass</span></b></center>
+                        </h3>
+                        <br/>
+                        <table style="line-height: 150%; font-size:10pt; width:100%;">
+                            <tr>
+                                <th style="width:20%;">Transport / Haulage</th>
+                                <th style="width:2%;">:</th>
+                                <td style="width:26%;"><span t-esc="o.driver"/>&#160;(<span t-esc="o.truck_no"/>)</td>
+                                <th style="width:5%;"></th>
+                                <th style="width:20%;">Date</th>
+                                <th style="width:2%;">:</th>
+                                <td style="width:25%;"><span t-field="o.create_date"/></td>
+                            </tr>
+                            <tr>
+                                <th>Time in</th>
+                                <th>:</th>
+                                <td><span t-field="o.time_in"/></td>
+                                <th ></th>
+                                <th>Time out</th>
+                                <th>:</th>
+                                <td><span t-field="o.time_out"/></td>
+                            </tr>
+                             <tr>
+                               <td colspan="7">
+                               </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7">
+                                    Allowed to take following items/articles Out/In
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="line-height: 150%; font-size:10pt; width:100%;">
+                            <tr>
+                                <th style="width:3%; border-left:1pt solid black;border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;">No.</th>
+                                <th style="width:20%; border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;">Contr. No.</th>
+                                <th style="width:30%; border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;">Description</th>
+                                <th style="width:17%; border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;">Quantity</th>
+                                <th style="width:30%; border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;">Remarks</th>
+                            </tr>
+                            <t t-set="item_no" t-value="0"/>
+                            <t t-foreach="o.container_gatepass_id2" t-as="line">
+                                <t t-set="item_no" t-value="item_no + 1"/>
+                                <tr>
+                                    <td style="border-left:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;"><span t-esc="item_no"/></td>
+                                    <td style="border-right:1pt solid black;border-bottom:1pt solid black;">
+                                        <span t-field="line.container_no"/>
+                                        <span t-esc="line['container_no']"/>
+                                    </td>
+                                    <td style="border-right:1pt solid black;border-bottom:1pt solid black;">
+                                        <span t-field="line.product_name"/>
+                                    </td>
+                                    <td style="border-right:1pt solid black;border-bottom:1pt solid black;">
+                                        <span t-field="line.no_of_packages"/>&#160;<span t-field="line.no_of_package_uom.name"/>
+                                    </td>
+                                    <td style="border-right:1pt solid black;border-bottom:1pt solid black;">
+                                        <span t-field="line.remark_line"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td colspan="5">
+                                    <b>Note: </b>This gate pass used only for internal purposes
+                                </td>
+                            </tr>
+                            <tr height="22px"/>
+                            <tr height="100px">
+                                <td colspan="2" style="border-top:1pt solid black;border-left:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;">
+                                    Prepared By<br/>
+                                    <span t-field="o.prepared_by"/>
+                                </td>
+                                <td style="border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;">
+                                    Received By<br/>
+                                    <span t-field="o.received_by"/>
+                                </td>
+                                <td colspan="2" style="border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;">
+                                    Pass IN/OUT<br/><br/>
+                                    Security InCharge:&#160;<span t-field="o.security"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <p style="page-break-after:always;"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

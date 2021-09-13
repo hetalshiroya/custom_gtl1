@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_account_bulk_credit_refund" model="ir.ui.view">
+            <field name="name">Bulk Credit Note</field>
+            <field name="model">account.bulk.refund</field>
+            <field name="arch" type="xml">
+                <form string="Credit Note">
+                    <p class="oe_grey">
+                        Select invoices to create single credit note against it.
+                    </p>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="type" widget="radio" invisible="1"/>
+                                <field name="description"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="account_id" options='{"no_open": True, "no_create": True}'/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Invoices">
+                                <field name="refund_line_ids">
+                                    <tree editable="bottom" delete="false" create="false">
+                                        <field name="invoice_id" readonly="1" force_save="1"/>
+                                        <field name="date" readonly="1"/>
+                                        <field name="partner_id" readonly="1"/>
+                                        <field name="date_due" readonly="1"/>
+                                        <field name="move_id" readonly="1"/>
+                                        <field name="amount_total" readonly="1"/>
+                                        <field name="residual" readonly="1"/>
+                                        <field name="reconcile_amount"/>
+                                        <field name="account_id"/>
+                                        <field name="company_currency_id" invisible="1"/>
+                                        <field name="tax_ids" widget="many2many_tags" string="Tax/VAT"
+                                               domain="[('type_tax_use','=','sale')]"
+                                                attrs="{'invisible':[('parent.type','=','Debit Note')]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <footer>
+                        <button name="create_debit_credit_note" string="Create Credit Note" type="object"
+                            class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_bulk_debit_refund" model="ir.ui.view">
+            <field name="name">Bulk Debit Note</field>
+            <field name="model">account.bulk.refund</field>
+            <field name="arch" type="xml">
+                <form string="Debit Note">
+                    <p class="oe_grey">
+                        Select invoices to create single debit note against it.
+                    </p>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="type" widget="radio" invisible="1"/>
+                                <field name="description"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="account_id" options='{"no_open": True, "no_create": True}'/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Invoices">
+                                <field name="refund_line_ids">
+                                    <tree editable="bottom" delete="false" create="false">
+                                        <field name="invoice_id" readonly="1" force_save="1"/>
+                                        <field name="date" readonly="1"/>
+                                        <field name="partner_id" readonly="1"/>
+                                        <field name="date_due" readonly="1"/>
+                                        <field name="move_id" readonly="1"/>
+                                        <field name="amount_total" readonly="1"/>
+                                        <field name="residual" readonly="1"/>
+                                        <field name="reconcile_amount"/>
+                                        <field name="account_id"/>
+                                        <field name="company_currency_id" invisible="1"/>
+                                        <field name="tax_ids" widget="many2many_tags" string="Tax/VAT"
+                                               domain="[('type_tax_use','=','purchase')]"
+                                                attrs="{'invisible':[('parent.type','=','Credit Note')]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <footer>
+                        <button name="create_debit_credit_note" string="Create Credit Note" type="object"
+                            class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_account_credit_note" model="ir.actions.act_window">
+            <field name="name">Bulk Credit Note</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.bulk.refund</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_account_bulk_credit_refund"/>
+            <field name="context">{'default_type': 'Credit Note'}</field>
+            <field name="groups_id" eval="[(4,ref('account.group_account_invoice'))]"/>
+        </record>
+
+        <menuitem action="action_account_credit_note"
+                      id="menu_action_invoice_credit_note"
+                      parent="account.menu_finance_receivables"
+                      sequence="20"/>
+
+        <record id="action_account_debit_note" model="ir.actions.act_window">
+            <field name="name">Bulk Credit Note</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.bulk.refund</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_account_bulk_debit_refund"/>
+            <field name="context">{'default_type': 'Debit Note'}</field>
+            <field name="groups_id" eval="[(4,ref('account.group_account_invoice'))]"/>
+        </record>
+
+        <menuitem action="action_account_debit_note"
+                      id="menu_action_invoice_debit_note"
+                      parent="account.menu_finance_payables"
+                      sequence="20"/>
+
+</odoo>

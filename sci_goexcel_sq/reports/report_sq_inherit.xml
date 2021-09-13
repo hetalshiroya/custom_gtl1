@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_saleorder_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//t[@t-set='doc']" position="after">
+            <div class="text-center" style="font-size:16pt;">
+                <br/>
+                <b>QUOTATION</b>
+                <br/><br/>
+            </div>
+            <div name="info1" class="row" style="font-size:12px">
+                <table style="width:100%; font-size:12px;">
+                    <tr>
+                        <th style="width:60%;">To:</th>
+                        <th style="width:10% ;">QUOTE REF</th>
+                        <td style="width:2%;">:</td>
+                        <td style="width:28%;"><span t-field="doc.name"/></td>
+                    </tr>
+                    <tr>
+                        <th><span t-field="doc.partner_id.name"/></th>
+                        <th>DATE</th>
+                        <td>:</td>
+                        <td><span t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'/></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="8">
+                            <span t-field="doc.partner_id.street"/><br/>
+                            <t t-if="doc.partner_id.street2">
+                                <span t-field="doc.partner_id.street2"/>&#160;
+                            </t>
+                            <span t-field="doc.partner_id.zip"/>,
+                            <span t-field="doc.partner_id.city"/>,&#160;<br/>
+                            <span t-field="doc.partner_id.state_id.name"/>,&#160;
+                            <span t-field="doc.partner_id.country_id.name"/><br/>
+                            <t t-if="doc.partner_id.phone">
+                                Tel:&#160;<span t-field="doc.partner_id.phone"/>,&#160;<br/>
+                            </t>
+                            <t t-if="doc.partner_id.email">
+                                Email:&#160;<span t-field="doc.partner_id.email"/>,&#160;<br/>
+                            </t>
+                            <t t-if="doc.contact_name">
+                                Attn:&#160;<span t-field="doc.contact_name.name"/>,&#160;<br/>
+                            </t>
+                        </td>
+                        <th>SALESMAN</th>
+                        <td>:</td>
+                        <td><span t-field="doc.user_id.name"/></td>
+                    </tr>
+                    <tr>
+                        <th>INCOTERM</th>
+                        <td>:</td>
+                        <td><span t-field="doc.incoterm"/></td>
+                    </tr>
+                    <tr>
+                        <th>MODE</th>
+                        <td>:</td>
+                        <td><span t-field="doc.mode"/></td>
+                    </tr>
+                    <tr>
+                        <th>CURRENCY</th>
+                        <td>:</td>
+                        <td><span t-field="doc.currency_id.name"/></td>
+                    </tr>
+                    <tr>
+                        <th>PAYMENT TERM</th>
+                        <td>:</td>
+                        <td><span t-field="doc.payment_term_id"/></td>
+                    </tr>
+                    <tr>
+                        <th>PREPARED BY</th>
+                        <td>:</td>
+                        <td><span t-field="doc.create_uid"/></td>
+                    </tr>
+                    <t t-if="doc.service_type == 'air'">
+                        <tr>
+                        <th>Pallet Dimension</th>
+                            <td>:</td>
+                            <td><span t-field="doc.pallet_dimension"/></td>
+                        </tr>
+                        <tr>
+                            <th>Gross Weight</th>
+                            <td>:</td>
+                            <td><span t-field="doc.gross_weight"/></td>
+                        </tr>
+                    </t>
+                </table>
+                <br/>
+            </div>
+
+            <div class="page">
+                <div class="row mt32 text-left">
+                    <h5 style="font-family:arial;font-size:12px;">
+                        &#160;&#160;&#160;<b>RE : </b><span t-field="doc.sq_description"/><br/>
+                        <t t-if="doc.service_type != 'air'">
+                            &#160;&#160;&#160;WITH REFERENCE TO ABOVE SUBJECT, WE ARE PLEASED TO APPEND BELOW QUOTATION FOR YOUR CONSIDERATION.
+                        </t>
+                    </h5>
+                </div>
+                <br/>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@class='page']" position="after">
+		<div name="info_table_main">
+            <table class="table table-sm table-bordered" style="font-size:12px" name="info_table">
+                <tbody>
+                    <t t-if="doc.service_type == 'ocean'">
+                    <tr>
+                        <td class="text-left">
+                            POL
+                        </td>
+                        <td class="text-left">
+                            <span t-field="doc.POL.name"/>
+                        </td>
+                        <td class="text-left">
+                            POD
+                        </td>
+                        <td class="text-left">
+                            <span t-field="doc.POD.name"/>
+                        </td>
+                        <td class="text-left">
+                            VALIDITY
+                        </td>
+                        <td class="text-left">
+                            <span t-field="doc.validity_date"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" colspan="1">
+                            COMMODITY
+                        </td>
+                        <td class="text-left" colspan="">
+                            <span t-field="doc.commodity1.name"/>
+                        </td>
+                    </tr>
+                    </t>
+                    <t t-if="doc.service_type != 'ocean'">
+                    <tr>
+                        <td class="text-left">
+                            VALIDITY
+                        </td>
+                        <td class="text-left">
+                            <span t-field="doc.validity_date"/>
+                        </td>
+                        <td class="text-left">
+                            COMMODITY
+                        </td>
+                        <td class="text-left">
+                            <span t-field="doc.commodity1.name"/>
+                        </td>
+                    </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-if="doc.service_type == 'air'">
+                <div class="row mt32 text-left">
+                    <h5 style="font-family:arial;font-size:12px;">
+                    &#160;&#160;&#160;<b>Air Freight Charges ex-<span t-field="doc.airport_departure.code"/>/<span t-field="doc.airport_destination.code"/></b><br/>
+                    </h5>
+                </div>
+                <table class="table table-sm table-bordered" style="font-size:12px">
+                    <thead>
+                        <tr>
+                            <th>Airlines</th>
+                            <th>
+                                <t t-if="doc.airline_line_ids">
+                                    <span t-esc="doc.airline_line_ids[0].price1_weight"/>
+                                </t>
+                                kg
+                            </th>
+                            <t t-if="doc.airline_line_ids">
+                                <t t-if="doc.airline_line_ids[0].price2_weight">
+                                    <th>
+                                        <t t-if="doc.airline_line_ids">
+                                            <span t-esc="doc.airline_line_ids[0].price2_weight"/>
+                                        </t>
+                                        kg
+                                    </th>
+                                </t>
+                            </t>
+                             <t t-if="doc.airline_line_ids">
+                                <t t-if="doc.airline_line_ids[0].price3_weight">
+                                    <th>
+                                        <t t-if="doc.airline_line_ids">
+                                            <span t-esc="doc.airline_line_ids[0].price3_weight"/>
+                                        </t>
+                                        kg
+                                    </th>
+                                </t>
+                             </t>
+
+                            <th>FSC</th>
+                            <th>SSC</th>
+                            <th>Validity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.airline_line_ids" t-as="line">
+                            <tr>
+                                <td class="text-left">
+                                    <strong><span t-field="line.airline.name"/></strong>
+                                </td>
+
+                                <td class="text-center">
+                                    <span t-field="line.price1"/>
+                                </td>
+                                <t t-if="doc.airline_line_ids">
+                                    <t t-if="doc.airline_line_ids[0].price2_weight">
+                                        <td class="text-center">
+                                            <span t-field="line.price2"/>
+                                        </td>
+                                    </t>
+                                </t>
+                                <t t-if="doc.airline_line_ids">
+                                    <t t-if="doc.airline_line_ids[0].price3_weight">
+                                        <td class="text-center">
+                                            <span t-field="line.price3"/>
+                                        </td>
+                                    </t>
+                                </t>
+
+                                <td class="text-center">
+                                    <t t-if="line.fsc == 0">
+                                        ALL IN
+                                    </t>
+                                    <t t-if="line.fsc > 0">
+                                        <span t-field="line.fsc"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.ssc == 0">
+                                        ALL IN
+                                    </t>
+                                    <t t-if="line.ssc > 0">
+                                        <span t-field="line.ssc"/>
+                                    </t>
+                                </td><td class="text-center">
+                                    <span t-field="line.validity"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br/><br/>
+                <table class="table table-sm table-bordered" style="font-size:12px">
+                    <thead>
+                        <tr>
+                            <th>Airlines</th>
+                            <th>Routing/Frequency</th>
+                            <th>Maximum Dimension &amp; Weight per Piece Acceptable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.airline_line_ids" t-as="line">
+                            <tr>
+                                <td class="text-left">
+                                    <strong><span t-field="line.airline.name"/></strong>
+                                </td>
+                                <td class="text-left">
+                                    <span t-field="line.routing_frequency"/>
+                                </td>
+                                <td class="text-left">
+                                    <span t-field="line.dimension_weight"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+			</div>
+        </xpath>
+
+        <!-- remove the duplicate customer name -->
+        <xpath expr="//div[@t-field='doc.partner_id']" position="replace">
+        </xpath>
+
+        <!-- remove the duplicate invoice/shipping address -->
+        <xpath expr="//t[@t-set='information_block']" position="replace">
+        </xpath>
+
+        <!-- remove the SQ/SO name -->
+        <xpath expr="//div[@class='page']/h2" position="replace">
+        </xpath>
+
+        <!-- remove the information -->
+        <xpath expr="//div[@id='informations']" position="replace">
+        </xpath>
+
+        <xpath expr="//table[@class='table table-sm o_main_table']" position="replace">
+            <table class="table table-sm o_main_table" >
+                <thead style="font-size:12px;">
+                     <tr>
+                         <t t-set="colspan" t-value="5"/>
+                         <th class="text-left">No</th>
+                         <th class="text-left">Description</th>
+                         <!-- <th class="text-left">Type</th> -->
+                         <t t-if="doc.service_type != 'air'">
+
+
+                         <th class="text-center">Qty</th>
+                         <th class="text-center">Unit Price</th>
+                         <th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                <span>Disc.(%)</span>
+                                <!-- TODO: remove in master -->
+                                <t t-set="colspan" t-value="colspan+1"/>
+                         </th>
+                         <th t-if="display_discount_fixed" class="text-right" groups="sale.group_discount_per_so_line">
+                            <span>Disc. Amount</span>
+                            <t t-set="colspan" t-value="colspan+1"/>
+                         </th>
+                         <th class="text-center">Amount</th>
+                         <th class="text-center">SST</th>
+                         <th class="text-center">Total</th>
+                         </t>
+
+
+                         <!--
+                         <th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                             <span>Disc.(%)</span>
+                             <t t-set="colspan" t-value="colspan+1"/>
+                         </th>
+
+                         <th class="text-right">
+                             <t groups="account.group_show_line_subtotals_tax_excluded">Price</t>
+                             <t groups="account.group_show_line_subtotals_tax_included">Total Price</t>
+                         </th>
+                         -->
+                     </tr>
+                </thead>
+                <tbody class="sale_tbody" style="font-size:12px;">
+                    <t t-set="current_subtotal" t-value="0"/>
+                    <t t-set="item_no" t-value="0"/>
+                    <t t-set="subitem_no" t-value="0.0"/>
+                    <t t-foreach="doc.order_line" t-as="line">
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                            <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type">
+                                    <t t-set="item_no" t-value="item_no + 1" />
+                                    <td><span t-esc="item_no"/></td>
+                                    <td><span t-field="line.name"/>
+                                        <t t-if="doc.service_type != 'land'">
+                                            <br/><span t-field="line.land_departure"/>
+                                            <t t-if="line.land_destination">
+                                                to <span t-field="line.land_destination"/>
+                                            </t>
+                                        </t>
+                                    </td>
+                                    <t t-if="doc.service_type != 'air'">
+
+                                    <td class="text-center">
+                                        <span t-esc="'%.0f'% line.product_uom_qty"/>
+                                        <span t-field= "line.product_uom"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                     <td t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                        <span t-field="line.discount"/>
+                                    </td>
+                                    <td t-if="display_discount_fixed" class="text-right" groups="sale.group_discount_per_so_line">
+                                        <span t-field="line.discount_fixed"/>
+                                    </td>
+
+                                    <td class="text-right o_price_total">
+                                        <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                        <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="line.tax_id"/>
+                                    </td>
+                                    <td class="text-right o_price_total">
+                                        <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                        <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                    </td>
+                                    </t>
+                                </t>
+                                <t t-if="line.display_type == 'line_section'">
+                                    <td colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>
+                                </t>
+                                <t t-if="line.display_type == 'line_note'">
+                                    <td colspan="99">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                </t>
+                            </tr>
+
+                            <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')">
+                                <tr class="is-subtotal text-right">
+                                    <td colspan="99">
+                                        <strong class="mr16">Subtotal</strong>
+                                        <span
+                                            t-esc="current_subtotal"
+                                            t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+            </table>
+        </xpath>
+
+        <xpath expr="//div[@class='clearfix']" position="replace">
+            <t t-if="doc.show_subtotal">
+            <div class="clearfix" style="font-size:12px;">
+                <div id="total" class="row" name="total">
+                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                        <table class="table table-sm">
+                            <tr class="border-black o_subtotal" style="">
+                                <td><strong>Sub Total </strong></td>
+                                <td class="text-right">
+                                    <span t-field="doc.amount_untaxed"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Add SST</td>
+                                <td class="text-right">
+                                    <span t-field="doc.amount_tax"/>
+                                </td>
+                            </tr>
+                            <t t-foreach="doc.amount_by_group" t-as="amount_by_group">
+                                <tr style="">
+                                    <t t-if="amount_by_group[3] == 1 and doc.amount_untaxed == amount_by_group[2]">
+                                        <td>
+                                            <span t-esc="amount_by_group[0]"/>
+                                            <span>&amp;nbsp;<span>on</span>&amp;nbsp;<t t-esc="amount_by_group[2]" t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/></span>
+                                        </td>
+                                        <td class="text-right o_price_total">
+                                            <span t-esc="amount_by_group[1]"
+                                                t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                        </td>
+                                    </t>
+                                    <t t-else ="">
+                                        <td>
+                                            <span t-esc="amount_by_group[0]"/>
+                                        </td>
+                                        <td class="text-right o_price_total">
+                                            <span t-esc="amount_by_group[1]"
+                                                t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                            <tr class="border-black o_total">
+                                <td><strong>Estimated Total MYR</strong></td>
+                                <td class="text-right">
+                                    <span t-field="doc.amount_total"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </t>
+         </xpath>
+         <xpath expr="//p[@t-field='doc.note']" position="replace">
+             <div name="note">
+                 <br/>
+                 <!-- <div style = "page-break-before:always;"> -->
+                 <div class="text-left" style="font-size: 12px; border-top: 1px solid black;">
+                     <br/>
+                     <span t-field="doc.note"/>
+                 </div>
+             </div>
+
+             <!-- </div>-->
+         </xpath>
+
+        <xpath expr="//div[@name='signature']" position="after">
+            <div name="signature_new">
+                <br/>
+                <t t-if="doc.split_signature">
+                    <p style="page-break-after:always;"/>
+                </t>
+                <br/><br/>
+                <table border="1" style="border-collapse: collapse; line-height: 200%; font-size:12px; width:50%;">
+                    <tr>
+                        <td>WE HEREBY CONFIRM AND ACCEPT THE QUOTATION ABOVE</td>
+                    </tr>
+                    <tr height="100px">
+                        <td style="border-bottom:1px solid">SIGNATURE:</td>
+                    </tr>
+                    <tr>
+                        <td>NAME:</td>
+                    </tr>
+                    <tr>
+                        <td>POSITION:</td>
+                    </tr>
+                    <tr>
+                        <td>DATE:</td>
+                    </tr>
+                </table>
+            </div>
+        </xpath>
+        <xpath expr="//p[@t-if='doc.payment_term_id.note']" position="replace">
+
+        </xpath>
+    </template>
+
+
+    <template id="report_saleorder_template_inherit" inherit_id="sale.report_saleorder">
+         <xpath expr="//t[@t-call='web.html_container']" position="inside">
+             <t t-set="data_report_header_spacing" t-value="29"/>
+             <t t-set="data_report_margin_top" t-value="33"/>
+             <t t-set="data_report_margin_bottom" t-value="10"/>
+         </xpath>
+    </template>
+</odoo>

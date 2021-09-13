@@ -1,0 +1,18 @@
+<odoo>
+    <record id="view_res_company_extended_form" model="ir.ui.view">
+        <field name="name">view_res_company_extended_form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page" position="after">
+                <page string ='ISO Image'>
+                    <group>
+                        <group>
+                            <field name="iso_image"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

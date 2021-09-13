@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+<odoo>
+    <record id="view_account_cheque_formate_form" model="ir.ui.view">
+        <field name="name">account.voucher.formate.form.view</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='communication']" position="after">
+                <field name="cheque_formate_id" />
+               <!-- <field name="partner_text"/>-->
+                <field name="cheque_no"/>
+               <!-- <field name="text_free"/>-->
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_cheque_form_sale_voucher" model="ir.ui.view">
+        <field name="name">account.voucher.sale.form.view</field>
+        <field name="model">account.voucher</field>
+        <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_due']" position="after">
+                <field name="cheque_formate_id" />
+                <field name="cheque_no"/>
+            </xpath>
+        </field>
+    </record>
+
+     <record id="view_account_cheque_form_purchase_voucher" model="ir.ui.view">
+        <field name="name">account.voucher.purchase.form.view</field>
+        <field name="model">account.voucher</field>
+        <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_due']" position="after">
+                <field name="cheque_formate_id" />
+                <field name="cheque_no"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

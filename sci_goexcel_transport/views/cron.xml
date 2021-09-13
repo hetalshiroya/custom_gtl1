@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<odoo>
+	<data noupdate="1">
+		<record model="ir.cron" id="cron_elapsed_day">
+			<field name="name">Elapsed Day</field>
+			<field name="model_id" ref="model_transport_rft"/>
+			<field name="interval_number">6</field>
+			<field name="interval_type">hours</field>
+			<field name="numbercall">-1</field>
+			<field name="doall" eval="False"/>
+			<field name="state">code</field>
+			<field name="code">model._cron_elapsed_day()</field>
+			<field name="nextcall" >2020-01-12 06:35:59</field>
+		</record>
+
+		<record model="ir.cron" id="cron_elapsed_day_hourly">
+			<field name="name">Elapsed Day Hourly</field>
+			<field name="model_id" ref="model_dispatch_trip"/>
+			<field name="interval_number">1</field>
+			<field name="interval_type">hours</field>
+			<field name="numbercall">-1</field>
+			<field name="doall" eval="False"/>
+			<field name="state">code</field>
+			<field name="code">model._cron_elapsed_day_hourly()</field>
+			<field name="nextcall" >2020-01-12 06:35:59</field>
+		</record>
+	</data>
+</odoo>

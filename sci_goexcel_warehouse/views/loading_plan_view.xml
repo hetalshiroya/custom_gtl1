@@ -1,0 +1,131 @@
+<odoo>
+
+	<!-- Tree View Loading Plan -->
+     <record id='view_tree_warehouse_loading_plan' model='ir.ui.view'>
+        <field name="name">Delivery Order Tree</field>
+        <field name="model">warehouse.loading.plan</field>
+        <field name="arch" type="xml">
+			<tree string='Delivery Order'>
+                <field name="sequence" widget="handle"/>
+                <field name="job_no"/>
+                <field name="priority" widget="priority"/>
+                <field name="loading_date"/>
+                <field name="job_status"/>
+                <field name="container_no"/>
+                <field name="marking"/>
+                <field name="seal_no" />
+                <field name="warehouse_location" domain="[('usage', '=', 'internal')]"/>
+                <field name="no_of_packages" sum="Total Packages"/>
+                <field name="no_of_package_uom" />
+                <field name="write_date"/>
+			</tree>
+		</field>
+	</record>
+
+
+
+	  <!-- Form View Packing -->
+    <record id="view_form_warehouse_loading_plan" model="ir.ui.view">
+        <field name="name">Delivery Order Form</field>
+        <field name="model">warehouse.loading.plan</field>
+        <field name="arch" type="xml">
+           <form string="Delivery Order">
+                <header>
+                    <button name="action_cancel_loadingplan"
+							type="object"
+							string="Cancel Delivery Order"
+							class="oe_button"
+                            confirm="Are you sure you want to Cancel Delivery Order?"
+                            attrs="{'invisible': [('job_status', 'in', ['03','04'])]}"/>
+                    <field name="job_status" widget="statusbar" clickable="True" statusbar_visible="01,02,03,04"/>
+
+                </header>
+                <sheet>
+                    <!-- <div class="oe_button_box"
+							name="button_box">
+			        </div>-->
+                    <group string="Delivery Order" name="loading_plan">
+                        <group>
+                            <field name="job_no"/>
+                             <field name="priority" widget="priority"/>
+                            <field name="loading_date"/>
+                            <field name="job_status"/>
+                            <field name="remark"/>
+                             <field name="owner"/>
+							<field name="create_date"/>
+							<field name="create_uid"/>
+							<field name="write_date"/>
+							<field name="write_uid"/>
+                        </group>
+                        <group>
+                            <field name="container_no"/>
+                            <field name="marking"/>
+                            <field name="seal_no" />
+                            <field name="warehouse_location" domain="[('usage', '=', 'internal')]"/>
+                            <field name="no_of_packages"/>
+                            <field name="no_of_package_uom" />
+                             <field name="transporter"/>
+                              <field name="truck_no"/>
+                            <field name="driver" />
+                        </group>
+                    </group>
+                </sheet>
+                 <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- Search Delivery Order -->
+    <record id="view_search_loading_plan" model="ir.ui.view">
+       <field name="name">warehouse.loading.plan.search</field>
+        <field name="model">warehouse.loading.plan</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="job_no"/>
+                <field name="marking"/>
+                <filter string="Draft" name="job status" domain="[('job_status', '=', '01')]"/>
+                <filter string="Confirmed" name="job status" domain="[('job_status', '=', '02')]"/>
+                <filter string="In Progress" name="job status" domain="[('job_status', '=', '05')]"/>
+                <filter string="Done" name="job status" domain="[('job_status', '=', '03')]"/>
+            </search>
+        </field>
+    </record>
+
+
+     <record id="view_calendar_loading_plan" model="ir.ui.view">
+         <field name="name">warehouse.loading.plan.calendar</field>
+         <field name="model">warehouse.loading.plan</field>
+        <field name="arch" type="xml">
+            <calendar color="job_no" date_start="loading_date" string="Delivery Order" mode="week" quick_add="0"
+                      all_day="loading_date">
+                     <field name="job_status" />
+                    <!-- <field name="shipment_close_date_time" />
+                     <field name="port_of_discharge_eta" />-->
+            </calendar>
+        </field>
+    </record>
+
+
+
+     <record id="action_loading_plan" model="ir.actions.act_window">
+		<field name="name">Delivery Order</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">warehouse.loading.plan</field>
+		<field name="view_mode">tree,form,calendar</field>
+
+ 	</record>
+
+
+<!--
+    <menuitem id="menu_warehouse_loadingplan" name="GoExcel Warehouse" parent="stock.menu_stock_root" sequence="3"/>
+-->
+    <menuitem id="menu_warehouse_loadingplan_1" name="Delivery Order" parent="menu_warehouse_tallysheet" action="action_loading_plan" sequence="4"/>
+
+
+
+</odoo>

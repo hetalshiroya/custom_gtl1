@@ -1,0 +1,54 @@
+<odoo>
+
+ 		<record id="subjob_view_form" model="ir.ui.view">
+            <field name="name">booking.subjob.form</field>
+            <field name="model">freight.booking.subjob</field>
+            <field name="arch" type="xml">
+                <form string="Create Booking Sub job">
+                    <group class="oe_title">
+                        <field name="new_booking" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                    <group class="oe_title" attrs="{'invisible': [('new_booking', '=', 'old')]}">
+                        <field name="customer_name"/>
+                    </group>
+                    <group class="oe_title" attrs="{'invisible': [('new_booking', '=', 'new')]}">
+                        <field name="booking_job_lines" nolabel="1">
+                            <tree create="false" delete="0" editable="bottom" string="Booking Job" default_order="booking_date_time">
+                                <field name="booking_no" readonly="1"/>
+                                <field name="add_to_master" />
+                                <field name="shipment_booking_status" readonly="1"/>
+                                <field name="direction" readonly="1"/>
+                                <field name="service_type" readonly="1"/>
+                                <field name="cargo_type" readonly="1"/>
+                                <field name="customer_name" readonly="1"/>
+                                <field name="shipper" readonly="1"/>
+                                <field name="consignee"  readonly="1"/>
+                                <field name="booking_date_time" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
+                                <field name="port_of_loading" readonly="1"/>
+                                <field name="port_of_discharge" readonly="1"/>
+                                <field name="carrier_booking_no" readonly="1"/>
+                                <field name="sq_reference" readonly="1"/>
+                                <field name="elapsed_day_booking" readonly="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="action_booking_subjob" string="Create New Sub Job" type="object" class="btn-primary" attrs="{'invisible': [('new_booking', '=', 'old')]}"/>
+                        <button name="action_add_subjob" string="Add As Sub Job" type="object" class="btn-primary" attrs="{'invisible': [('new_booking', '=', 'new')]}"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!--        <record id="create_subjob_wizard" model="ir.actions.act_window">-->
+<!--            <field name="name">Create Booking Subjob</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">freight.booking.subjob</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="view_id" ref="subjob_view_form"/>-->
+<!--            <field name="target">new</field>-->
+<!--        </record>-->
+
+</odoo>

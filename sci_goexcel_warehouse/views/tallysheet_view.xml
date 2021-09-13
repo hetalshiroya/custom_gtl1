@@ -1,0 +1,631 @@
+<odoo>
+
+	<!-- Tree View Tally Sheet -->
+     <record id='view_tree_warehouse_tally_sheet' model='ir.ui.view'>
+        <field name="name">Job Sheet Tree</field>
+        <field name="model">warehouse.tally.sheet</field>
+        <field name="arch" type="xml">
+			<tree string='Warehouse Job Sheet'>
+                 <field name="job_no"/>
+				 <field name="customer"/>
+				 <field name="receipt_date"/>
+                 <field name="cargo_type"/>
+				 <field name="customer_reference_no"/>
+				 <field name="shipment_type" widget="radio" options="{'horizontal': true}"/>
+				 <field name="priority" widget="priority"/>
+<!--				 <field name="seal_no"/>-->
+				 <field name="job_scope"/>
+                 <field name="packing_type"/>
+                <!-- <field name="sorting_by"/>-->
+                <!-- <field name="packing_on_pallet"/>-->
+				 <field name="remark"/>
+				 <field name="create_date"/>
+				 <field name="write_date"/>
+			</tree>
+		</field>
+	</record>
+
+    <!-- View Receipt -->
+    <record id="view_picking_list_warehouse_receipt" model="ir.actions.act_window">
+        <field name="name">Receipt</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="stock.vpicktree"/>
+        <field name="domain">[('tallysheet_reference', '=', active_id), ('picking_type_id','=', 1)]</field>
+    </record>
+
+    <!-- View DO -->
+    <record id="view_picking_list_warehouse_do" model="ir.actions.act_window">
+        <field name="name">Delivery Order</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="stock.vpicktree"/>
+        <field name="domain">[('tallysheet_reference', '=', active_id), ('picking_type_id','=', 2)]</field>
+    </record>
+
+	  <!-- Form View Job Sheet -->
+    <record id="view_form_warehouse_tally_sheet" model="ir.ui.view">
+        <field name="name">Job Sheet Form</field>
+        <field name="model">warehouse.tally.sheet</field>
+        <field name="arch" type="xml">
+           <form string="Warehouse Job Sheet">
+                <header>
+                <button name="action_cancel_tallysheet"
+							type="object"
+							string="Cancel Job Sheet"
+							class="oe_button"
+                            confirm="Are you sure you want to Cancel Job Sheet?"
+                            attrs="{'invisible': [('job_status', 'in', ['03','04'])]}"/>
+                        <button name="action_create_pick_list"
+							type="object"
+							string="Tally Sheet"
+							class="oe_highlight" attrs="{'invisible': [('job_status', '=', '03')]}"/>
+                        <!--<button name="action_create_loading_plan"
+							type="object"
+							string="Delivery Order"
+							class="oe_highlight" attrs="{'invisible': [('job_status', '=', '03')]}"/>-->
+                         <button name="action_invoice"
+							type="object" class="oe_highlight"
+							string="Invoice"
+							attrs="{'invisible': [('job_status', '=', '03')]}"/>
+                        <button name="action_create_vendor_bill"
+                                type="object" class="oe_highlight"
+                                string="Vendor Bill"
+                                attrs="{'invisible': [('job_status', '=', '03')]}"/>
+					 <field name="job_status" widget="statusbar" clickable="True" statusbar_visible="01,02,03" options='{"always_reload": True}'/>
+                </header>
+                <sheet>
+                     <div class="oe_button_box"
+							name="button_box">
+                        <!--  <button name="action_view_receipt"
+		                        type="object"
+                                class="oe_stat_button"
+                                icon="fa-dropbox"
+                                attrs="{'invisible': [('receipt_count', '!=', 1)]}">
+                                <field name="receipt_count" widget="statinfo" string="Receipt"/>
+	                	    </button>-->
+                            <button name="action_view_receipt" type="object" class="oe_stat_button" icon="fa-dropbox"
+                                attrs="{'invisible': [('receipt_count', '==', 0)]}">
+                                <field name="receipt_count" widget="statinfo" string="Tally Sheet"/>
+	                	    </button>
+                            <button name="action_view_do"
+		                        type="object"
+                                class="oe_stat_button"
+                                icon="fa-truck"
+                                attrs="{'invisible': [('do_count', '==', 0)]}">
+                                <field name="do_count" widget="statinfo" string="DO"/>
+	                	    </button>
+                         <!-- <button name="%(sci_goexcel_warehouse.view_picking_list_warehouse_do)d" type="action"
+                                class="oe_stat_button"
+                                icon="fa-truck"
+                                attrs="{'invisible': [('do_count', '==', 0)]}">
+                                <field name="do_count" widget="statinfo" string="Load. Plan"/>
+	                	    </button>-->
+                         <button name="operation_invoices"
+		                        type="object"
+                                class="oe_stat_button"
+                                icon="fa-credit-card"
+                                attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+	                	</button>
+	                	<button name="operation_bill"
+		                        type="object"
+		                        class="oe_stat_button"
+	    	                    icon="fa-credit-card-alt"
+                                attrs="{'invisible':[('vendor_bill_count', '=', 0)]}">
+                            <field name="vendor_bill_count" widget="statinfo" string="Vendor Bill"/>
+	                	</button>
+                       <!--  <button name="operation_loading_plan"
+		                        type="object"
+                          volume      class="oe_stat_button"
+                                icon="fa-cubes"
+                                attrs="{'invisible': [('loading_plan_count', '=', 0)]}">
+                            <field name="loading_plan_count" widget="statinfo" string="Loading Plan"/>
+	                	</button>-->
+                       <!--  <button name="operation_gate_pass"
+		                        type="object"
+                                class="oe_stat_button"
+                                icon="fa-list"
+                                attrs="{'invisible': [('gate_pass_count', '=', 0)]}">
+                            <field name="gate_pass_count" widget="statinfo" string="Gate Pass"/>
+	                	</button>-->
+			        </div>
+                    <group>
+                        <group>
+                            <field name="job_no"/>
+                            <field name="customer"/>
+							<field name="customer_reference_no"/>
+                            <field name="sq_reference" context="{'form_view_ref': 'sci_goexcel_warehouse.view_order_form_warehouse'}"/>
+
+<!--                            <field name="seal_no"/>-->
+
+                <!--           <field name="job_scope" widget="many2many_checkboxes"/>
+                            <field name="packing_type" widget="many2many_checkboxes"/>
+                            <field name="sorting_by" widget="many2many_checkboxes"/>
+                            <field name="packing_on_pallet" widget="many2many_checkboxes"/>-->
+                            <field name="job_scope"/>
+                            <field name="packing_type"/>
+                           <!-- <field name="sorting_by"/>-->
+                            <!--<field name="packing_on_pallet"/>-->
+                            <field name="container_category_id" invisible="1" />
+                            <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]" options='{"always_reload": True}'/>
+                            <field name="cargo_type" widget="radio" options="{'horizontal': true}" />
+                            <field name="container_qty" attrs="{'invisible': [('cargo_type', '!=', 'fcl')]}"/>
+                            <!--<field name="remark"/>-->
+                             <field name="invoice_status" readonly="1"/>
+                            <field name="invoice_paid_status" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="shipment_type" widget="radio" options="{'horizontal': true}"/>
+                            <field name="receipt_date" />
+                            <field name="priority" widget="priority"/>
+							<field name="owner"/>
+							<field name="create_date"/>
+							<field name="create_uid"/>
+							<field name="write_date"/>
+							<field name="write_uid"/>
+							<field name="company_id" options="{'no_create': True}"/>
+                             <field name="remark"/>
+                            <field name="receipt_picking_type_id"/>
+                            <field name="delivery_picking_type_id"/>
+                        </group>
+                    </group>
+					 <notebook>
+                          <page string="Container Details">
+<!--
+                              <button name="copy_last_and_add_line" type="object" string="Copy Last and Add New" class="oe_right" attrs="{'invisible': [('job_status', '!=', '01')]}" help="Copy the latest line and add to a new line."/>
+-->
+                             <field name="container_line_ids" mode="tree,kanban">
+								<tree string="Cargo info" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+									<field name="container_no" attrs="{'column_invisible':[('parent.cargo_type','=','lcl')]}"/>
+                                    <field name="truck_no" attrs="{'column_invisible':[('parent.cargo_type','=','fcl')]}"/>
+                                     <field name="seal_no" attrs="{'column_invisible':[('parent.cargo_type','=','lcl')]}"/>
+                                    <field name="receipt_date"/>
+                                    <field name="unstuff_date" attrs="{'column_invisible':[('parent.cargo_type','=','lcl')]}"/>
+                                    <field name="container_category_id" invisible="1" />
+                                    <field name="container_product_id" domain="[('categ_id', '=', container_category_id)]" options='{"always_reload": True}' attrs="{'column_invisible':[('parent.cargo_type', '!=', 'fcl')]}"/>
+                                    <field name="product" />
+                                    <field name="product_name" />
+                                    <field name="no_of_packages" sum="Total Packages" />
+                                    <field name="no_of_package_uom" />
+                                    <field name="exp_gross_weight" sum="Weight" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="exp_gross_weight_uom" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="volume" sum="Total Unit Volume" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="volume_uom" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="total_volume" sum="Total Volume" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="total_volume_uom" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="warehouse_location" domain="[('usage', '=', 'internal')]" invisible="1"/>
+                                    <field name="marking"/>
+                                   <!-- <field name="inventory_marking"/>-->
+
+<!--
+                                    <button name="action_survey_lines" string="Container Survey" type="object" icon="fa-list" options='{"warn": true}'/>
+-->
+                                    <field name="receipt_no_of_packages"/>
+                                    <field name="delivered_no_of_packages" />
+                                    <field name="dim_length" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="dim_width" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="dim_height" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                   <!-- <button name="action_gate_pass" string="Gate Pass" type="object" icon="fa-files-o" options='{"warn": true}'/>-->
+								    <field name="remark_line" />
+                                </tree>
+                                 <kanban class="o_kanban_mobile">
+									<field name="container_no" attrs="{'column_invisible':[('parent.cargo_type','=','lcl')]}"/>
+                                    <field name="container_product_id" />
+                                    <field name="product" />
+                                    <field name="product_name" />
+                                    <field name="seal_no" attrs="{'column_invisible':[('parent.cargo_type','=','lcl')]}"/>
+                                    <field name="warehouse_location" domain="[('usage', '=', 'internal')]" invisible="1"/>
+                                    <field name="no_of_packages" sum="Total Packages"/>
+                                    <field name="no_of_packages" sum="Total Packages" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'fcl')]}"/>
+                                    <field name="no_of_package_uom" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'fcl')]}"/>
+                                    <field name="dim_length" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="dim_width" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="dim_height" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="volume" sum="Total Unit Volume" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'lcl')]}"/>
+                                    <field name="volume_uom" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'fcl')]}"/>
+                                     <field name="exp_gross_weight" sum="Total Weight" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'fcl')]}"/>
+                                    <field name="exp_gross_weight_uom" attrs="{'column_invisible':[('parent.cargo_type', '!=', 'fcl')]}"/>
+                                    <field name="total_volume" sum="Total Volume" />
+                                     <field name="remark_line" />
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.container_no.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Pkg No:
+                                                            <t t-esc="record.no_of_packages.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            T.Volume:
+                                                            <t t-esc="record.total_volume.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+                          </page>
+                         <page string="Cost &amp; Profit">
+							<field name="cost_profit_ids" mode="tree,kanban">
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+									<field name="product_id"/>
+                                    <field name="product_name"/>
+									<field name="profit_qty"/>
+									<field name="list_price"/>
+									<!--<field name="uom_id" groups="uom.group_uom"/>-->
+                                    <field name="profit_amount"/>
+                                    <field name="profit_currency"/>
+                                    <field name="profit_currency_rate"/>
+									<field name="sale_total" sum="Total Sale"/>
+                                    <field name="cost_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_amount"/>
+                                    <field name="vendor_id" domain="[('supplier','=',True)]"/>
+                                    <field name="cost_currency"/>
+                                    <field name="cost_currency_rate"/>
+									<field name="cost_total" sum="Total Cost"/>
+                                    <field name="profit_total" sum="Total Profit"/>
+                                    <field name="added_to_invoice" readonly="1"/>
+                                    <field name="invoice_paid" readonly="1"/>
+                                    <field name="invoiced" readonly="1"/>
+                                    <field name="paid" readonly="1"/>
+                                   <!-- <field name="bill_line_id"/>-->
+								</tree>
+                                 <kanban class="o_kanban_mobile">
+                                    <field name="product_id"/>
+                                    <field name="product_name"/>
+									<field name="profit_qty"/>
+									<field name="list_price"/>
+                                    <field name="profit_amount"/>
+                                    <field name="profit_currency"/>
+                                    <field name="profit_currency_rate"/>
+									<field name="sale_total" sum="Total Sale"/>
+                                    <field name="cost_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_amount"/>
+                                    <field name="vendor_id"/>
+                                    <field name="cost_currency"/>
+                                    <field name="cost_currency_rate"/>
+									<field name="cost_total" sum="Total Cost"/>
+                                    <field name="profit_total" sum="Total Profit"/>
+                                     <field name="added_to_invoice" readonly="1"/>
+                                    <field name="invoice_paid" readonly="1"/>
+                                    <field name="invoiced" readonly="1"/>
+                                    <field name="paid" readonly="1"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.product_name.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.sale_total.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Cost:
+                                                            <t t-esc="record.cost_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Profit:
+                                                            <t t-esc="record.profit_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+						</page>
+                         <page string="Attachments" name="gdrive_jobsheet_documents">
+                            <group>
+                                <field name="google_drive_attachments_ids" nolabel="1" >
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name" string="Remarks" invisible="1"/>
+                                        <field name="file_name" required="1"/>
+                                        <field name="file" filename="file_name" />
+                                        <field name="file_url" widget="url" invisible="1"/>
+                                        <button type="object" name="upload_document" string="Upload to Google Drive" icon="fa-cloud-upload" context="{'rec_id':parent.id,'rec_model':'account.invoice'}" attrs="{'invisible':[('file','=',False)]}"/>
+                                        <button type="object" name="download_document" string="Download from Google Drive" icon="fa-download" attrs="{'invisible':[('file_url','=',False)]}"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                       <!--  <page string="Container Survey">
+                            &lt;!&ndash; <field name="id" invisible="1"/>&ndash;&gt;
+                             <field name="container_survey_line_ids" mode="tree,kanban">
+								<tree string="Survey" editable="bottom">
+                                   <field name="sequence" widget="handle"/>
+									&lt;!&ndash;<field name="container_no"/>
+                                    <field name="container_product_id" />&ndash;&gt;
+                                    <field name="container_door" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="container_panel" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="front_panel" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="internal_floor" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="remark_line"/>
+								</tree>
+                                 <kanban class="o_kanban_mobile">
+                                    &lt;!&ndash;<field name="container_no"/>
+                                    <field name="container_product_id" />&ndash;&gt;
+                                     <field name="container_door" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="container_panel" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="front_panel" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="internal_floor" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="remark_line"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                 Door:
+                                                                <t t-esc="record.container_door.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                Ctr Panel:
+                                                                <t t-esc="record.front_panel.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Int. Panel:
+                                                            <t t-esc="record.internal_floor.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Remark:
+                                                            <t t-esc="record.remark_line.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+                          </page>-->
+                       <!--   <page string="Gate Pass">
+                            &lt;!&ndash; <field name="id" invisible="1"/>&ndash;&gt;
+                             <field name="container_gatepass_line_ids" mode="tree,kanban">
+								<tree string="Gate Pass" editable="bottom">
+                                   <field name="sequence" widget="handle"/>
+									<field name="time_in"/>
+                                    <field name="time_out"/>
+                                    <field name="truck_no"/>
+                                    <field name="driver"/>
+                                     <field name="security"/>
+                                    <field name="prepared_by"/>
+                                    <field name="received_by"/>
+                                     <field name="job_status"/>
+                                    <field name="remark_line"/>
+								</tree>
+                                 <kanban class="o_kanban_mobile">
+                                    &lt;!&ndash;<field name="container_no"/>
+                                    <field name="container_product_id" />&ndash;&gt;
+                                   <field name="time_in"/>
+                                    <field name="time_out"/>
+                                    <field name="truck_no"/>
+                                    <field name="driver"/>
+                                    <field name="prepared_by"/>
+                                    <field name="received_by"/>
+                                    <field name="remark_line"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                Time In/Out:
+                                                                <t t-esc="record.time_in.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <t t-esc="record.time_out.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Truck No:
+                                                            <t t-esc="record.truck_no.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Remark:
+                                                            <t t-esc="record.remark_line.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+							</field>
+                          </page>-->
+
+                      </notebook>
+                </sheet>
+                 <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- Search Tally Sheet -->
+    <record id="view_search_tally_sheet" model="ir.ui.view">
+       <field name="name">warehouse.tally.sheet.search</field>
+        <field name="model">warehouse.tally.sheet</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="job_no"/>
+                <field name="customer"/>
+                <filter string="Import" name="import" domain="[('shipment_type', '=', 'import')]"/>
+                <filter string="Export" name="export" domain="[('shipment_type', '=', 'export')]"/>
+                <filter string="Draft" name="job status" domain="[('job_status', '=', '01')]"/>
+                <filter string="Confirmed" name="job status" domain="[('job_status', '=', '02')]"/>
+                <filter string="In Progress" name="job status" domain="[('job_status', '=', '05')]"/>
+                <filter string="Done" name="job status" domain="[('job_status', '=', '03')]"/>
+                <filter string="FCL" name="fcl" domain="[('cargo_type', '=', 'fcl')]"/>
+                <filter string="LCL" name="lcl" domain="[('cargo_type', '=', 'lcl')]"/>
+                <filter string="Receipt Date" name="filter_receipt_date" date="receipt_date"/>
+                <field name="container_line_ids" string="Container No" filter_domain="[('container_line_ids.container_no','ilike',self)]"/>
+                <field name="container_line_ids" string="Truck No" filter_domain="[('container_line_ids.truck_no','ilike',self)]"/>
+                <field name="container_line_ids" string="SKU" filter_domain="[('container_line_ids.product','ilike',self)]"/>
+                <field name="container_line_ids" string="Marking" filter_domain="[('container_line_ids.marking','ilike',self)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Receipt Date" name="receipt_month" domain="[]" context="{'group_by':'receipt_date'}"/>
+                    <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by':'sales_person'}"/>
+                    <filter string="Owner" name="owner" domain="[]" context="{'group_by':'owner'}"/>
+                    <filter string="Customer" name="customer" domain="[]" context="{'group_by':'customer'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+     <record id="view_calendar_tally_sheet" model="ir.ui.view">
+         <field name="name">warehouse.tally.sheet.calendar</field>
+         <field name="model">warehouse.tally.sheet</field>
+        <field name="arch" type="xml">
+            <calendar color="job_no" date_start="receipt_date" string="Job Sheet" mode="week" quick_add="0"
+                      all_day="receipt_date">
+                     <field name="customer" />
+                     <field name="job_status" />
+                    <!-- <field name="shipment_close_date_time" />
+                     <field name="port_of_discharge_eta" />-->
+            </calendar>
+        </field>
+    </record>
+
+
+     <record id="view_tally_sheet_pivot" model="ir.ui.view">
+          <field name="name">warehouse.tally.sheet.pivot</field>
+         <field name="model">warehouse.tally.sheet</field>
+         <field name="arch" type="xml">
+             <pivot string="Warehouse Job Sheet Analysis">
+                <field name="customer" type="row"/>
+                <field name="container_qty" type="measure"/>
+                 <field name="do_count" type="measure"/>
+                 <field name="receipt_count" type="measure"/>
+                 <field name="total_packages" type="measure"/>
+                 <field name="receipt_date" interval="month" type="row"/>
+                 <!--<field name="port_of_loading_eta" interval="month" type="row"/>-->
+             </pivot>
+         </field>
+    </record>
+
+
+     <record id="view_tally_sheet_graph" model="ir.ui.view">
+         <field name="name">warehouse.tally.sheet.graph</field>
+         <field name="model">warehouse.tally.sheet</field>
+         <field name="arch" type="xml">
+             <graph string="Warehouse Job Sheet Graph" type="line">
+                 <field name="customer" type="col"/>
+                 <field name="container_qty" type="measure"/>
+                 <field name="do_count" type="measure"/>
+                 <field name="receipt_count" type="measure"/>
+                 <field name="total_packages" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+	<!--<act_window id="action_tally_sheet"
+                name="Tally Sheet"
+                res_model="warehouse.tally.sheet"
+                view_mode="tree,form,calendar,pivot,graph"
+    />-->
+
+     <record id="action_tally_sheet" model="ir.actions.act_window">
+		<field name="name">Job Sheet</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">warehouse.tally.sheet</field>
+		<field name="view_mode">tree,form,calendar,pivot,graph</field>
+       <!-- <field name="view_id" ref="view_tree_air_booking"/>-->
+      <!--  <field name="act_window_id" ref="action_booking_view_id3"/>-->
+       <!-- <field name="context">{"search_default_air_booking":1}</field>-->
+       <!--  <field name="domain">[('service_type','=','air')]</field>-->
+ 	</record>
+
+
+    <menuitem id="menu_warehouse_tallysheet" name="GoExcel Warehouse" parent="stock.menu_stock_root" sequence="0"/>
+    <menuitem id="menu_warehouse_tallysheet_1" name="Job Sheet" parent="menu_warehouse_tallysheet" action="action_tally_sheet" sequence="2"/>
+    <!-- overwrite the standard Inventory overview menu   -->
+    <menuitem
+            id="stock.stock_picking_type_menu"
+            parent="stock.menu_stock_root" sequence="1"
+            name="Overview"/>
+
+
+
+
+</odoo>

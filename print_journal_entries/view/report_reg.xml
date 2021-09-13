@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- QWeb Reports for Journal Entries -->
+        <report
+            id="print_journal_entires_report"
+            model="account.move"
+            menu="True"
+            report_type="qweb-pdf"
+            string="Journal Entries"
+            name="print_journal_entries.project_journal_entries_id"
+            file="print_journal_entries.project_journal_entries_id"
+         />
+        
+        
+    </data>
+</openerp>

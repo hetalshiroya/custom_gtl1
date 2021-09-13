@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <record id="module_transport_category"
+          model="ir.module.category">
+      <field name="name">Transport</field>
+    </record>
+
+     <!-- Own Record -->
+    <record id="transport_group_own" model="res.groups">
+        <field name="name">Own Records</field>
+        <field name="category_id" ref="module_transport_category"/>
+    </record>
+
+    <!-- Own Department -->
+    <record id="transport_group_user" model="res.groups">
+        <field name="name">My Team's Records</field>
+        <field name="category_id" ref="module_transport_category"/>
+        <field name="implied_ids" eval="[(4, ref('transport_group_own'))]"/>
+    </record>
+
+    <!-- All -->
+    <record id="transport_group_manager" model="res.groups">
+        <field name="name">All Records</field>
+        <field name="category_id" ref="module_transport_category"/>
+        <field name="implied_ids" eval="[(4, ref('transport_group_user'))]"/>
+    </record>
+
+     <!-- Own Record rule -->
+    <record id="transport_own_rule" model="ir.rule">
+        <field name="name">Own Records</field>
+        <field ref="model_transport_rft" name="model_id"/>
+        <field name="domain_force">[('owner','=',user.id),('company_id', '=', [user.company_id.id])]</field>
+        <field name="groups" eval="[(4, ref('transport_group_own'))]"/>
+    </record>
+
+    <!-- Own Department rule -->
+    <record id="transport_user_rule" model="ir.rule">
+        <field name="name">My Team's Records</field>
+        <field ref="model_transport_rft" name="model_id"/>
+        <field name="domain_force">[('company_id', '=', [user.company_id.id]), '|', ('department.member_ids.user_id', 'in', [user.id]),('department.parent_id.member_ids.user_id', 'in', [user.id])]</field>
+        <field name="groups" eval="[(4, ref('transport_group_user'))]"/>
+    </record>
+
+
+    <!-- All Records rule -->
+    <record id="transport_manager_rule" model="ir.rule">
+        <field name="name">All Records</field>
+        <field ref="model_transport_rft" name="model_id"/>
+        <field name="domain_force">[('company_id', '=', [user.company_id.id])]</field>
+        <field name="groups" eval="[(4, ref('transport_group_manager'))]"/>
+    </record>
+
+
+</odoo>

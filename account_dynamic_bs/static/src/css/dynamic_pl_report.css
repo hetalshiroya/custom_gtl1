@@ -1,0 +1,146 @@
+.DynamicPlMain {
+    background-color: white;
+}
+
+.FiltersSectionPl {
+    padding-left:7%;
+    padding-right:7%;
+    padding-top:1%;
+}
+
+.DataSectionPl {
+    padding-bottom:5%;
+}
+
+.account_filter_pl {
+    margin-left:50px;
+    margin-right:50px;
+    margin-top:25px;
+    margin-bottom:25px;
+    border:1px solid black;
+    border-radius:12px;
+
+}
+
+.report_header_pl {
+    padding-bottom: 5%;
+}
+
+
+.filter-row {
+    margin:10px;
+}
+
+.select2-container{
+    min-width:230px;
+}
+
+#from_date_pl {
+    max-width:150px;
+}
+
+#to_date_pl {
+    max-width:150px;
+}
+
+#from_date_pl {
+    max-width:150px;
+}
+
+#to_date {
+    max-width:150px;
+}
+
+#filter_to_date {
+    max-width:150px;
+}
+
+#filter_from_date {
+    max-width:150px;
+}
+
+.row-toggle {
+    cursor:pointer;
+}
+
+.row-toggle-line {
+    cursor:default;
+}
+
+.row-toggle:hover{
+    background-color:#edeeef;
+}
+
+.row-toggle > td {
+    padding:0 !important;
+}
+
+.cont {
+    padding-left:2%;
+    padding-right:2%;
+}
+
+
+#loader {
+  animation: loader 5s cubic-bezier(.8,0,.2,1) infinite;
+  height: 40px;
+  width: 41px;
+  position: absolute;
+  top:calc(50% - 20px);
+  left:calc(50% - 20px);
+  visibility: hidden;
+  background-color: #c5a6c7;
+}
+@keyframes loader {
+  90% { transform: rotate(0deg); }
+  100% { transform: rotate(180deg); }
+}
+#top {
+  animation: top 5s linear infinite;
+  border-top: 20px solid #fff;
+  border-right: 20px solid transparent;
+  border-left: 20px solid transparent;
+  height: 0px;
+  width: 1px;
+  transform-origin: 50% 100%;
+}
+@keyframes top {
+  90% { transform: scale(0); }
+  100% { transform: scale(0);}
+}
+#bottom {
+  animation: bottom 5s linear infinite;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid #fff;
+  border-left: 20px solid transparent;
+  height: 0px;
+  width: 1px;
+  transform: scale(0);
+  transform-origin: 50% 100%;
+}
+@keyframes bottom {
+  10% { transform: scale(0); }
+  90% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+#line {
+  animation: line 5s linear infinite;
+  border-left: 1px dotted #fff;
+  height: 0px;
+  width: 0px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+@keyframes line {
+  10% { height: 20px; }
+  100% { height: 20px; }
+}
+
+
+
+
+
+
+
+

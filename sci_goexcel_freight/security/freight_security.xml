@@ -1,0 +1,118 @@
+<?xml version="1.0" ?>
+<odoo>
+   <!-- <data noupdate="1">-->
+
+    <record id="module_freight_category"
+            model="ir.module.category">
+        <field name="name">Freight</field>
+    </record>
+
+    <!-- Freight Own Record -->
+    <record id="freight_group_own" model="res.groups">
+        <field name="name">Own Records</field>
+        <field name="category_id" ref="module_freight_category"/>
+    </record>
+    <!-- Freight User Department -->
+    <record id="freight_group_user" model="res.groups">
+        <field name="name">My Team's Record</field>
+        <field name="category_id" ref="module_freight_category"/>
+        <field name="implied_ids" eval="[(4, ref('freight_group_own'))]"/>
+    </record>
+     <!-- Freight Manager Group -->
+    <record id="freight_group_manager" model="res.groups">
+        <field name="name">All Records</field>
+        <field name="category_id" ref="module_freight_category"/>
+        <field name="implied_ids" eval="[(4, ref('freight_group_user'))]"/>
+    </record>
+
+    <!-- Freight Own Record Group rule -->
+    <record id="freight_own_rule" model="ir.rule">
+        <field name="name">Own Records</field>
+        <field ref="model_freight_booking" name="model_id"/>
+        <field name="domain_force">[('owner','=',user.id),('company_id', '=', [user.company_id.id])]</field>
+        <field name="groups" eval="[(4, ref('freight_group_own'))]"/>
+    </record>
+
+    <!-- Freight Own Department rule -->
+    <record id="freight_user_rule" model="ir.rule">
+        <field name="name">My Team's Records</field>
+        <field ref="model_freight_booking" name="model_id"/>
+        <field name="domain_force">[ ('company_id', '=', [user.company_id.id]),'|', ('department.member_ids.user_id', 'in', [user.id]),('department.parent_id.member_ids.user_id', 'in', [user.id])]</field>
+        <field name="groups" eval="[(4, ref('freight_group_user'))]"/>
+    </record>
+
+    <!-- Freight All rule -->
+    <record id="freight_manager_rule" model="ir.rule">
+        <field name="name">All Records</field>
+        <field ref="model_freight_booking" name="model_id"/>
+        <field name="domain_force">[ ('company_id', '=', [user.company_id.id])]</field>
+        <field name="groups" eval="[(4, ref('freight_group_manager'))]"/>
+    </record>
+
+
+    <record id="si_portal_rule" model="ir.rule">
+            <field name="name">SI Portal</field>
+            <field name="model_id" ref="sci_goexcel_freight.model_freight_website_si"/>
+        <field name="domain_force">[('customer_name','in',[user.partner_id.commercial_partner_id.id])]</field>
+           <!-- <field name="domain_force">[
+                        ('message_partner_ids', 'child_of', [user.partner_id.commercial_partner_id.id]), ]</field>-->
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
+
+
+    <record model="ir.rule" id="multi_bol_rule">
+        <field name="name">BOL multi-company</field>
+        <field name="model_id" search="[('model','=','freight.bol')]" model="ir.model"/>
+        <field name="global" eval="True" />
+        <field name="domain_force">['|',('company_id','=',False),('company_id','=',user.company_id.id)]</field>
+    </record>
+
+      <record model="ir.rule" id="multi_si_rule">
+        <field name="name">SI multi-company</field>
+        <field name="model_id" search="[('model','=','freight.website.si')]" model="ir.model"/>
+         <field name="groups" eval="[(4, ref('freight_group_manager')),(4, ref('freight_group_user')),(4, ref('freight_group_own'))]"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','=',user.company_id.id)]</field>
+      </record>
+<!--    <record id="si_portal_rule_fcl" model="ir.rule">-->
+<!--            <field name="name">SI Portal FCL</field>-->
+<!--            <field name="model_id" ref="sci_goexcel_freight.model_freight_website_si_fcl"/>-->
+<!--        <field name="domain_force">[]</field>-->
+<!--            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>-->
+<!--    </record>-->
+
+    <!-- Portal All rule -->
+    <!-- <record id="freight_portal_rule" model="ir.rule">
+            <field name="name">Portal user: Own records</field>
+            <field ref="model_freight_booking" name="model_id"/>
+            <field name="domain_force">[('owner','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+     </record>-->
+
+    <!-- <record id="freight_group_portal" model="res.groups">
+        <field name="name">Own Record</field>
+        <field name="category_id" ref="module_freight_category"/>
+       &lt;!&ndash; <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>&ndash;&gt;
+    </record>-->
+
+     <!-- Portal Access Rules -->
+  <!--  <record id="freight_rule_portal" model="ir.rule">
+        <field name="name">Portal SI</field>
+        <field name="model_id" ref="model_freight_website_si"/>
+      &lt;!&ndash;  <field name="domain_force">[('message_partner_ids','child_of',[user.commercial_partner_id.id])]</field>&ndash;&gt;
+        <field name="domain_force">[('commercial_partner_id','in',[user.partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+    </record>-->
+
+   <!-- <record id="freight_rule_portal" model="ir.rule">
+        <field name="name">Portal Sales Orders Line</field>
+        <field name="model_id" ref="sale.model_sale_order_line"/>
+        <field name="domain_force">[('order_id.message_partner_ids','child_of',[user.commercial_partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>-->
+
+  <!--  </data>-->
+</odoo>

@@ -1,0 +1,26 @@
+<odoo>
+
+	 <!--Invoice Form-->
+	<record model="ir.ui.view" id="view_form_booking_inherit">
+		<field name="name">Booking Inherit</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<!--<xpath expr="//field[@name='sale_order_template_id']" position="after">
+				<button name="action_calculate_cost" type="object" class="oe_highlight" string="Refresh"/>
+			</xpath>-->
+
+			<xpath expr="//field[@name='vendor_bill_id']" position="after">
+				<field name="vendor_id_ids" invisible="1" widget="many2many_tags" domain="[('supplier','=',True)]" force_save="1" readonly="1"/>
+				<field name="vendor_bill_ids" widget="many2many_tags" force_save="1"/>
+			</xpath>
+			<xpath expr="//field[@name='vendor_bill_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+		</field>
+	</record>
+
+
+
+</odoo>

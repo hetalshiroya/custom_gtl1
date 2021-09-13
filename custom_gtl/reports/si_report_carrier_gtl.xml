@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="si_report_carrier_gtl" inherit_id="sci_goexcel_shipping_instruction.report_si_report_carrier">
+        <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="header">
+                        <div>
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style=" margin-right:15px; max-height: 120px; max-width: 200px; float: left" alt="Logo"/>
+                            <t t-if="res_company.partner_id">
+                                <b><span t-field="res_company.partner_id.name" style="font-family:arial;font-size:15pt;"/></b>
+                                <span t-field="res_company.company_registry"/><br/>
+                                <span t-field="res_company.partner_id.street"/><br/>
+                                <span t-field="res_company.partner_id.zip"/>
+                                <span t-field="res_company.partner_id.city"/>,
+                                <span t-field="res_company.partner_id.state_id.name"/>,
+                                <span t-field="res_company.partner_id.country_id.name"/><br/>
+                                Hunting Line: <span t-field="res_company.partner_id.phone"/>
+                                <![CDATA[&nbsp;&nbsp;]]>
+                                <br/>
+                                Email : <span t-field="res_company.partner_id.email" style="font-size:11pt;"/>
+                                <![CDATA[&nbsp;]]>
+                                Website : <span t-field="res_company.partner_id.website" style="font-size:11pt;"/>
+                            </t>
+                        </div>
+                    </div>
+                        <div class="page">
+                            <style>
+                            .my_table {
+                                border:none;
+                                border-collapse: collapse;
+                                line-height: 150%;
+                                font-size:10px;
+                                width:100%"
+                            }
+
+                            .my_table th{
+                                padding:3px;
+                                border-top:1px solid black;
+                                border-bottom:1px solid black;
+                                border-left:1px solid black;
+                                border-right:1px solid black;
+                            }
+
+                            .my_table th:first-child{
+                                border-left:1px solid black;
+                            }
+
+                            .my_table th:last-child{
+                                border-right:1px solid black;
+                            }
+
+                            .my_table td{
+                                padding:3px;
+                            }
+
+                            .my_table td:first-child{
+                                padding:3px;
+                                border-left:1px solid black;
+                            }
+
+                            .my_table td:last-child{
+                                padding:3px;
+                                border-right:1px solid black;
+                            }
+                            </style>
+                            <table border="1" style="border-collapse: collapse; line-height: 150%;
+                                font-size:12px; width:100%;">
+                                <tr>
+                                    <td colspan="4" style="font-size:20px;" height="30px">
+                                        <center><b>SHIPPING INSTRUCTION</b></center>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="6" style="vertical-align: top; width:50%; padding-left: 5px;">
+                                        Shipper<br/>
+                                        <!--
+                                        <span t-esc="o.shipper.upper()"/>
+                                        -->
+                                        <span t-field="o.shipper"/>
+                                    </td>
+                                    <td style="vertical-align: top; width:15%; padding-left: 5px; border-right:none;">
+                                        BOOKING
+                                    </td>
+                                    <td style="vertical-align: top; width:5%; padding-left: 5px; border-left:none;border-right:none;">
+                                        :
+                                    </td>
+                                    <td style="vertical-align: top; width:30%; padding-left: 5px; border-left:none;">
+                                        <b><span t-field="o.carrier_booking_ref"/></b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px; border-right:none; border-bottom:none;">
+                                        Date
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-right:none;border-bottom:none;">
+                                        :
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-bottom:none;">
+                                        <span t-field="o.booking_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px; border-right:none;border-bottom:none;border-top:none;">
+                                        To
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-right:none;border-bottom:none;border-top:none;">
+                                        :
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-bottom:none;border-top:none;">
+                                        <span t-field="o.carrier.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px; border-right:none;border-bottom:none;border-top:none;">
+                                        Attention
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-right:none;border-bottom:none;border-top:none;">
+                                        :
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-bottom:none;border-top:none;">
+                                        <span t-field="o.carrier_contact.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px; border-right:none;border-bottom:none;border-top:none;">
+                                        Tel
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-right:none;border-bottom:none;border-top:none;">
+                                        :
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-bottom:none;border-top:none;">
+                                        <span t-field="o.carrier.phone"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px; border-right:none;border-bottom:none;border-top:none;">
+                                        Fax
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-right:none;border-bottom:none;border-top:none;">
+                                        :
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-bottom:none;border-top:none;">
+                                        <span t-field="o.carrier.fax"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="3" style="vertical-align: top; padding-left: 5px;">
+                                        Consignee<br/>
+                                        <!--
+                                        <span t-esc="o.consignee.upper()"/>
+                                        -->
+                                        <span t-field="o.consignee"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-right:none;border-bottom:none;border-top:none;">
+                                        Job No
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-right:none;border-bottom:none;border-top:none;">
+                                        :
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-bottom:none;border-top:none;">
+                                        <span t-field="o.booking_ref.booking_no"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px; border-right:none;border-bottom:none;border-top:none;">
+                                        Staff
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-right:none;border-bottom:none;border-top:none;">
+                                        :
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; border-left:none;border-bottom:none;border-top:none;">
+                                        <span t-field="o.owner.name"/>
+                                    </td>
+                                </tr>
+                                <tr height="80px" >
+                                    <td colspan="3" style="border-top:none;border-bottom:none;text-align:center; font-size:20px;">
+                                        <span t-field="o.bol_status"/>
+                                    </td>
+                                </tr>
+
+                                <tr height="120px">
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        Notify Party<br/>
+                                        <!--
+                                        <span t-esc="o.notify_party.upper()"/>
+                                        -->
+                                        <span t-field="o.notify_party"/>
+                                    </td>
+                                    <td colspan="3" style="border-top:none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        Feeder Vessel<br/>
+                                        <span t-field="o.booking_ref.feeder_vessel_name"/><br/>
+                                    </td>
+                                    <td colspan="3" style="vertical-align: top; padding-left: 5px;">
+                                        Place of Receipt<br/>
+                                        <span t-field="o.booking_ref.place_of_receipt"/><br/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px;">
+                                        Mother Vessel<br/>
+                                        <span t-field="o.vessel"/><br/>
+                                    </td>
+                                    <td colspan="3" style="vertical-align: top; padding-left: 5px;">
+                                        Port of Loading<br/>
+                                        <span t-field="o.port_of_loading_input"/><br/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table border="1" style="border-collapse: collapse; line-height: 150%;
+                                font-size:12px; width:100%;">
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px; width:50%; border-top:none;">
+                                        Port of Discharge<br/>
+                                        <span t-field="o.port_of_discharge_input"/><br/>
+                                    </td>
+                                    <td colspan="2" style="vertical-align: top; padding-left: 5px; width:30%; border-top:none;">
+                                        Place of Delivery<br/>
+                                        <span t-field="o.place_of_delivery"/><br/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; width:20%; border-top:none;">
+                                        No.of Original B/L<br/>
+                                        <span t-field="o.no_of_original_bl"/><br/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="my_table" style="font-size:12px; width:100%;">
+                                <tr>
+                                    <th style="vertical-align: top; padding-left: 5px; text-align:center; width:20%">
+                                        Container / Seal No.<br/>Marks &amp; Nos.
+                                    </th>
+                                    <th style="vertical-align: top; padding-left: 5px; text-align:center; width:15%">
+                                        No.and Kind<br/>of Packages
+                                    </th>
+                                    <th style="vertical-align: top; padding-left: 5px; text-align:center; width:50%">
+                                        Description of Goods
+                                    </th>
+                                    <th style="vertical-align: top; padding-left: 5px; text-align:center; width:15%">
+                                        Weight<br/>Measurement
+                                    </th>
+                                </tr>
+                                <t t-if="o.cargo_type == 'fcl'">
+                                    <t t-if="o.fcl_line_ids">
+                                        <tr>
+                                            <td style="vertical-align: top; padding-left: 5px;" height="200px">
+                                                <span t-esc="o.fcl_line_ids[0].container_no"/> /
+                                                <span t-esc="o.fcl_line_ids[0].seal_no"/><br/>
+                                                <t t-foreach="o.fcl_line_ids" t-as="line">
+                                                    <span t-field="line.remark"/><br/><br/>
+                                                </t>
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 5px;">
+                                                <span t-esc="o.fcl_line_ids[0].packages_no"/>
+                                                <span t-esc="o.fcl_line_ids[0].packages_no_uom.name"/>
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 5px;">
+                                                <t t-if="o.shipper_load">
+                                                    Shipper’s Load, Seal and Count<br/>
+                                                </t>
+                                                <span t-esc="o.fcl_line_ids[0].container_product_name"/><br/><br/>
+                                                HS CODE: <span t-field="o.booking_ref.hs_code"/><br/><br/>
+                                                Freight <!--<span t-field="o.freight_type"/>--><t t-if="o.freight_type">
+                                                    <span t-esc="o.freight_type.upper()"/>
+                                                 </t>
+
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 5px;">
+                                                <span t-esc="o.fcl_line_ids[0].exp_gross_weight"/> KGS<br/>
+                                                <span t-esc="o.fcl_line_ids[0].exp_vol"/> M3
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="not o.fcl_line_ids">
+                                        <tr>
+                                            <td style="vertical-align: top; padding-left: 5px;" height="200px"/>
+                                            <td style="vertical-align: top; padding-left: 5px;"/>
+                                            <td style="vertical-align: top; padding-left: 5px;">
+                                                <t t-if="o.shipper_load">
+                                                    Shipper’s Load, Seal and Count<br/>
+                                                </t>
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 5px;"/>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-if="o.cargo_type == 'lcl'">
+                                    <t t-if="o.lcl_line_ids">
+                                        <tr>
+                                            <td style="vertical-align: top; padding-left: 5px;" height="200px">
+                                                <span t-esc="o.lcl_line_ids[0].container_no"/> /
+                                                <span t-esc="o.lcl_line_ids[0].seal_no"/><br/>
+                                                <t t-foreach="o.lcl_line_ids" t-as="line">
+                                                    <span t-field="line.remark"/><br/><br/>
+                                                </t>
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 5px;">
+                                                <span t-esc="o.lcl_line_ids[0].packages_no"/>
+                                                <span t-esc="o.lcl_line_ids[0].packages_no_uom.name"/>
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 5px;">
+                                                <t t-if="o.shipper_load">
+                                                    Shipper’s Load, Seal and Count<br/>
+                                                </t>
+                                                <span t-esc="o.lcl_line_ids[0].container_product_name"/><br/><br/>
+                                                <t t-if="o.booking_ref.hs_code">
+                                                    HS CODE: <span t-field="o.booking_ref.hs_code"/><br/><br/>
+                                                </t>
+                                                FREIGHT <!--<span t-field="o.freight_type"/>-->
+                                                <t t-if="o.freight_type">
+                                                    <span t-esc="o.freight_type.upper()"/>
+                                                </t>
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 5px;">
+                                                <span t-esc="o.lcl_line_ids[0].exp_gross_weight"/> KGS<br/>
+                                                <span t-esc="o.lcl_line_ids[0].exp_vol"/> M3
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="not o.lcl_line_ids">
+                                        <tr>
+                                            <td style="vertical-align: top; padding-left: 5px;" height="200px"/>
+                                            <td style="vertical-align: top; padding-left: 5px;"/>
+                                            <td style="vertical-align: top; padding-left: 5px;">
+                                                <t t-if="o.shipper_load">
+                                                    Shipper’s Load, Seal and Count<br/>
+                                                </t>
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 5px;"/>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </table>
+                            <table border="1" style="border-collapse: collapse; line-height: 200%;
+                                font-size:12px; width:100%;">
+                                <tr>
+                                    <td colspan="2" height="150px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-left: 5px; width:20%">
+                                        Total number of packages<br/>or units (in words)
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px; width:80%">
+                                        <span t-field="o.packages_no_input"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    <div class="footer">
+                        <div>
+                            <p>
+                                Please fax draft B/L for checking and <br/>
+                                Thanking you in advance for your kind co-operation
+                            </p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- GoExcel Invoice Template -->
+    <template id="report_invoice_inherit" inherit_id="account.report_invoice_document">
+        <xpath expr="//t[@t-set='display_discount']" position="after">
+            <t t-set="display_discount_fixed"
+               t-value="any([l.discount_fixed for l in o.invoice_line_ids])"/>
+        </xpath>
+        <xpath expr="//t[@t-set='address']" position="replace">
+        </xpath>
+        <xpath expr="//div[@class='page']" position="replace">
+             <div class="page">
+             <style>
+                 body {
+                 font-family: sans-serif;
+                 font-size:14px;
+                 }
+             </style>
+             <h3><strong><center>
+                <!-- <span t-if="o.type == 'out_invoice' and customer_debit_note == 1 and debit_invoice_id != False">Debit Note</span>-->
+                 <span t-if="o.type == 'out_invoice' and o.customer_debit_note == True">Debit Note</span>
+                 <span t-if="o.type == 'out_invoice' and o.customer_debit_note == False and o.state in ('open', 'in_payment', 'paid')">Invoice</span>
+                <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span>
+                <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>
+                <span t-if="o.type == 'out_refund'">Credit Note</span>
+                <span t-if="o.type == 'in_refund'">Credit Note</span>   <!-- vendor CN-->
+                <span t-if="o.type == 'in_invoice'">Vendor Bill</span>
+
+             </center></strong></h3>
+             <div class="row">
+                 <div name="bill_to" style="font-size:14px" class="col-7">
+                     <strong>TO:</strong><br/>
+                     <span t-field="o.partner_id.name"/><br/>
+                     <span t-field="o.partner_id.street"/>,<br/>
+                     <t t-if="o.partner_id.street2">
+                         <span t-field="o.partner_id.street2"/>,<br/>
+                     </t>
+                     <span t-field="o.partner_id.zip"/>&#160;
+                     <span t-field="o.partner_id.city"/>,&#160;<span t-field="o.partner_id.state_id.name"/>,
+                     <span t-field="o.partner_id.country_id.name"/><br/>
+                     <t t-if="o.attn.name">
+                         ATTN: <span t-field="o.attn.name"/><br/>
+                     </t>
+                     <t t-if="o.partner_id.phone or o.partner_id.fax">
+                         <t t-if="o.partner_id.phone">
+                             TEL:&#160;<span t-field="o.partner_id.phone"/> &#160;
+                         </t>
+                         <t t-if="o.partner_id.fax">
+                            FAX:&#160;<span t-field="o.partner_id.fax"/>
+                         </t>
+                     </t>
+                     <br/>
+                 </div>
+                 <div id="inv_header_div" style="font-size:14px" class="col-7" name="invoice_info">
+                     <table width="100%">
+                         <tr id="inv_header_div_first">
+                            <!-- <td style="width:27%;"><strong>INVOICE NO</strong></td>-->
+                             <td style="width:27%;"><strong>
+                             <span t-if="o.type == 'out_refund' or o.type == 'in_refund'">CREDIT NOTE NO</span>
+                                 <span t-if="o.type == 'in_invoice' or o.customer_debit_note == True">DEBIT NOTE NO</span>
+                                 <span t-if="o.type == 'out_invoice' and o.customer_debit_note == False">INVOICE NO</span>
+                             </strong>
+                             </td>
+                             <td style="width:3%;"><strong>:</strong></td>
+                             <td style="width:70%;"><span t-field="o.number"/></td>
+                         </tr>
+                          <t t-if="o.type == 'in_invoice'">
+                              <tr>
+                                 <td><strong>VENDOR REF.</strong></td>
+                                 <td><strong>:</strong></td>
+                                 <td><span t-field="o.reference"/></td>
+                             </tr>
+                          </t>
+                         <tr>
+                             <td><strong>BILL DATE </strong></td>
+                             <td><strong>:</strong></td>
+                             <td name="date_invoice"><span t-field="o.date_invoice"/></td>
+                         </tr>
+                         <tr>
+                            <td><strong>TERMS</strong></td>
+                            <td><strong>:</strong></td>
+                            <td><span t-field="o.payment_term_id.name"/></td>
+                         </tr>
+                         <tr>
+                            <td><strong>JOB NO</strong></td>
+                            <td><strong>:</strong></td>
+                            <td><span t-field="o.origin"/></td>
+                         </tr>
+                         <tr id="inv_header_div_last">
+                            <td name="salesman"><strong>SALESMAN</strong></td>
+                            <td><strong>:</strong></td>
+                            <td><span t-field="o.user_id.name"/></td>
+                         </tr>
+                     </table>
+                 </div>
+             </div>
+             <br/>
+             <div class="row" style="border-top: 2px solid black;" name="invoice_info">
+                 <br/>
+                 <t t-if="o.freight_booking">
+                     <t t-if="o.freight_booking.service_type == 'ocean'">
+                         <table width="100%" class="table table-sm" border="0" style="font-size:14px">
+                             <br/>
+                             <tbody>
+                                 <t t-set="item_no" t-value="0"/>
+                                 <t t-set="weight" t-value="0"/>
+                                 <t t-set="measurement" t-value="0"/>
+                                 <t t-if="o.freight_booking.cargo_type == 'fcl'">
+                                     <t t-foreach="o.freight_booking.operation_line_ids" t-as="line">
+                                         <t t-set="item_no" t-value="item_no + 1" />
+                                         <t t-set="weight" t-value="weight + line.exp_gross_weight" />
+                                         <t t-set="measurement" t-value="measurement + line.exp_vol" />
+                                     </t>
+                                 </t>
+                                 <t t-if="o.freight_booking.cargo_type == 'lcl'">
+                                     <t t-foreach="o.freight_booking.operation_line_ids2" t-as="line">
+                                         <t t-set="item_no" t-value="item_no + 1" />
+                                         <t t-set="weight" t-value="weight + line.exp_gross_weight" />
+                                         <t t-set="measurement" t-value="measurement + line.exp_vol" />
+                                     </t>
+                                 </t>
+                                 <tr>
+                                     <th style="width:20%;" class="text-left">FEEDER VESSEL</th>
+                                     <th style="width:3%;" class="text-left">:</th>
+                                     <td style="width:36%;" class="text-left"><span t-field="o.freight_booking.feeder_vessel_name"/></td>
+                                     <th style="width:15%;" class="text-left">JOB NO</th>
+                                     <th style="width:3%;" class="text-left">:</th>
+                                     <td style="width:23%;" class="text-left"><span t-field="o.freight_booking.booking_no"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">MOTHER VESSEL</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left" colspan="4"><span t-field="o.freight_booking.vessel_name"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">P.O. LOADING</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.port_of_loading.name"/></td>
+                                     <th class="text-left">ETD POL</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.port_of_loading_eta"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">P.O. DISCHARGE</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.port_of_discharge.name"/></td>
+                                     <th class="text-left">ETA POD</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.port_of_discharge_eta"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">SHIPPER</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.shipper.name"/></td>
+                                     <th class="text-left">OCEAN BL</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.obl_no"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">CONSIGNEE</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.consignee"/></td>
+                                     <th class="text-left">HOUSE BL</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.hbl_no"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">DESCRIPTION</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.invoice_description"/></td>
+                                     <th class="text-left">WEIGHT/ M3</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-esc="weight"/>/ <span t-esc="measurement"/></td>
+                                 </tr>
+                                 <t t-if="o.freight_booking.cargo_type == 'lcl'">
+                                     <tr>
+                                         <th class="text-left">VOLUME</th>
+                                         <th class="text-left">:</th>
+                                         <td class="text-left" colspan="4"><span t-field="o.freight_booking.lcl_volume"/></td>
+                                     </tr>
+                                 </t>
+                                 <tr>
+                                     <th class="text-left">CONTAINER</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left" colspan="4">
+                                          <t t-set="line_no" t-value="0"/>
+                                         <t t-if="o.freight_booking.cargo_type == 'fcl'">
+                                             <t t-foreach="o.freight_booking.operation_line_ids" t-as="line">
+                                                 <t t-if="line_no > 0">
+                                                    /
+                                                </t>
+                                                 <span t-esc="line.container_no"/>
+                                                 <t t-set="line_no" t-value="line_no + 1"/>
+                                             </t>
+                                         </t>
+                                         <t t-if="o.freight_booking.cargo_type == 'lcl'">
+                                             <t t-foreach="o.freight_booking.operation_line_ids2" t-as="line">
+                                                  <t t-if="line_no > 0">
+                                                    /
+                                                 </t>
+                                                 <span t-esc="line.container_no"/>
+                                                 <t t-set="line_no" t-value="line_no + 1"/>
+                                             </t>
+                                         </t>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </t>
+                     <t t-if="o.freight_booking.service_type == 'air'">
+                         <table width="100%" class="table table-sm" border="0" style="font-size:14px">
+                             <br/>
+                             <tbody>
+                                 <t t-set="item_no" t-value="0"/>
+                                 <t t-set="gross_weight" t-value="0"/>
+                                 <t t-set="net_weight" t-value="0"/>
+                                 <t t-set="measurement" t-value="0"/>
+                                 <t t-set="length" t-value="0"/>
+                                 <t t-set="width" t-value="0"/>
+                                 <t t-set="height" t-value="0"/>
+                                 <t t-if="o.freight_booking.cargo_type == 'fcl'">
+                                     <t t-foreach="o.freight_booking.operation_line_ids" t-as="line">
+                                         <t t-set="item_no" t-value="item_no + 1" />
+                                         <t t-set="gross_weight" t-value="weight + line.exp_gross_weight" />
+                                         <t t-set="net_weight" t-value="weight + line.exp_net_weight" />
+                                         <t t-set="measurement" t-value="measurement + line.exp_vol" />
+                                         <t t-set="length" t-value="length + line.dim_length"/>
+                                         <t t-set="width" t-value="width + line.dim_width"/>
+                                         <t t-set="height" t-value="height + line.dim_height"/>
+                                     </t>
+                                 </t>
+                                 <t t-if="o.freight_booking.cargo_type == 'lcl'">
+                                     <t t-foreach="o.freight_booking.operation_line_ids2" t-as="line">
+                                         <t t-set="item_no" t-value="item_no + 1" />
+                                         <t t-set="gross_weight" t-value="weight + line.exp_gross_weight" />
+                                         <t t-set="net_weight" t-value="weight + line.exp_net_weight" />
+                                         <t t-set="measurement" t-value="measurement + line.exp_vol" />
+                                         <t t-set="length" t-value="length + line.dim_length"/>
+                                         <t t-set="width" t-value="width + line.dim_width"/>
+                                         <t t-set="height" t-value="height + line.dim_height"/>
+                                     </t>
+                                 </t>
+                                 <tr>
+                                     <th style="width:20%;" class="text-left">FLIGHT NO.</th>
+                                     <th style="width:3%;" class="text-left">:</th>
+                                     <td style="width:36%;" class="text-left"><span t-field="o.freight_booking.first_carrier_flight_no.name"/></td>
+                                     <th style="width:15%;" class="text-left">JOB NO</th>
+                                     <th style="width:3%;" class="text-left">:</th>
+                                     <td style="width:23%;" class="text-left"><span t-field="o.freight_booking.booking_no"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">ORIGIN</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.airport_departure.name"/></td>
+                                     <th class="text-left">MAWB NO</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.mawb_no"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">DESTINATION</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.airport_destination.name"/></td>
+                                     <th class="text-left">HAWB NO</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.awb_no"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">SHIPPER</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.shipper.name"/></td>
+                                     <th class="text-left">GROSS WT</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-esc="gross_weight"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">CONSIGNEE</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.freight_booking.consignee.name"/></td>
+                                     <th class="text-left">CHARGE WT</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-esc="net_weight"/></td>
+                                 </tr>
+                                 <tr>
+                                     <th class="text-left">DESCRIPTION</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-field="o.invoice_description"/></td>
+                                     <th class="text-left">DIMENSION</th>
+                                     <th class="text-left">:</th>
+                                     <td class="text-left"><span t-esc="length"/>*<span t-esc="width"/>*<span t-esc="height"/></td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </t>
+                 </t>
+             </div>
+             <br/>
+
+
+            <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+            <t t-if="o.invoice_type == 'without_lorry'">
+                <table class="table table-sm o_main_table" name="invoice_line_table">
+                    <thead>
+                        <tr>
+                            <!-- TODO: remove in master -->
+                            <t t-set="colspan" t-value="6"/>
+                            <th class="text-left"><span>Description</span></th>
+                            <th class="text-left"><span>Qty Type</span></th>
+                            <th class="text-left"><span>Unit Price</span></th>
+
+                            <th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                <span>Disc.(%)</span>
+                                <!-- TODO: remove in master -->
+                                <t t-set="colspan" t-value="colspan+1"/>
+                             </th>
+                            <th t-if="display_discount_fixed" class="text-right" groups="sale.group_discount_per_so_line">
+                                <span>Disc. Amount</span>
+                                <t t-set="colspan" t-value="colspan+1"/>
+                            </th>
+                            <th class="text-right"><span>Amount</span></th>
+                            <th class="text-right"><span>SST</span></th>
+                            <th class="text-right"><span>Total</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <t t-foreach="o.invoice_line_ids" t-as="line">
+                            <tr>
+                                <td><span t-field="line.name"/></td>
+                                <td class="text-left"><span t-field="line.quantity"/>&#160;
+                                    <t t-if="line.uom_id">
+                                        <span t-field="line.uom_id.name"/>
+                                    </t>
+                                    <t t-if="not line.uom_id">
+                                        PKGS
+                                    </t>
+                                </td>
+                                <td class="text-left"><span t-field="line.currency_id.name"/>&#160;<span t-field="line.price_unit"/></td>
+
+                                <td t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                    <span t-field="line.discount"/>
+                                </td>
+                                <td t-if="display_discount_fixed" class="text-right" groups="sale.group_discount_per_so_line">
+                                    <span t-field="line.discount_fixed"/>
+                                </td>
+                                <td class="text-right"><span t-field="line.currency_id.name"/>&#160;<t t-esc="'{0:,.2f}'.format(float(line.price_subtotal))" /></td>
+                                <td class="text-right">0.00</td>
+                                <td class="text-right"><span t-field="line.currency_id.name"/>&#160;<t t-esc="'{0:,.2f}'.format(float(line.price_subtotal))" /></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+            <t t-if="o.invoice_type == 'lorry'">
+                <table class="table table-sm o_main_table" name="invoice_line_table1">
+                    <thead name="invoice_thead1">
+                        <tr>
+                            <t t-set="colspan" t-value="9"/>
+                            <th class="text-left"><span>Date</span></th>
+                            <th class="text-left"><span>Description</span></th>
+                            <th class="text-left"><span>DO NO</span></th>
+                            <th class="text-left"><span>Lorry Type</span></th>
+                            <th class="text-left"><span>Lorry No</span></th>
+                            <th class="text-left"><span>Pickup From</span></th>
+                            <th class="text-left"><span>Delivery To</span></th>
+                            <th class="text-left"><span>QTY/MT</span></th>
+                            <th class="text-left"><span>Unit Price</span></th>
+                            <th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                <span>Disc.(%)</span>
+                                <!-- TODO: remove in master -->
+                                <t t-set="colspan" t-value="colspan+1"/>
+                             </th>
+                            <th t-if="display_discount_fixed" class="text-right" groups="sale.group_discount_per_so_line">
+                                <span>Disc. Amount</span>
+                                <t t-set="colspan" t-value="colspan+1"/>
+                            </th>
+                            <th class="text-right"><span>Amount</span></th>
+                            <!--
+                            <th class="text-right"><span>SST</span></th>
+                            <th class="text-right"><span>Total</span></th>
+                            -->
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody1" name="invoice_tbody1">
+                        <t t-foreach="o.invoice_line_ids" t-as="line">
+                            <tr>
+                                <td><span t-field="o.date_invoice" /></td>
+                                <td><span t-field="line.name" /></td>
+                                <td><span t-field="line.do_no"/></td>
+                                <td><span t-field="line.lorry_type" /></td>
+                                <td><span t-field="line.lorry_no" /></td>
+                                <td><span t-field="line.location" /></td>
+                                <td><span t-field="line.dest_location" /></td>
+                                <td class="text-center"><span t-field="line.quantity"/>&#160;<span t-field="line.uom_id.name"/></td>
+                                <td class="text-left"><span t-field="line.price_unit"/></td>
+                                <td t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                    <span t-field="line.discount"/>
+                                </td>
+                                <td t-if="display_discount_fixed" class="text-right" groups="sale.group_discount_per_so_line">
+                                    <span t-field="line.discount_fixed"/>
+                                </td>
+                                <td class="text-right"><span t-field="line.currency_id.name"/>&#160;<t t-esc="'{0:,.2f}'.format(float(line.price_subtotal))" /></td>
+                                <!--
+                                <td class="text-right">0.00</td>
+                                <td class="text-right"><span t-field="line.price_subtotal"/></td>
+                                -->
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+
+            <div class="clearfix">
+                <div id="total" class="row">
+                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                        <table class="table table-sm" width="100%">
+                            <tr class="border-black o_subtotal" style="">
+                                <td><strong>Sub Total</strong></td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_untaxed"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Add SST</strong></td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_tax"/>
+                                </td>
+                            </tr>
+
+                            <tr class="border-black o_total">
+                                <td><strong>Total</strong></td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="first-page">
+                    <p>
+                        <br/><br/>
+                        <span t-field="o.comment"/>
+                    </p>
+                </div>
+            </div>
+            <!--
+            <p><span t-esc="o.amount_to_text(o.amount_total, 'Euro')"/> </p>
+            -->
+
+            <t name="document_attachment" t-if="o.document_attachments_ids" t-foreach="o.document_attachments_ids" t-as="attach">
+                <p style="page-break-after:always;"/>
+                <img t-attf-src="https://drive.google.com/uc?export=view&amp;id={{attach.file_id}}" height="1000px" width="750px"/>
+                <p style="page-break-before:always;"/>
+            </t>
+             </div>
+        </xpath>
+
+    </template>
+
+      <!--  <xpath expr="//div[@class='row mt32 mb32']" position="after">
+            <div class="col-auto mw-100 mb-2" id="invoice_inherit">
+                <strong><u><span t-field="o.invoice_description"/></u></strong>
+            </div>
+        </xpath>-->
+
+
+           <!-- <div t-if="doc.date_order and doc.state in ['approved']">
+                <strong>Quotation Date:</strong>
+                <p class="m-0" t-field="doc.date_order"/>
+            </div>-->
+
+</odoo>

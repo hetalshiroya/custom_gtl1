@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_saleorder_inherit" inherit_id="sale.report_saleorder_document">
+         <xpath expr="/t[1]/t[1]/div[1]/h2[1]" position="replace">
+
+        </xpath>
+       <xpath expr="/t[1]/t[1]/div[1]" position="before">
+           <h2>
+                <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                    <span t-if="doc.state not in ['draft','sent','approved']">Order # </span>
+                    <span t-if="doc.state in ['draft','sent','approved']">Quotation # </span>
+                </t>
+                <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                        <span>Pro-Forma Invoice # </span>
+                    </t>
+                <span t-field="doc.name"/>
+           </h2>
+        </xpath>
+        <xpath expr="//div[@class='row mt32 mb32']" position="inside">
+            <div t-if="doc.date_order and doc.state in ['approved']" class="col-auto mw-100 mb-2">
+                <strong>Quotation Date:</strong>
+                 <p class="m-0" t-field="doc.date_order"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[@class='row mt32 mb32']" position="after">
+            <div class="col-auto mw-100 mb-2" id="sq_inherit">
+                <strong><u><span t-field="doc.sq_description"/></u></strong>
+            </div>
+        </xpath>
+
+
+           <!-- <div t-if="doc.date_order and doc.state in ['approved']">
+                <strong>Quotation Date:</strong>
+                <p class="m-0" t-field="doc.date_order"/>
+            </div>-->
+
+    </template>
+</odoo>

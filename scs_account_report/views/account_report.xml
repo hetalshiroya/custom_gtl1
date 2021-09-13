@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+            id="action_report_trial_balance"
+            model="account.balance.report"
+            string="Trial Balance"
+            report_type="qweb-pdf"
+            name="scs_account_report.report_trialbalance"
+            file="scs_account_report.report_trialbalance"
+            />
+
+        <report
+            id="action_report_general_ledger"
+            model="account.report.general.ledger"
+            string="General Ledger"
+            report_type="qweb-pdf"
+            name="scs_account_report.report_generalledger"
+            file="scs_account_report.report_generalledger"
+            />
+
+        <report
+            id="action_report_partnerledger"
+            model="account.report.partner.ledger"
+            string="Partner Ledger"
+            report_type="qweb-pdf"
+            name="scs_account_report.report_partnerledger"
+            file="scs_account_report.report_partnerledger"
+            />
+
+        <report
+            id="action_report_financial"
+            model="account.financial.report"
+            string="Financial report"
+            menu="False"
+            report_type="qweb-pdf"
+            name="scs_account_report.report_financial"
+            file="scs_account_report.report_financial"
+            />
+
+        <report
+            id="action_report_print_overdue"
+            model="res.partner"
+            report_type="qweb-pdf"
+            string="Due Payments"
+            name="scs_account_report.report_overdue"
+            file="scs_account_report.report_overdue"
+            print_report_name="'Due Payments - %s' % (object.name)"
+        />
+
+        <report
+            id="action_report_aged_partner_balance_v12"
+            model="res.partner"
+            string="Aged Partner Balance"
+            menu="False"
+            report_type="qweb-pdf"
+            name="scs_account_report.report_agedpartnerbalance"
+            file="scs_account_report.report_agedpartnerbalance"
+        />
+
+        <report
+            id="action_report_account_tax"
+            model="account.tax.report"
+            string="Tax Report"
+            report_type="qweb-pdf"
+            name="scs_account_report.report_tax"
+            file="scs_account_report.report_tax"
+            />
+
+
+    <!-- Report of Balance 1, 2, 3 and 4th Column -->
+    <report id="account_pf_balance_report"
+        string="Balance 1 Column"
+        menu="True"
+        model="account.wizard.report"
+        report_type="qweb-pdf"
+        name="scs_account_report.financial_report_balance_full_temp"
+        file="scs_account_report.financial_report_balance_full_temp"/>
+
+    <!-- Report of Balance 13 Column -->
+    <report id="account_pf_balance_13_report"
+        string="Balance 13 Column"
+        menu="True"
+        model="account.wizard.report"
+        report_type="qweb-pdf"
+        name="scs_account_report.account_full_13_balance_cols"
+        file="scs_account_report.account_full_13_balance_cols"/>
+
+    <!-- Report of Balance QTR Column -->
+    <report id="account_pf_balance_qtr_report"
+        string="Balance QTR Column"
+        menu="True"
+        model="account.wizard.report"
+        report_type="qweb-pdf"
+        name="scs_account_report.account_full_qtr_balance_cols"
+        file="scs_account_report.account_full_qtr_balance_cols"/>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="aspl_web_tinymce_editor assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/aspl_web_tinymce_editor/static/lib/tinymce/tinymce.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/themes/modern/theme.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/advlist/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/anchor/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/autolink/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/autoresize/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/charmap/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/code/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/colorpicker/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/emoticons/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/autosave/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/save/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/fullpage/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/fullscreen/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/hr/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/image/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/imagetools/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/insertdatetime/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/link/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/lists/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/media/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/nonbreaking/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/pagebreak/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/paste/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/preview/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/print/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/searchreplace/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/spellchecker/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/tabfocus/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/table/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/textcolor/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/textpattern/plugin.min.js"/>
+                <script type="text/javascript"
+                        src="/aspl_web_tinymce_editor/static/lib/tinymce/plugins/wordcount/plugin.min.js"/>
+<!--                <link rel="stylesheet" type="text/css"-->
+<!--                      href="/aspl_web_tinymce_editor/static/lib/tinymce/skins/lightgray/content.min.css"-->
+<!--                      X-Content-Type-Options="nosniff"/>-->
+                <link rel="stylesheet" type="text/css"
+                      href="/aspl_web_tinymce_editor/static/lib/tinymce/skins/lightgray/skin.min.css"
+                      X-Content-Type-Options="nosniff"/>
+                <script type="text/javascript" src="/aspl_web_tinymce_editor/static/src/js/web_tinymce.js"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

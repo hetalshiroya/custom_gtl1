@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+    <report id="action_delivery_order_report"
+            string="Delivery Order"
+            model="freight.booking"
+            report_type="qweb-pdf"
+            name="sci_goexcel_freight.report_delivery_order"/>
+    -->
+
+    <report id="action_delivery_order_report"
+            string="Delivery Order"
+            model="transport.rft"
+            report_type="qweb-pdf"
+            name="sci_goexcel_transport.report_delivery_order"/>
+
+    <template id="report_delivery_order">
+        <t t-call="web.html_container">
+            <t t-foreach="docs.booking_reference" t-as="o">
+                <t t-call="web.external_layout">  <!-- define in general settings -> document template, for logo, address -->
+                    <div class="page">
+                        <!-- Report header content -->
+                            <br/>
+                            <h3 style="border-left:1pt solid black;border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;background-color:#E0E0E0;width:100%">
+                                <center>Delivery Order</center>
+                            </h3>
+                            <br/>
+
+                            <table style="width:100%">
+                                <tr>
+                                    <th class="text-left" style="width:25%">DATE:</th>
+                                    <td><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/></td>
+                                    <th>JOB NO:</th>
+                                    <td><span t-esc="o.booking_no"/></td>
+                                </tr>
+                            </table>
+                             <table style="width:100%">
+                                <tr>
+                                    <th class="text-left" style="width:25%">ATTENTION:</th>
+                                    <td><span t-field="o.carrier"/></td>
+                                    <th class="text-left" style="width:15%"></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" style="width:25%">COLLECTION FROM:</th>
+                                    <td style="width:50%"><span t-field="docs.pickup_from_address_input"/></td>
+                                    <th class="text-left" style="width:15%"></th>
+                                    <td></td>
+                                </tr>
+                                 <tr>
+                                    <th class="text-left" style="width:25%">PLACE OF DELIVERY:</th>
+                                     <td style="width:50%"><span t-field="docs.delivery_to_address_input" /></td>
+                                     <th class="text-left" style="width:10%"></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                   <th class="text-left" style="width:25%">CUSTOMER:</th>
+                                    <td><span t-field="o.customer_name"/></td>
+                                </tr>
+                                 <tr>
+                                   <th class="text-left" style="width:25%">PORT:</th>
+                                     <td><span t-field="o.land_port"/></td>
+                                </tr>
+                                 <tr>
+                                   <th class="text-left" style="width:25%">COMMODITY:</th>
+                                    <td><span t-field="o.commodity1.name"/></td>
+                                </tr>
+                                <t t-if="o.lcl_container">
+                                    <th class="text-left" style="width:25%">CONTAINER QTY/TYPE:</th>
+                                    <td><span t-field="o.lcl_container"/></td>
+                                </t>
+                                <t t-if="o.land_cargo_type == 'ftl'" t-foreach="o.operation_line_ids" t-as="line">
+                                    <tr>
+                                       <th class="text-left" style="width:25%">VOLUME(M3):</th>
+                                        <td><span t-field="line.exp_vol"/></td>
+                                    </tr>
+                                     <tr>
+                                       <th class="text-left" style="width:25%">GROSS WEIGHT(KGS):</th>
+                                        <td><span t-field="line.exp_gross_weight"/></td>
+                                    </tr>
+                                    <tr>
+                                       <th class="text-left" style="width:25%">MEASURE(KGS):</th>
+                                        <td><span t-field="line.exp_net_weight"/></td>
+                                    </tr>
+                                </t>
+                                 <t t-if="o.land_cargo_type == 'ltl'" t-foreach="o.operation_line_ids2" t-as="line">
+                                    <tr>
+                                       <th class="text-left" style="width:25%">VOLUME(M3):</th>
+                                        <td><span t-field="line.exp_vol"/></td>
+                                    </tr>
+                                     <tr>
+                                       <th class="text-left" style="width:25%">GROSS WEIGHT(KGS):</th>
+                                        <td><span t-field="line.exp_gross_weight"/></td>
+                                    </tr>
+                                    <tr>
+                                       <th class="text-left" style="width:25%">MEASURE(KGS):</th>
+                                        <td><span t-field="line.exp_net_weight"/></td>
+                                    </tr>
+                                </t>
+                               <br/>
+                                <tr>
+                                   <th>REMARK:</th>
+                                    <td><span t-field="o.note"/></td>
+                                </tr>
+                            </table>
+                        <br/>
+                        <br/>
+
+                        <br/><br/><br/> <!-- Report footer content -->
+                        <left>REMEASUREMENT:</left><br/>
+                        <left>* This Transportation Order to be acknowledge receipt by consignee receipient of cargo upon delivery.</left><br/>
+                        <left>* This document is important to furnish the safe delivery of goods from warehouse to consignee and
+                          it shall be consider as supporting documents for insurance claims(if any) </left><br/>
+                        <left>Please bill for transport to&#160;<b><span t-field="res_company.partner_id"/></b>.</left><br/>
+                        <br/><br/>
+                        <left>Received By:</left>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        <right>Warehouse Received By:</right><br/><br/><br/><br/>
+                        <left>____________________________</left>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        <right>____________________________</right><br/>
+                        <left>Chop &amp; Sign by Transporter</left>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                        <right>Chop &amp; Sign by Warehouse</right><br/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

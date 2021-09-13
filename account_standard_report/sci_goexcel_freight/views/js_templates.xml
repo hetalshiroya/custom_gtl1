@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <template id="assets_editor_popup" inherit_id="web.assets_frontend" name="sci_goexcel_freight sipopup">
+        <xpath expr="." position="inside">
+           <!-- <link rel="stylesheet" href="/sci_goexcel_freight/static/src/css/popup.css"/>-->
+            <script type="text/javascript" src="/sci_goexcel_freight/static/src/js/website_popup_editor.js" />
+
+        </xpath>
+    </template>
+
+  <!--
+    <template id="si_website_popup_options" name="SI Popup Options" inherit_id="website.snippet_options">
+        <xpath expr="//div" position="after">
+            <div data-js='popup_button'
+                data-selector=".popup_button"
+                data-drop-in="div">
+            </div>
+        </xpath>
+    </template>-->
+
+
+
+</odoo>

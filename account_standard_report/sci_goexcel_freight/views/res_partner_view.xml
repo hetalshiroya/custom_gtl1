@@ -1,0 +1,136 @@
+<odoo>
+	<!-- Inherit res.partner search view -->
+	<record id="inherit_res_partner_search_view" model="ir.ui.view">
+		<field name="name">inherit.res.partner.search.view</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_res_partner_filter"/>
+		<field name="arch" type="xml">
+			<xpath expr="." position="inside">
+				<filter name="vendor" string="Carrier" domain="[('carrier','=', True)]"/>
+				<filter name="transporter" string="Transporter" domain="[('transporter','=', True)]"/>
+				<filter name="shipping_agent" string="Shipping Agent" domain="[('shipping_agent','=', True)]"/>
+				<filter name="consignee" string="Consignee" domain="[('consignee','=', True)]"/>
+				<filter name="shipper" string="Shipper" domain="[('shipper','=', True)]"/>
+				<!--<filter name="forwarding_agent" string="Forwarding Agent" domain="[('forwarding_agent','=', True)]"/>-->
+				<!-- <filter name="agent" string="Agent" domain="[('agent','=', True)]"/> -->
+			</xpath>
+		</field>
+	</record>
+
+	<!-- Inherit res.partner form view -->
+	<record model="ir.ui.view" id="res_partner_inherit_view">
+		<field name="name">res.partner.inherit</field>
+		<field name="model">res.partner</field>
+        <field name="type">form</field>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='vat']" position="after">
+				<!--<field name="total_overdue"/>-->
+				<field name="carrier" attrs="{'invisible': [('is_company', '=', False)]}"/>
+				<field name="shipper" attrs="{'invisible': [('is_company', '=', False)]}"/>
+				<field name="transporter" attrs="{'invisible': [('is_company', '=', False)]}"/>
+				<field name="consignee" attrs="{'invisible': [('is_company', '=', False)]}"/>
+				<field name="shipping_agent" attrs="{'invisible': [('is_company', '=', False)]}"/>
+				<!--<field name="forwarding_agent"/>-->
+			 </xpath>
+			<xpath expr="//field[@name='category_id']" position="after">
+				<field name="credit"/>
+			</xpath>
+
+			 <!--<xpath expr="//field[@name='property_account_position_id']" position="after">
+				 <field name="over_credit"/>
+   				<field name="credit_limit"/>
+  			</xpath>-->
+		    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='purchase']/field[@name='supplier']" position="after">
+				<field name="debit"/>
+		    </xpath>
+		</field>
+	</record>
+
+	 <!-- Call action window to view freight booking -->
+    <record id="view_partner_freight_booking" model="ir.actions.act_window">
+        <field name="name">Freight Job History</field>
+        <field name="res_model">freight.booking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>
+        <field name="view_id" ref="sci_goexcel_freight.view_tree_ocean_booking"/>
+		<field name="domain">[('customer_name', '=', active_id)]</field>
+		<!--<field name="context">{
+                'search_default_partner_id': active_id
+            }</field>-->
+    </record>
+
+
+	<!-- Inherited the res partner view and added smart button to call booking count form company view -->
+	<record model="ir.ui.view" id="res_partner_freight_booking_view">
+		<field name="name">Freight Booking</field>
+		<field name="model">res.partner</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<button name="toggle_active" position="after">
+				<button class="oe_stat_button" type="action" name="%(sci_goexcel_freight.view_partner_freight_booking)d"
+                    icon="fa-cubes"
+					attrs="{'invisible': [('is_company', '=', False)]}">
+                    <field string="Freight Booking" name="company_booking_count" widget="statinfo"/>
+				<!--attrs="{'invisible': [('type', '=', 'contact')]}"-->
+					<!-- for type 'contact', company and contact is the  same -->
+                </button>
+			</button>
+		</field>
+	</record>
+
+
+	<!-- Action res.partner for Vendor -->
+	<record id="action_agent_partner" model="ir.actions.act_window">
+		<field name="name">Vendors</field>
+		<field name="res_model">res.partner</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[('supplier', '=', True)]</field>
+		<field name="context">{'search_default_vendor':1}</field>
+	</record>
+
+	<!-- Action res.partner for Customer -->
+	<record id="action_customer_partner" model="ir.actions.act_window">
+		<field name="name">Customers</field>
+		<field name="res_model">res.partner</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[('customer', '=', True)]</field>
+		<field name="context">{'search_default_customer':1}</field>
+	</record>
+
+	<!-- Action product.product for Customer -->
+	<record id="action_product" model="ir.actions.act_window">
+		<field name="name">Products</field>
+		<field name="res_model">product.product</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<!-- <field name="domain">[('customer', '=', True)]</field> -->
+		<!-- <field name="context">{'search_default_customer':1}</field> -->
+	</record>
+
+
+	<menuitem id="main_menu_master_data"
+			  name="Master Data"
+			  parent="menu_freight"
+			  sequence="4"/>
+
+	<menuitem id="menu_vendor"
+			  name="Vendor"
+			  parent="main_menu_master_data"
+			  action="action_agent_partner"/>
+
+	<menuitem id="menu_customer"
+			  name="Customer"
+			  parent="main_menu_master_data"
+			  action="action_customer_partner"/>
+
+	<menuitem id="menu_product"
+			  name="Product"
+			  parent="main_menu_master_data"
+			  action="action_product"/>
+
+</odoo>

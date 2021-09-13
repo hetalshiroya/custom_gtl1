@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_pr_details_inherit" inherit_id="sci_goexcel_payment_receipt.report_pr_details">
+        <xpath expr="//div[@class='page']" position="replace">
+
+            <!-- This is for Payment Voucher for account.payment Outbound  -->
+
+            <div class="page" style="font-family:sans-serif;font-size:16px">
+                     <div class="row mt32 mb32 text-right">
+                          <div class="col-12 bm-2">
+                               <t t-if="payment_receipt_info['payment_type'] == 'outbound'">
+                                   <strong><h1 class="text-center" style="font-family:arial;font-size:30px;">Payment Voucher</h1></strong>
+                                </t>
+                                <!--<t t-if="payment_receipt_info['payment_type'] == 'inbound'">
+                                      <strong>  <h3 class="text-center" style="font-family:arial;font-size:20px;"> Official Receipt </h3></strong>
+                                </t>-->
+
+                          </div>
+                      </div>
+
+                    <div class="row">
+                       <!--<style>
+                            body {font-family:sans-serif;};
+                        </style>-->
+                         <div style="font-family:arial;font-size:16px" class="col-7">
+                             <!--<t t-set="partner_info" t-value="partner"/>-->
+                             <t t-if="payment_receipt_info['payment_type'] == 'outbound'">
+                                 <strong>Paid To:</strong><br/>
+                             </t>
+
+                             <strong><u><span t-esc="partner_info['name']"/></u></strong><br/>
+                               <t t-if="partner_info['street']">
+                                    <span t-esc="partner_info['street']"/><br/>
+                                </t>
+                                <t t-if="partner_info['street2']">
+                                    <span t-esc="partner_info['street2']"/>&#160;
+                                </t>
+                                <t t-if="partner_info['zip']">
+                                    <span t-esc="partner_info['zip']"/>
+                                </t>
+                                <t t-if="partner_info['city']">
+                                    ,<span t-esc="partner_info['city']"/>
+                                </t>
+                                 <t t-if="partner_info['state']">
+                                    ,&#160;<span t-esc="partner_info['state']"/>
+                                 </t>
+                                <t t-if="partner_info['country']">
+                                    ,&#160;<span t-esc="partner_info['country']"/><br/>
+                                </t>
+                                 <t t-if="partner_info['phone']">
+                                    Tel:&#160;<span t-esc="partner_info['phone']"/>
+                                    <t t-if="partner_info['fax']">
+                                     ,&#160;Fax:&#160;<span t-esc="partner_info['fax']"/>
+                                    </t>
+                                 </t><br/>
+                                  <t t-if="partner_info['account_number']">
+                                      <Strong>Bank Account</Strong>:&#160;<span t-esc="partner_info['account_number']"/><br/>
+                                </t>
+
+                         </div>
+                        <div class="col-5 pull-right" style="font-family:arial;font-size:16px">
+                            <!--<div class="col-12 text-left">-->
+                             <div class="col-12 text-left">
+                                  <t t-if="payment_receipt_info['payment_type'] == 'outbound'">
+                                      <b>Payment Voucher No:</b>&#160;<span t-esc="payment_receipt_info['payment_receipt_no']"/><br/>
+                                  </t>
+                             </div>
+                            <div class="col-12 text-left">
+                                <b>Date:</b>&#160;<span t-esc="payment_receipt_info['payment_receipt_date'].strftime('%d/%m/%Y')"/><br/>
+                            </div>
+                            <div class="col-12 text-left">
+                                <t t-if="payment_receipt_info['cheque_no']">
+                                    <b>Cheque No:</b>&#160;<span t-esc="payment_receipt_info['cheque_no']"/><br/>
+                                </t>
+                            </div>
+                            <!--<div class="col-12 text-left">
+                                <b>State:</b>&#160;Done<br/>
+                            </div>-->
+                        </div>
+                     </div>
+                         <br/>
+                    <div class="row">
+                        <div class="col-12 text-left" style="font-family:arial;font-size:16px">
+                       <strong>THE SUM OF &#160;</strong><span t-esc="payment_receipt_info['total_en']"/>&#160;ONLY<br/>
+                        </div>
+                    </div>
+                       <br/>
+                    <div class="row">
+                        <div class="col-12 text-left" style="font-family:arial;font-size:16px">
+                            <t t-if="payment_receipt_info['payment_ref']">
+                                <strong>Payment ref:&#160;</strong><span t-esc="payment_receipt_info['payment_ref']"/><br/>
+                            </t>
+                        </div>
+                    </div>
+
+                    <br/>
+                     <t t-if="len(docs) > 0">
+                         <table class="table table-sm o_main_table" style="font-family:arial;font-size:16px">
+                            <thead>
+                                 <t t-if="payment_receipt_info['payment_type'] == 'outbound'">
+                                    <tr>
+                                        <th class="text-center"><strong>Serial No</strong></th>
+                                        <th class="text-center"><strong>Invoice Date</strong></th>
+                                      <!--  <th class="text-center"><strong>System Inv No</strong></th>-->
+                                        <th class="text-center"><strong>Supplier Inv No</strong></th>
+                                         <th class="text-center"><strong>Source Document</strong></th>
+
+                                        <th class="text-center"><strong>Org. Amount</strong></th>
+                                       <!-- <th class="text-center"><strong>Account</strong></th>-->
+                                     <!--   <th class="text-center"><strong>Description</strong></th>-->
+                                       <!-- <th class="text-center"><strong>Payment Ref</strong></th>-->
+                                        <!--<th class="text-center"><strong>Period</strong></th>-->
+                                        <th class="text-right"><strong>Paid Amount</strong></th>
+                                    </tr>
+                                </t>
+                            </thead>
+                            <tbody>
+                                <t t-if="payment_receipt_info['payment_type'] == 'outbound'">
+                                   <tr t-foreach="docs" t-as="doc">
+                                        <t t-if="doc['amount'] > 0">
+                                            <td class="text-center">
+                                               <span t-esc="doc['serial_no']"/>
+                                            </td>
+                                           <td class="text-center">
+                                                <span t-esc="doc['invoice_date'].strftime('%d/%m/%Y')"/>
+                                            </td>
+                                           <td class="text-center">
+                                                <span t-esc="doc['supplier_invoice_no']"/>
+                                            </td>
+                                           <td class="text-center">
+                                                <span t-esc="doc['source_doc']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="doc['original_amount']"
+                                                       t-options='{"widget": "monetary", "display_currency": doc["currency_id"]}'/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="doc['amount']"
+                                                       t-options='{"widget": "monetary", "display_currency": doc["currency_id"]}'/>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                             <td class="text-center">
+                                            </td>
+                                           <td class="text-center">
+                                            </td>
+                                           <td class="text-center">
+                                            </td>
+                                            <td class="text-center">
+                                            </td>
+                                            <td class="text-right">
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                         </table>
+                     </t>
+                    <t t-if="len(journal_docs) > 0">
+                         <table class="table table-sm o_main_table" style="font-family:arial;font-size:16px">
+                            <thead>
+                                 <t t-if="payment_receipt_info['payment_type'] == 'outbound'">
+                                    <tr>
+                                        <th class="text-center"><strong>Serial No</strong></th>
+                                      <!--  <th class="text-center"><strong>System Inv No</strong></th>-->
+                                        <th class="text-center"><strong>Journal No</strong></th>
+                                         <th class="text-center"><strong>Reference</strong></th>
+                                        <th class="text-center"><strong>Journal Date</strong></th>
+                                       <!-- <th class="text-center"><strong>Account</strong></th>-->
+                                     <!--   <th class="text-center"><strong>Description</strong></th>-->
+                                       <!-- <th class="text-center"><strong>Payment Ref</strong></th>-->
+                                        <!--<th class="text-center"><strong>Period</strong></th>-->
+                                        <th class="text-right"><strong>Amount</strong></th>
+                                    </tr>
+                                </t>
+                            </thead>
+                            <tbody>
+                                <t t-if="payment_receipt_info['payment_type'] == 'outbound'">
+                                   <tr t-foreach="journal_docs" t-as="doc">
+                                        <t t-if="doc['amount'] > 0">
+                                            <td class="text-center">
+                                               <span t-esc="doc['serial_no']"/>
+                                            </td>
+                                          <!--  <td class="text-center">
+                                                <span t-esc="doc['invoice_no']"/>
+                                            </td>-->
+                                           <td class="text-center">
+                                                <span t-esc="doc['journal_no']"/>
+                                            </td>
+                                           <td class="text-center">
+                                                <span t-esc="doc['reference']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="doc['journal_date'].strftime('%d/%m/%Y')"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="doc['amount']"
+                                                       t-options='{"widget": "monetary", "display_currency": doc["currency_id"]}'/>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                             <td class="text-center">
+                                            </td>
+                                           <td class="text-center">
+                                            </td>
+                                           <td class="text-center">
+                                            </td>
+                                            <td class="text-center">
+                                            </td>
+                                            <td class="text-right">
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                         </table>
+                     </t>
+
+                    <div id="total" class="row justify-content-end">
+                         <div class="col-4">
+                            <table class="table table-sm" style="font-family:arial;font-size:14px">
+                                <tr class="border-black o_total">
+                                    <td colspan="3" class="text-right"><strong>Total Amount</strong></td>
+                                    <td class="text-right">
+                                        <span t-esc="payment_receipt_info['total_amount']"
+                                            t-options='{"widget": "monetary", "display_currency": payment_receipt_info["currency_id"]}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+
+                     <t t-if="payment_receipt_info['payment_type'] == 'outbound'" style="font-family:arial;font-size:16px">
+                          <!--<div class="last-page row" id="signature" style="position:absolute; top:1400px; page-break-inside: avoid;">
+                                <div class="col-5">
+                                    <div class="col-24 text-left">
+                                        .................................................................
+                                    </div>
+                                    <div class="col-24 text-left">
+                                         <br/>
+                                        <b>Issued By</b>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                     <div class="col-24 text-left">
+                                        .................................................................
+                                    </div>
+                                    <div class="col-24 text-left">
+                                         <br/>
+                                        <b>Approved By</b>
+                                    </div>
+                                </div>
+                               <div class="col-5">
+                                    <div class="col-16 text-left">
+                                        .................................................................
+                                    </div>
+                                   <div class="col-16 text-left">
+                                        <br/>
+                                       <b>Received By</b>
+                                    </div>
+                                </div>
+                          </div>-->
+                          <div class="footer">
+                            <div class="last-page" style="position:relative;font-size:12px;margin-top:0;">
+                                <table>
+                                    <tr>
+                                        <td style="line-height: 1.6;" width="30%">
+
+
+                                            ................................................................
+                                            <br/> <strong>Issued By</strong>
+                                            <br/><br/><br/>
+
+                                        </td>
+                                        <td style="text-align:left" width="25%">
+
+
+                                            ................................................................
+                                            <br/><strong>Approved By</strong>
+                                             <br/><br/><br/>
+                                        </td>
+                                        <td style="text-align:left" width="20%">
+
+
+                                            ................................................................
+                                            <br/><strong>Received By</strong>
+                                             <br/><br/><br/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="text-center" style="border-top: 1px solid black;font-family:arial;font-size:8pt;">
+                               <ul class="list-inline mb4">
+                                   <li t-if="company_info['phone']" class="list-inline-item">Phone: <span t-esc="company_info['phone']"/></li>
+                                   <b>&#183;</b>&#160;&#160;
+                                   <li t-if="company_info['fax']" class="list-inline-item">Fax : <span t-esc="company_info['fax']"/></li>
+                                   <b>&#183;</b>&#160;&#160;
+                                   <li t-if="company_info['email']" class="list-inline-item">Email: <span t-esc="company_info['email']"/></li>
+                                   <b>&#183;</b>&#160;&#160;
+                                   <li t-if="company_info['website']" class="list-inline-item">Website: <span t-esc="company_info['website']"/></li>
+                               </ul>
+
+<!--                               <div name="financial_infos">-->
+<!--                                   <span t-field="o.company_id.report_footer"/>-->
+<!--                               </div>-->
+
+                               <div t-if="report_type == 'pdf'" class="text-muted">
+                                   Page: <span class="page"/> / <span class="topage"/>
+                               </div>
+                           </div>
+                        </div>
+                     </t>
+                </div>
+
+          </xpath>
+    </template>
+
+
+
+    <!--<template id="payment_receipt_template">
+		<t t-call="web.html_container">
+		    <t t-foreach="docs" t-as="o">
+		        <t t-call="account_voucher_report.report_payment_receipt_details" />
+		    </t>
+		</t>
+	</template>
+-->
+
+</odoo>

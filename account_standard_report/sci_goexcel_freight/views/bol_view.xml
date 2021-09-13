@@ -1,0 +1,132 @@
+<odoo>
+
+	 <!-- Tree View BOL -->
+    <record id='view_tree_bol' model='ir.ui.view'>
+        <field name="name">Bill Of Lading</field>
+        <field name="model">freight.bol</field>
+        <field name="arch" type="xml">
+			<tree string='Bill of Lading'>
+                <field name="bol_status"/>
+				<field name="bol_no"/>
+                <field name="cargo_type"/>
+				<field name="service_type"/>
+                <field name="booking_ref"/>
+               <!-- <field name="direction"/>-->
+                <field name="shipper"/>
+                <field name="consignee" />
+                <field name="notify_party"/>
+                <field name="date_of_issue"/>
+                <field name="create_date"/>
+                <field name="port_of_loading_input"/>
+                <field name="port_of_discharge_input"/>
+                <field name="place_of_delivery"/>
+			</tree>
+		</field>
+	</record>
+
+
+    <!-- Form View BOL -->
+    <record id="view_form_bol" model="ir.ui.view">
+        <field name="name">Bill Of Lading</field>
+        <field name="model">freight.bol</field>
+        <field name="arch" type="xml">
+            <form string="Bill Of Lading">
+                <header>
+                    <field name="bol_status" widget="statusbar" clickable="True" statusbar_visible="01,02,03" options='{"always_reload": True}'/>
+				</header>
+                <sheet>
+					<group string="BL Information">
+                        <group>
+                            <field name="service_type" widget="radio" options="{'horizontal': true}"/>
+                            <field name="direction" widget="radio" options="{'horizontal': true}"/>
+							<field name="cargo_type"  widget="radio" options="{'horizontal': true}"/>
+							<field name="booking_ref" readonly="1"/>
+                            <field name="no_of_original_bl" widget="radio" options="{'horizontal': true}"/>
+                            <field name="doc_form_no"/>
+                            <field name="service_contract_no"/>
+                        </group>
+                        <group>
+							<field name="bol_no" readonly="1"/>
+                            <field name="carrier_booking_no" readonly="1"/>
+                            <field name="date_of_issue" />
+                            <field name="date_laden_on_board"/>
+                            <field name="place_of_issue" />
+                            <field name="export_reference"/>
+							<field name="fa_reference"/>
+                            <field name="point_country_origin"/>
+                            <field name="term"/>
+                        </group>
+                    </group>
+                    <group string="Customer Information">
+                        <group>
+                            <field name="customer_name" domain="[('customer','=',True), ('type','not in',['invoice','delivery'])]" options='{"always_reload": True}'/>
+							<field name="notify_party"/>
+                            <field name="routing_instruction"/>
+                        </group>
+                        <group>
+                             <field name="shipper"/>
+							<field name="consignee"/>
+                            <field name="delivery_contact"/>
+                        </group>
+                    </group>
+					<group string="Shipment Information">
+                        <group>
+                            <field name="voyage_no"/>
+							<field name="vessel"/>
+                            <field name="total_no_of_packages_words"/>
+                        </group>
+                        <group>
+                            <field name="port_of_loading_input"/>
+							<field name="port_of_discharge_input"/>
+							<field name="place_of_delivery"/>
+							<field name="pre_carriage_by"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Manifest">
+                            <field name="cargo_line_ids" mode="tree">
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="marks" />
+                                    <field name="container_product_name" />
+                                    <field name="packages_no"/>
+                                    <field name="seal_no" />
+                                    <field name="packages_no"/>
+                                    <field name="container_no" />
+                                    <field name="exp_gross_weight"/>
+                                    <field name="exp_vol" />
+								</tree>
+							</field>
+						</page>
+                        <page string="Freight Charges">
+                            <field name="charge_line_ids" mode="tree">
+								<tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="freight_charges"/>
+                                    <field name="revenue_tons"/>
+                                    <field name="rate"/>
+                                    <field name="per"/>
+                                    <field name="amount"/>
+                                    <field name="prepaid"/>
+                                    <field name="collect"/>
+                                    <field name="payable_at_by" />
+								</tree>
+							</field>
+						</page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_bol" name="Bill Of Lading" res_model="freight.bol" view_mode="tree,form"/>
+
+
+    <menuitem id="menu_bol" name="Bill Of Lading" parent="main_menu_document" action="action_bol"/>
+
+</odoo>

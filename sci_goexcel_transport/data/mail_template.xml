@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+		<record id="email_template_rft" model="mail.template">
+            <field name="name">Request Of Transport: Send by email</field>
+            <field name="model_id" ref="sci_goexcel_transport.model_transport_rft"/>
+            <field name="email_from">${object.owner.email_formatted |safe}</field>
+            <field name="partner_to">${object.billing_address.id}</field>
+            <field name="subject">Request Of Transport (ROT) (${object.rft_no or 'n/a' })</field>
+            <field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Dear ${object.billing_address.name}
+						<br /><br />
+                        Here is the Request Of Transport for <strong>(Ref ${object.rft_no or 'n/a' })</strong>
+                        on ${object.required_date_time or 'n/a' }<br/>
+                        <table border="1" style="border-collapse: collapse; width:100%;">
+                            <tr>
+                                <th>Pick-Up From</th>
+                                <th>Delivery To</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>${object.pickup_from.name or '' }</b><br/>
+                                    ${object.pickup_from.street or '' }<br/>
+                                    ${object.pickup_from.street2 or '' }<br/>
+                                    ${object.pickup_from.zip or '' }
+                                    ${object.pickup_from.city or '' }
+                                    ${object.pickup_from.state_id.name or '' }
+                                </td>
+                                <td>
+                                    <b>${object.delivery_to.name or '' }</b><br/>
+                                    ${object.delivery_to.street or '' }<br/>
+                                    ${object.delivery_to.street2 or '' }<br/>
+                                    ${object.delivery_to.zip or '' }
+                                    ${object.delivery_to.city or '' }
+                                    ${object.delivery_to.state_id.name or '' }
+                                </td>
+                            </tr>
+
+                        </table>
+
+						Do not hesitate to contact us if you have any question.
+						Thanks.
+					</p>
+				</div>
+            </field>
+            <field name="report_template" ref="action_rft"/>
+            <field name="report_name">Request Of Transport</field>
+            <field name="lang">${object.billing_address.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+	</data>
+</odoo>

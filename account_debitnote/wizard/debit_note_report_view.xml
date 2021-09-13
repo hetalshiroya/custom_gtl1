@@ -1,0 +1,245 @@
+<odoo>
+
+    <record id="view_account_debitnote_report" model="ir.ui.view">
+        <field name="name">account.debitnote.report.form</field>
+        <field name="model">account.debitnote.report</field>
+        <field name="arch" type="xml">
+            <form string="Debit Note">
+                <group>
+                    <group>
+                        <field name="partner_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="filter_debit" widget="radio" options="{'horizontal': true}" />
+                        <field name="balance"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Generate Report"
+                            name="get_report_values"
+                            type="object"
+                            class="btn-primary"
+                            />
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"
+                            />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_account_debitnote_report" model="ir.actions.act_window">
+        <field name="name">Invoice/CN/DN reports</field>
+        <field name="res_model">account.debitnote.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_account_debitnote_report"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="account_reports_debit_notes" sequence="20"
+                  name="Invoice/CN/DN reports" parent="account.menu_finance_reports"/>
+
+        <menuitem id="account_reports_debit_note" sequence="10"
+                  action="action_account_debitnote_report"
+                  name="Invoice/CN/DN reports" parent="account_reports_debit_notes"/>
+
+    <!-- ============================== PDF ================================== -->
+
+    <template id="account_debitnote_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-set="data_report_margin_top" t-value="12"/>
+                <t t-set="data_report_header_spacing" t-value="9"/>
+                <t t-set="data_report_dpi" t-value="110"/>
+                <div class="page">
+                    <style>
+                        .pims_report_content{
+                            font-size: 14px;
+                            font-family" 'Arial';
+                        }
+
+                        .pims_report_line_table {
+                            width:100%;
+                        }
+
+                        .pims_report_summary_table {
+                            width:100%;
+                            font-weight: bold;
+                        }
+
+                        .pims_report_line_main_tr {
+                            font-weight:normal;
+                            font-size: 14px;
+                            font-family" 'Arial';
+                            border-bottom:1px solid grey;
+                        }
+
+                        .pims_report_line_initial_tr {
+                            font-style:italic;
+                        }
+
+                        .pims_report_line_subtotal {
+                            font-weight:bold;
+                            background-color: white;
+                            border:1px solid grey;
+                        }
+                    </style>
+                    <h4><span t-esc="res_company.name"/>:
+                        <t t-if="data[0].get('type')=='debit'">Debit Note Listing Report</t>
+                        <t t-if="data[0].get('type')=='credit'">Credit Note Listing Report</t>
+                        <t t-if="data[0].get('type')=='invoice'">Invoice Listing Report</t>
+                        <t t-if="data[0].get('type')=='bill'"> Vendor bill Listing Report</t>
+                    </h4>
+                    <table width="100%" style="line-height: 20px; font-size:12pt;">
+                        <tr height="8px">
+                            <td style="width: 12%">Date From:</td>
+                            <td class="text-left" style="width: 13%"><span t-esc="data[0].get('date_from')"/></td>
+                            <td style="width: 12%">Date To:</td>
+                            <td style="width: 13%"><span t-esc="data[0].get('date_to')"/></td>
+                            <td class="text-left" style="width: 50%"></td>
+
+                        </tr>
+                    </table>
+                    <table class="pims_report_line_table">
+                        <thead style="border-bottom:2px solid black;font-size:14px;">
+                            <tr>
+                                <th style="padding-top:20px;padding-bottom:20px;">No</th>
+                                <th>Date</th>
+                                <th>Document No</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th class="text-right">Actual Amount</th>
+                                <th class="text-right">Due Amount</th>
+                            </tr>
+                        </thead>
+                        <t t-set="total_amount" t-value="0"/>
+                        <t t-set="total_amount_due" t-value="0"/>
+                        <tbody>
+                            <t t-set="sub_lines" t-value="[]"/>
+                            <t t-set="line_no" t-value="0"/>
+                            <t t-foreach="data[1:]" t-as="dat">
+                                <t t-set="line_no" t-value="line_no + 1"/>
+                                <t t-set="total_amount" t-value="total_amount + dat.get('total_amount')"/>
+                                <t t-set="total_amount_due" t-value="total_amount_due + dat.get('amount')"/>
+                                <tr class="pims_report_line_main_tr">
+                                    <td style="padding-top: 10px;">
+                                       <span t-esc="line_no"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="dat.get('doc_date')" t-options='{"widget": "date"}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="dat.get('doc_number')"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="dat.get('code')"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="dat.get('partner_name')"/>
+                                    </td>
+                                    <td class="text-right" style="white-space: text-nowrap;">
+                                        <span t-att-style="style" t-esc="dat.get('total_amount')"
+                                              t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                    </td>
+                                    <td class="text-right" style="white-space: text-nowrap;">
+                                        <span t-att-style="style" t-esc="dat.get('amount')"
+                                              t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                    </td>
+                                    <t t-set="sub_lines" t-value="dat.get('sub_lines')"/>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="6" style="text-align:center">
+                                        <table style="width:95%;color:grey;font-size:11px">
+                                            <thead style="color:grey;font-size:11px">
+                                                <th>Date</th>
+                                                <th>Doc No</th>
+                                                <th>Description</th>
+                                                <th class="text-right">Doc Amt</th>
+                                                <th class="text-right">Knock-off Amt</th>
+                                            </thead>
+                                            <t t-if="sub_lines">
+                                                <tbody style="color:grey;font-size:11px">
+                                                    <tr class="pims_report_line_main_tr" t-foreach="sub_lines" t-as="sub">
+                                                        <td>
+                                                            <span t-esc="sub.get('date')" t-options='{"widget": "date"}'/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="sub.get('doc_number')"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="sub.get('description')"/>
+                                                        </td>
+                                                        <td class="text-right" style="white-space: text-nowrap;">
+                                                            <span t-att-style="style" t-esc="sub.get('doc_amount')"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        </td>
+                                                        <td class="text-right" style="white-space: text-nowrap;">
+                                                            <span t-att-style="style" t-esc="sub.get('knockoff_amount')"
+                                                                  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </t>
+                                            <t t-else="">
+                                                <tbody>
+                                                    <tr class="pims_report_line_main_tr">
+                                                        <td colspan="4">
+                                                            <p><i>No related data found</i></p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </t>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                     <div>
+                         <table class="table table-sm o_main_table">
+                                <tr>
+                                    <td style="width: 60%"></td>
+                                    <td style="width: 14%" class="text-right">
+                                        <b>
+                                            <span>Total:</span>
+                                        </b>
+                                    </td>
+                                    <td style="width: 13%" class="text-right">
+                                       <!-- <t t-set="l_sub_total" t-value="o.sum_of_udebits + o.ending_balance - o.sum_of_ucredits" />  -->
+                                         <b><span t-esc="total_amount" t-options='{"widget": "float", "precision": 2}'/></b>
+                                    </td>
+                                    <!--<td style="width: 5%">
+                                        <b>
+                                            <span></span>
+                                        </b>
+                                    </td>-->
+                                    <td class="text-right" style="width: 13%">
+                                       <!-- <t t-set="l_sub_total" t-value="o.sum_of_udebits + o.ending_balance - o.sum_of_ucredits" />  -->
+                                         <b><span t-esc="total_amount_due" t-options='{"widget": "float", "precision": 2}'/></b>
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="ins_debitnote_report_pdf"
+        model="account.debitnote.report"
+        string="Invoice/CN/DN reports"
+        report_type="qweb-pdf"
+        name="account_debitnote.account_debitnote_report"
+        file="account_debitnote.account_debitnote_report"
+    />
+
+
+</odoo>

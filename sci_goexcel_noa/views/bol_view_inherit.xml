@@ -1,0 +1,24 @@
+<odoo>
+
+	 <!--Invoice Form-->
+	<record model="ir.ui.view" id="view_form_bl_noa_inherit">
+		<field name="name">Bill Of Lading</field>
+		<field name="model">freight.bol</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_bol"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_send_bl']" position="after">
+				<button name="action_send_noa"
+						type="object" class="oe_highlight"
+						string="Send NOA"
+						attrs="{'invisible': ['|', ('direction', '=', 'export')]}"/>
+			</xpath>
+
+
+
+		</field>
+	</record>
+
+
+
+</odoo>

@@ -1,0 +1,67 @@
+<odoo>
+
+     <!-- Must place before the form view button that call this -->
+   <!-- Call action window to view RFT -->
+     <record id="view_dispatch_job_freight_booking" model="ir.actions.act_window">
+        <field name="name">Dispatch Job</field>
+        <field name="res_model">freight.dispatch.job</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="sci_goexcel_dispatch_job.view_tree_dispatch_job"/>
+		<field name="domain">[('booking_ref', '=', active_id)]</field>
+    </record>
+
+    <!-- Inherited the freight booking view and added 'Dispatch Job' button -->
+     <record model="ir.ui.view" id="view_freight_booking_dispatch_job">
+        <field name="name">Dispatch Job</field>
+        <field name="model">freight.booking</field>
+        <field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='action_cancel_booking']" position="before">
+                <button name="action_copy_to_dispatch_job" type="object" string="Dispatch Job" attrs="{'invisible': [('shipment_booking_status', 'in', ['01'])]}"/>
+            </xpath>
+            <button name="operation_bill" position="after">
+				<button class="oe_stat_button" type="action" name="%(sci_goexcel_dispatch_job.view_dispatch_job_freight_booking)d"
+                    icon="fa-male" attrs="{'invisible': [('booking_dispatch_job_count', '=', 0)]}">
+                    <field string="Dispatch Job" name="booking_dispatch_job_count" widget="statinfo"/>
+                </button>
+			</button>
+        </field>
+    </record>
+
+
+     <!-- Inherited the freight booking view and added for incentive page -->
+     <record model="ir.ui.view" id="view_freight_booking_dispatch_job_incentive">
+        <field name="name">Incentive for Job</field>
+        <field name="model">freight.booking</field>
+        <field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+        <field name="arch" type="xml">
+             <xpath expr="//page[last()]" position="after">
+                  <page string="Incentives">
+                      <group>
+                    <group>
+                         <field name="post_journal"/>
+                         <field name="amount" attrs="{'invisible': [('post_journal', '=', False)]}"/>
+                         <field name="account_id"/>
+                        <field name="property_account_expense_id"/>
+                        <field name="payment_journal_id"/>
+                    </group>
+                      <group>
+                          <button name="action_post_journal"
+							type="object"
+							string="Confirm and Post"
+							class="oe_highlight"/>
+                           <field name="account_date"/>
+                            <field name="move_id" readonly="1"/>
+
+                      </group>
+                      </group>
+                  </page>
+             </xpath>
+
+        </field>
+    </record>
+
+
+
+</odoo>

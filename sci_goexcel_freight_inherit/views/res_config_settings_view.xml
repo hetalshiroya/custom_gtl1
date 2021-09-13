@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.freight</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="4"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Freight" string="Freight" data-key="sci_goexcel_freight_inherit">
+                    <h2>Freight</h2>
+                    <div class="row mt16 o_settings_container" name="freight_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" title="Freight Terms &amp; Conditions.">
+                            <div class="o_setting_left_pane">
+                                <field name="use_freight_note"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Freight Terms &amp; Conditions</span>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="freight_note" placeholder="Insert your freight terms &amp; conditions here..."/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="freight_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_settings_view_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'sci_goexcel_freight_inherit'}</field>
+    </record>
+
+    <menuitem id="menu_freight_setting" name="Settings" parent="sci_goexcel_freight.menu_freight" sequence="99" action="freight_config_settings_action"/>
+
+
+</odoo>

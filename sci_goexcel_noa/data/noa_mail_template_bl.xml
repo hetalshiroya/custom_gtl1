@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template and notification section -->
+    <data noupdate="1">
+         <record id="email_template_noa_bl" model="mail.template">
+            <field name="name">Notice Of Arrival: Send by email</field>
+            <field name="model_id" ref="sci_goexcel_noa.model_freight_bol"/>
+            <field name="email_from">${object.sales_person.email_formatted |safe}</field>
+            <field name="partner_to">${object.customer_name.id}</field>
+            <field name="subject">Notice Of Arrival - ${object.bol_no or ''}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.customer_name.name}
+                        <br/><br/>
+                        Here is the NOA for <strong>${object.bol_no or ''}</strong>
+                        on ${object.date_of_issue or 'n/a' }
+                        <br/>Port of Loading: ${object.port_of_loading_input or 'n/a' }
+                        <br/>Port of Discharge: ${object.port_of_discharge_input or 'n/a' }
+                        <br/>
+                        <br/>
+                        Do not hesitate to contact us if you have any question.
+                        Thanks.
+                    </p>
+                </div>
+            </field>
+            <!-- <field name="report_template" ref="action_notice_of_arrival_report"/> -->
+             <field name="report_template" ref="action_notice_of_arrival_report_bl"/>
+            <field name="report_name">Notice Of Arrival</field>
+            <field name="lang">${object.customer_name.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

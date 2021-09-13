@@ -1,0 +1,28 @@
+<odoo>
+
+    <record id="si_confirm_view_form" model="ir.ui.view">
+        <field name="name">freight.website.si.confirm.form</field>
+        <field name="model">freight.website.si</field>
+        <field name="arch" type="xml">
+            <form string="Shipping Instruction Creation Confirmation">
+                 <div>
+                    Are you sure you want to Create Shipping Instruction (Draft) that will be filled up by Customer?
+                </div>
+                <footer>
+                   <button name="cancel_button" string="Discard" class="btn-primary" special="cancel"/>
+                    <button string="Confirm" name="action_done" type="object" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+<!--        <record id="create_subjob_wizard" model="ir.actions.act_window">-->
+<!--            <field name="name">Create Booking Subjob</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">freight.booking.subjob</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="view_id" ref="subjob_view_form"/>-->
+<!--            <field name="target">new</field>-->
+<!--        </record>-->
+
+</odoo>

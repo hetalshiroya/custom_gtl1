@@ -1,0 +1,74 @@
+<odoo>
+	 <!-- Action on the smart button to open visit company form view and filter -->
+    <record id="view_visits" model="ir.actions.act_window">
+        <field name="name">Visitor Company History</field>
+        <field name="res_model">visit</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form,calendar</field>
+        <field name="view_id" ref="goexcel_visit.view_tree_visit"/>
+		<field name="domain">[('customer_name', '=', active_id)]</field>
+    </record>
+
+    <!-- Action on the smart button to open visit contact form view and filter -->
+	<record id="view_contact_visits" model="ir.actions.act_window">
+        <field name="name">Visitor Contact History</field>
+        <field name="res_model">visit</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form,calendar</field>
+        <field name="view_id" ref="goexcel_visit.view_tree_visit"/>
+		<field name="domain">[('contact', '=', active_id)]</field>
+    </record>
+
+	<!-- Inherited the res partner view and added smart button to call visit form company view -->
+	<record model="ir.ui.view" id="res_partner_visit_view">
+		<field name="name">Visits to Company</field>
+		<field name="model">res.partner</field>
+        <field name="type">form</field>
+		<field name="priority" eval="20"/>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<button name="toggle_active" position="after">
+				<button class="oe_stat_button" type="action" name="%(goexcel_visit.view_visits)d"
+                    icon="fa-plane"
+					attrs="{'invisible': [('is_company', '=', False)]}">
+                    <field string="Visit History" name="visit_company_count" widget="statinfo"/>
+                </button>
+			</button>
+		</field>
+	</record>
+
+    <!-- Inherited the res partner view and added smart button to call visit contact form view -->
+	<record model="ir.ui.view" id="res_partner_contact_visit_view">
+		<field name="name">Visits to Contact</field>
+		<field name="model">res.partner</field>
+        <field name="type">form</field>
+		<field name="priority" eval="20"/>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<button name="toggle_active" position="after">
+				<button class="oe_stat_button"
+                        type="action"
+                        name="%(goexcel_visit.view_contact_visits)d"
+                        icon="fa-plane"
+					    attrs="{'invisible': [('is_company', '=', True)]}">
+                    <field string="Visit History" name="visit_contact_count" widget="statinfo"/>
+                </button>
+			</button>
+		</field>
+	</record>
+
+    <record id="view_partner_visit_form" model="ir.ui.view">
+        <field name="name">res.partner.visit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook[last()]" position="inside">
+                <page string="Visit" name="partner_visit">
+                    <group>
+                        <field name="partner_visit_frequency" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

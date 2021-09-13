@@ -1,0 +1,88 @@
+<odoo>
+
+     <record model="ir.ui.view" id="view_form_transport_rft_inherit">
+         <field name="name">transport.rft.inherit</field>
+         <field name="model">transport.rft</field>
+         <field name="inherit_id" ref="sci_goexcel_transport.view_form_transport_rft"/>
+         <field name="arch" type="xml">
+             <field name="direct_loading" position="after">
+                 <field name="job_type_trip" widget="radio" options="{'horizontal': true}"/>
+                 <field name="special_handling"/>
+                 <field name="scn_terminal_code"/>
+                 <field name="off_load_at_premises" widget="radio" options="{'horizontal': true}"/>
+             </field>
+             <!--
+             <xpath expr="//group[@name='shipping_info']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+
+             <xpath expr="//group[@name='cost_profit']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             -->
+             <field name="rft_note" position="after">
+                 <field name="lcl_container"/>
+             </field>
+             <xpath expr="//button[@name='action_send_rft']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//button[@name='action_send_do']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//tree[@name='cargo_tree']" position="replace">
+				<tree name="cargo_tree">
+                    <field name="sequence" widget="handle" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                    <field name="container_product_name" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                    <field name="packages_no" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                    <field name="packages_no_uom" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                    <field name="exp_gross_weight" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                    <field name="exp_vol" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                    <field name="required_date_time_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                    <field name="container_operator_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                    <field name="accept_hour_line" attrs="{'readonly':[('parent.rft_status', 'in', ['05','06'])]}"/>
+                </tree>
+             </xpath>
+             <xpath expr="//field[@name='requested_by']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+              <xpath expr="//field[@name='requested_by_contact_name']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+              <xpath expr="//field[@name='loading_eta']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+             <!--<xpath expr="//page[@name='cost_profit_ids_rft']" position="attributes">
+                 <attribute name="groups">account.group_account_manager</attribute>
+             </xpath>-->
+        </field>
+    </record>
+    <record id="view_form_transport_rft_container" model="ir.ui.view">
+        <field name="name">Transport RFT Container Line</field>
+        <field name="model">rft.container.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="container_no"/>
+                        <field name="lorry_no"/>
+                        <field name="container_id"/>
+                        <field name="trip_reference" readonly="1"/>
+                        <field name="container_product_id"/>
+                        <field name="container_product_name"/>
+                        <field name="packages_no"/>
+                        <field name="packages_no_uom"/>
+                        <field name="exp_gross_weight"/>
+                        <field name="exp_vol"/>
+                        <field name="required_date_time_line"/>
+                        <field name="container_operator_line"/>
+                        <field name="accept_hour_line"/>
+                        <field name="remark_line"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+</odoo>

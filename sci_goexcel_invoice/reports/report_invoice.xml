@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_invoice_goexcel">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div class="oe_structure" />
+                    <div class="header">
+                        <div class="float-left">
+                            <img t-if="o.company_id.logo"
+                                t-att-src="image_data_uri(o.company_id.logo)"
+                                style="height:60px;width:150px;" />
+                        </div>
+                        <div class="float-right"
+                            style="line-height: 1.2;padding-right:150px;font-color:black;font-family:sans-serif;">
+                            <strong t-field="o.company_id.partner_id.name" />
+                            <br />
+                            <span t-field="o.company_id.partner_id.street" />
+                            ,
+                            <span t-field="o.company_id.partner_id.street2" />
+                            ,
+                            <br />
+                            <span t-field="o.company_id.partner_id.city" />
+                            ,
+                            <span t-field="o.company_id.partner_id.zip" />
+                            <span t-field="o.company_id.partner_id.city" />
+                            ,
+                            <span t-field="o.company_id.partner_id.country_id.name" />
+                            .
+                            <br />
+                            Tel :
+                            <span t-field="o.company_id.phone" />
+                            <br />
+                            Email :
+                            <span t-field="o.company_id.email" />
+                        </div>
+                        <br />
+                    </div>
+                    <div>
+                        <div
+                            style="font-family:sans-serif;float:right;font-size:25px;padding-right:40px;">
+                            <strong>INVOICE</strong>
+                        </div>
+                        <table width="100%"
+                            style="font-family:sans-serif;font-size:18px;">
+                            <tr>
+                                <td width="10%" style="border-top:2px solid black;">
+                                    <strong>TO</strong>
+                                </td>
+                                <td width="1%" style="border-top:2px solid black;">:</td>
+                                <td rowspan="4" width="35%"
+                                    style="border-top:2px solid black;">
+                                    <div t-field="o.partner_id"
+                                        t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' />
+                                </td>
+                                <td width="8%" style="border-top:2px solid black;"></td>
+                                <td width="19%" style="border-top:2px solid black;">
+                                    <strong>INVOICE NO</strong>
+                                </td>
+                                <td width="1%" style="border-top:2px solid black;">:</td>
+                                <td width="26%" style="border-top:2px solid black;">
+                                    <span t-field="o.number" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="10%"></td>
+                                <td width="1%"></td>
+                                <td width="10%"></td>
+                                <td width="19%">STATUS</td>
+                                <td width="1%">:</td>
+                                <td width="26%">
+                                    <span t-field="o.state" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="10%"></td>
+                                <td width="1%"></td>
+                                <td width="10%"></td>
+                                <td width="19%">INVOICE DATE</td>
+                                <td width="1%">:</td>
+                                <td width="26%">
+                                    <span t-field="o.date_invoice" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="10%"></td>
+                                <td width="1%"></td>
+                                <td width="10%"></td>
+                                <td width="19%">TERM</td>
+                                <td width="1%">:</td>
+                                <td width="26%">
+                                    <span t-field="o.payment_term_id.name" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="10%">TEL</td>
+                                <td width="1%">:</td>
+                                <td width="35%">
+                                    <span t-field="o.partner_id.phone" />
+                                </td>
+                                <td width="10%"></td>
+                                <td width="19%">PREPARED BY</td>
+                                <td width="1%">:</td>
+                                <td width="26%">
+                                    <span t-esc="user.name" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="10%">FAX</td>
+                                <td width="1%">:</td>
+                                <td width="35%"></td>
+                                <td width="10%"></td>
+                                <td width="19%"></td>
+                                <td width="1%"></td>
+                                <td width="26%"></td>
+                            </tr>
+                            <tr>
+                                <td width="10%">ATTN</td>
+                                <td width="1%">:</td>
+                                <td width="35%"></td>
+                                <td width="10%"></td>
+                                <td width="19%"></td>
+                                <td width="1%"></td>
+                                <td width="26%"></td>
+                            </tr>
+                            <tr>
+                                <td width="10%">RE</td>
+                                <td width="1%">:</td>
+                                <td width="35%"></td>
+                                <td width="10%"></td>
+                                <td width="19%">QUOTATION NO</td>
+                                <td width="1%">:</td>
+                                <td width="26%"></td>
+                            </tr>
+                            <tr>
+                                <td width="10%">GOODS</td>
+                                <td width="1%">:</td>
+                                <td width="35%"></td>
+                                <td width="10%"></td>
+                                <td width="19%"></td>
+                                <td width="1%"></td>
+                                <td width="26%"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                    <br/>
+                    <table width="100%"
+                        style="font-family:sans-serif;font-size:18px;">
+                        <tr>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">DATE</th>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">DO NO</th>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">LORRY TYPE</th>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">LORRY NO</th>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">PICKUP FROM</th>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">DELIVER TO</th>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">QTY/MT</th>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">UNIT PRICE</th>
+                            <th
+                                style="border-top:2px solid black;border-bottom:2px solid black;">AMOUNT</th>
+                        </tr>
+                        <t t-set="total" t-value="0" />
+                        <tr t-foreach="o.invoice_line_ids" t-as="line"
+                            style="text-align:center">
+                            <td>
+                                <span t-field="o.date_invoice" />
+                            </td>
+                            <td>
+                                <span t-field="line.do_no"/>
+                            </td>
+                            <td>
+                                <span t-field="line.lorry_type" />
+                            </td>
+                            <td>
+                                <span t-field="line.lorry_no" />
+                            </td>
+                            <td>
+                                <span t-field="line.location" />
+                            </td>
+                            <td>
+                                <span t-field="line.dest_location" />
+                            </td>
+                            <td>
+                                <span t-field="line.quantity" />
+                                &#160;
+                                <span t-field="line.uom_id.name" />
+                            </td>
+                            <td>
+                                <span t-field="line.price_unit" />
+                            </td>
+                            <td>
+                                <span t-field="line.price_total" />
+                            </td>
+                            <t t-set="total" t-value="total + line.price_total" />
+                        </tr>
+                    </table>
+                    <t name="document_attachment" t-if="o.document_attachments_ids" t-foreach="o.document_attachments_ids" t-as="attach">
+                        <p style="page-break-after:always;"/>
+                        <img t-attf-src="https://drive.google.com/uc?export=view&amp;id={{attach.file_id}}" height="1000px" width="630px"/>
+                        <p style="page-break-before:always;"/>
+                    </t>
+                    <div class="footer">
+                        <div class="first-page">
+                            <table>
+                                <tr>
+                                    <td style="border-top:2px solid black;" width="75%">
+                                        <strong>
+                                            <span t-esc="o.currency_id.amount_to_text(total)" />
+                                        </strong>
+                                    </td>
+                                    <td style="text-align:center;border-top:2px solid black;">
+                                        <strong>&#160;&#160;Total&#160;&#160;&#160;&#160;</strong>
+                                        <strong>
+                                            <span t-field='o.company_id.currency_id.name' />
+                                        </strong>
+                                        <strong>
+                                            <span t-esc="total" />
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:3.5mm;line-height: 1.6;" width="75%">
+                                        <span t-field="o.comment"/>
+                                    </td>
+                                    <td style="text-align:right" width="25%">
+                                        <br />
+                                        FOR
+                                        <strong>
+                                            <span t-field='o.company_id.name' />
+                                        </strong>
+                                        <t t-if="user.signature_image">
+                                            <br/>
+                                            <img t-if="user.signature_image" t-att-src="image_data_uri(user.signature_image)"
+                                                 style="height:120px;width:300px;" />
+                                        </t>
+                                        <t t-if="not user.signature_image">
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                        __________________________
+                                        </t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_goexcel_invoice"
+        model="report.paperformat">
+        <field name="name">GoExcel Invoice</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">35</field>
+        <field name="margin_bottom">53</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">25</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report id="action_report_goexcel_invoice"
+        model="account.invoice" string="Truck Invoice"
+        report_type="qweb-pdf" name="sci_goexcel_invoice.report_invoice_goexcel"
+        file="sci_goexcel_invoice.report_invoice_goexcel"
+        paperformat="sci_goexcel_invoice.paperformat_goexcel_invoice" />
+
+</odoo>

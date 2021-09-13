@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="paperformat_job_sheet" model="report.paperformat">
+        <field name="name">Job Sheet A4</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">28</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+	<report id="report_job_sheet_action"
+            model="freight.booking"
+            string="Job Sheet"
+            report_type="qweb-pdf"
+            name="sci_goexcel_job_sheet.report_job_sheet_details"
+            file="sci_goexcel_job_sheet.report_job_sheet_details"
+            paperformat="paperformat_job_sheet"
+            print_report_name="'Job Sheet %s' % (object.booking_no)"
+    />
+
+
+    <template id="report_job_sheet_details">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                         <table class="table table-sm table-bordered" style="font-size:13px">
+                              <thead>
+
+                              </thead>
+                              <tbody>
+                                    <tr style="background:#e0e0e0;">
+                                         <td class="text-left" colspan="4">
+                                            <span t-field="o.company_id.name"/>
+                                        </td>
+                                        <td colspan="4">
+                                            <h1><strong>JOB SHEET</strong></h1>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">
+                                           <strong>DATE:</strong>
+                                        </td>
+                                         <td class="text-left">
+                                            <span t-field="o.booking_date_time"/>
+                                        </td>
+                                        <td class="text-left">
+                                           <strong>SALES PERSON:</strong>
+                                        </td>
+                                          <td class="text-left">
+                                            <span t-field="o.sales_person"/>
+                                        </td>
+                                         <td class="text-left">
+                                           <strong>SHIPMENT MODE:</strong>
+                                        </td>
+                                          <td class="text-left">
+                                            <span t-field="o.service_type"/>
+                                        </td>
+                                        <td class="text-left">
+                                           <strong>DIRECTION:</strong>
+                                        </td>
+                                         <td class="text-left">
+                                            <span t-field="o.direction"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" colspan="2">
+                                           <strong>CUSTOMER:</strong>
+                                        </td>
+                                         <td class="text-left" colspan="2">
+                                            <span t-field="o.customer_name"/>
+                                        </td>
+                                        <td class="text-left" colspan="2">
+                                           <strong>JOB NO:</strong>
+                                        </td>
+                                          <td class="text-left" colspan="2">
+                                            <span t-field="o.booking_no"/>
+                                        </td>
+
+                                    </tr>
+                                      <tr>
+                                            <td class="text-left" colspan="2">
+                                               <strong>CONTACT:</strong>
+                                            </td>
+                                             <td class="text-left" colspan="2">
+                                                <span t-field="o.contact_name"/>
+                                            </td>
+                                            <td class="text-left" colspan="2">
+                                               <strong>HBL NO:</strong>
+                                            </td>
+                                              <td class="text-left" colspan="2">
+                                                <span t-field="o.hbl_no"/>
+                                            </td>
+                                      </tr>
+                                       <tr>
+                                            <td class="text-left" colspan="2">
+                                               <strong>TEL/FAX:</strong>
+                                            </td>
+                                             <td class="text-left" colspan="2">
+                                                <span t-field="o.customer_name.phone"/>/<span t-field="o.customer_name.fax"/>
+                                            </td>
+                                            <td class="text-left" colspan="2">
+                                               <strong>MBL NO:</strong>
+                                            </td>
+                                              <td class="text-left" colspan="2">
+                                                <span t-field="o.obl_no"/>
+                                            </td>
+                                      </tr>
+                                        <tr>
+                                            <td class="text-left" colspan="2">
+                                               <strong>AGENT:</strong>
+                                            </td>
+                                             <td class="text-left" colspan="2">
+                                                <span t-field="o.oversea_agent"/>
+                                            </td>
+                                            <td class="text-left" colspan="2">
+                                               <strong>CARRIER BOOKING NO.</strong>
+                                            </td>
+                                              <td class="text-left" colspan="2">
+                                                <span t-field="o.carrier_booking_no"/>
+                                            </td>
+                                      </tr>
+                                      <tr>
+                                            <td class="text-left" colspan="2">
+                                               <strong>VESSEL:</strong>
+                                            </td>
+                                             <td class="text-left" colspan="2">
+                                                <span t-field="o.vessel_name.name"/>
+                                            </td>
+                                            <td class="text-left" colspan="2">
+                                               <strong>ETA:</strong>
+                                            </td>
+                                              <td class="text-left" colspan="2">
+                                                <span t-field="o.port_of_loading_eta"/>
+                                            </td>
+                                      </tr>
+                                      <tr>
+                                            <td class="text-left" colspan="2">
+                                               <strong>VESSEL ID:</strong>
+                                            </td>
+                                             <td class="text-left" colspan="2">
+                                                <span t-field="o.vessel_id"/>
+                                            </td>
+                                            <td class="text-left" colspan="2">
+                                               <strong>SCN NO:</strong>
+                                            </td>
+                                              <td class="text-left" colspan="2">
+                                                <span t-field="o.scn_code"/>
+                                            </td>
+                                      </tr>
+                              </tbody>
+                         </table>
+                        <table class="table table-sm table-bordered" style="font-size:13px">
+                            <thead>
+                                <tr>
+                                    <th style="width:60%; padding-left: 5px;">
+                                    ITEMS
+                                    </th>
+                                    <th style="width:20%; padding-left: 5px;">
+                                        COSTING(RM)
+                                    </th>
+                                    <th style="width:20%; padding-left: 5px;">
+                                        BILLING(RM)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="sale_total" t-value="0"/>
+                                <t t-set="cost_total" t-value="0"/>
+                                <t t-set="product_id" t-value="false"/>
+                                <t t-set="product_name" t-value="false"/>
+                                <t t-set="costing" t-value="0"/>
+                                <t t-set="billing" t-value="0"/>
+                                <t t-foreach="cost_profit_ids1" t-as="cost">
+                                    <!--
+                                    <t t-set="sale_total" t-value="sale_total+line.sale_total"/>
+                                    <t t-set="cost_total" t-value="cost_total+line.cost_total"/>
+                                    -->
+
+                                    <t t-if="cost['product_id'] == product_id">
+                                        <t t-set="product_name" t-value="cost['product_name']"/>
+                                        <t t-set="costing" t-value="costing + cost['costing']"/>
+                                        <t t-set="billing" t-value="billing + cost['billing']"/>
+                                    </t>
+
+                                    <t t-if="not product_id">
+                                        <t t-set="product_id" t-value="cost['product_id']"/>
+                                        <t t-set="product_name" t-value="cost['product_name']"/>
+                                        <t t-set="costing" t-value="cost['costing']"/>
+                                        <t t-set="billing" t-value="cost['billing']"/>
+                                    </t>
+
+                                    <t t-if="cost['product_id'] != product_id">
+                                        <tr>
+                                            <td>
+                                                <span t-esc="product_name"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(costing)" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(billing)" />
+                                            </td>
+                                        </tr>
+                                        <t t-set="product_id" t-value="cost['product_id']"/>
+                                        <t t-set="product_name" t-value="cost['product_name']"/>
+                                        <t t-set="costing" t-value="cost['costing']"/>
+                                        <t t-set="billing" t-value="cost['billing']"/>
+                                    </t>
+
+
+                                </t>
+                                <t t-if="cost_total == 0">
+                                    <t t-set="cost_total" t-value="1"/>
+                                </t>
+                                <t t-set="margin" t-value="sale_total*100/cost_total"/>
+                                <t t-set="profit" t-value="sale_total-cost_total"/>
+                                <tr>
+                                    <t t-foreach="info_ids1" t-as="info">
+                                        <td>
+                                            <b>PROFIT (RM) : </b>
+                                            <u><t t-esc="'{0:,.2f}'.format(info['profit'])" /> (<t t-esc=" '%.2f'% info['margin']"/>%)</u>
+                                            <span style="float:right;"><b>TOTAL (RM) : </b></span>
+                                        </td>
+                                        <td>
+                                            <u><t t-esc="'{0:,.2f}'.format(info['cost_total'])" /></u>
+                                        </td>
+                                        <td>
+                                            <u><t t-esc="'{0:,.2f}'.format(info['sale_total'])" /></u>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-bordered" style="font-size:13px">
+                            <thead>
+                                <tr>
+                                    <th style="width:25%; padding-left: 5px;">
+                                        DOC
+                                    </th>
+                                    <th style="width:35%; padding-left: 5px;">
+                                        NAME
+                                    </th>
+                                    <th style="width:15%; padding-left: 5px;">
+                                        INVOICE NO.
+                                    </th>
+                                    <th style="width:10%; padding-left: 5px;">
+                                        CUR
+                                    </th>
+                                    <th style="width:15%; padding-left: 5px;">
+                                        AMOUNT
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="invoice_ids1" t-as="invoice">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="invoice['type']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoice['partner_id']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoice['number']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoice['currency_id']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="'{0:,.2f}'.format(invoice['amount_total'])" />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

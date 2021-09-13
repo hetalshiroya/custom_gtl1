@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sales_commission_wizard_view"
+        model="ir.ui.view">
+        <field name="name">Monthly Sales Commission Report</field>
+        <field name="model">monthly.sales.commission.report</field>
+        <field name="arch" type="xml">
+            <form string="Sales Commission Report">
+                <group>
+                    <group>
+                        <field name="date_range" widget="radio"/>
+                    </group>
+                    <group>
+                        <field name="start_date" required="1" attrs="{'invisible':[('date_range','!=','custom_date')]}"/>
+                        <field name="end_date" required="1" attrs="{'invisible':[('date_range','!=','custom_date')]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="sales_commssion_excel_report"
+                        string="Generate Excel Report" type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_sales_commission_report"
+        model="ir.actions.act_window">
+        <field name="name">Monthly Sales Commission Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">monthly.sales.commission.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_sales_commission_report"
+        name="Monthly Sales Commission Report"
+        action="action_view_sales_commission_report"
+        parent="account.menu_finance_reports" sequence="6" />
+
+    <!-- Form view of Commission XLS wizard -->
+    <record id="view_commission_xls_report" model="ir.ui.view">
+        <field name="name">view.commission.xls.report</field>
+        <field name="model">commission.xls.report</field>
+        <field name="arch" type="xml">
+            <form string="Excel Export">
+                <group>
+                    <field name="name" invisible="1"/>
+                    <h4>Click On Link To Download Xls File: &#160;<field name="file" filename="name" nolabel="1"/></h4>
+                </group>
+                <footer>
+                    <button special="cancel" string="Cancel" colspan="2"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

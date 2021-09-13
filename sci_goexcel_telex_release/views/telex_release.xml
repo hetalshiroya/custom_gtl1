@@ -1,0 +1,27 @@
+<odoo>
+ 		<record id="telex_release_view_form" model="ir.ui.view">
+            <field name="name">telex.release.form</field>
+            <field name="model">telex.release</field>
+            <field name="arch" type="xml">
+                <form string="Telex Release">
+                    <sheet>
+                        <group>
+                            <field name="date" readonly="1"/>
+                            <field name="bl_no" readonly="1"/>
+                            <field name="vessel" readonly="1"/>
+                            <field name="second_vessel" readonly="1"/>
+                            <field name="volume" readonly="1"/>
+                            <field name="container_no" readonly="1"/>
+                            <field name="shipper" readonly="1"/>
+                            <field name="release_to" domain="[('customer','=',True)]"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_print" string="Print" type="object" class="btn-primary"/>
+                        <button name="action_send" string="Send" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>

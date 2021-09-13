@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_inherit_ip" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.ip</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]/div[hasclass('app_settings_block')]/div[@id='invoicing_settings']" position="after">
+                    <h2>Invoices Approval</h2>
+                    <div class="row mt16 o_settings_container" name="invoice_approval_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" title="This Amount is check when any new invoice/bill created.">
+                            <div class="o_setting_left_pane">
+                                <field name="invoice_bill_approval"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Invoice/Bill Approval</span>
+                                <div class="text-muted">
+                                    Managers must approve Invoices/Bills
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16" attrs="{'invisible': [('invoice_bill_approval', '=', False)]}">
+                                        <label string="Invoice Minimum Amount" for="invoice_ammount" class="col-lg-4 o_light_label"/>
+                                        <field name="invoice_ammount"/>
+                                        <label string="Invoice Approver" for="invoice_user_ids" class="col-lg-4 o_light_label"/>
+                                        <field name="invoice_user_ids" widget="many2many_tags" options="{'no_create_edit':True,'no_open':True,'no_edit':True,'no_create':True}"/>
+                                    </div>
+                                    <div class="row" attrs="{'invisible': [('invoice_bill_approval', '=', False)]}">
+                                        <label string="Bill Minimum Amount" for="bill_ammount" class="col-lg-4 o_light_label"/>
+                                        <field name="bill_ammount"/>
+                                        <label string="Bill Approver" for="bill_user_ids" class="col-lg-4 o_light_label"/>
+                                        <field name="bill_user_ids" widget="many2many_tags" options="{'no_create_edit':True,'no_open':True,'no_edit':True,'no_create':True}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" title="This Amount is check when any new invoice/bill created.">
+                            <div class="o_setting_left_pane">
+                                <field name="customer_vendor_credit_approval"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Customer/Vendor Credit Note Approval</span>
+                                <div class="text-muted">
+                                    Managers must approve Customer/Vendor Credit Note
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16" attrs="{'invisible': [('customer_vendor_credit_approval', '=', False)]}">
+                                        <label string="Customer Credit Note Minimum Amount" for="customer_credit_note_ammount_ammount" class="col-lg-4 o_light_label"/>
+                                        <field name="customer_credit_note_ammount_ammount"/>
+                                        <label string="Customer CN Approver" for="invoice_cn_user_ids" class="col-lg-4 o_light_label"/>
+                                        <field name="invoice_cn_user_ids" widget="many2many_tags" options="{'no_create_edit':True,'no_open':True,'no_edit':True,'no_create':True}"/>
+                                    </div>
+                                    <div class="row" attrs="{'invisible': [('customer_vendor_credit_approval', '=', False)]}">
+                                        <label string="Vendor Credit Note Minimum Amount" for="vendor_credit_note_ammount" class="col-lg-4 o_light_label"/>
+                                        <field name="vendor_credit_note_ammount"/>
+                                        <label string="Vendor CN Approver" for="bill_cn_user_ids" class="col-lg-4 o_light_label"/>
+                                        <field name="bill_cn_user_ids" widget="many2many_tags" options="{'no_create_edit':True,'no_open':True,'no_edit':True,'no_create':True}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

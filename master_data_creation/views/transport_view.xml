@@ -1,0 +1,29 @@
+<odoo>
+	 <!-- SQ Form -->
+	<record model="ir.ui.view" id="view_transport_inherit">
+		<field name="name">Partner Product Creation</field>
+		<field name="model">transport.rft</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="sci_goexcel_transport.view_form_transport_rft"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='pickup_from']" position="before">
+				<button name="action_partner_product_creation" type="object" string="Master Data Creation"/>
+			</xpath>
+			<xpath expr="//field[@name='pickup_from']" position="replace">
+				<field name="pickup_from" domain="[('shipper', '=', True), ('type','not in',['invoice'])]"
+					   context="{'show_address': 1,
+					   			'form_view_ref':'partner_product_creation.master_data_edit_form'}"
+					   options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+			</xpath>
+			<xpath expr="//field[@name='delivery_to']" position="replace">
+				<field name="delivery_to" domain="[('consignee', '=', True), ('type','not in',['invoice'])]"
+					   context="{'show_address': 1,
+					   			'form_view_ref':'partner_product_creation.master_data_edit_form'}"
+					   options='{"always_reload": True}' attrs="{'readonly':[('rft_status', 'in', ['05','06'])]}"/>
+			</xpath>
+
+
+		</field>
+	</record>
+</odoo>

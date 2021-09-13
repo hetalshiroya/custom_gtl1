@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+
+        <!-- Own Conversations Read, Write, Create -->
+        <record model="ir.rule" id="rule_cetmix_conversations_own_cru">
+            <field name="name">Access own Conversations only CRU</field>
+            <field name="model_id" ref="model_cetmix_conversation"/>
+            <field name="groups" eval="[(4, ref('group_conversation_own'))]"/>
+            <field name="domain_force">[('partner_ids', 'in', [user.partner_id.id])]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Own Conversations Unlink -->
+        <record model="ir.rule" id="rule_cetmix_conversations_own_d">
+            <field name="name">Access own Conversations only D</field>
+            <field name="model_id" ref="model_cetmix_conversation"/>
+            <field name="groups" eval="[(4, ref('group_conversation_own'))]"/>
+            <field name="domain_force">[('author_id', '=', user.partner_id.id)]</field>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Any Conversation -->
+        <record model="ir.rule" id="rule_cetmix_conversations_any">
+            <field name="name">Any Conversation</field>
+            <field name="model_id" ref="model_cetmix_conversation"/>
+            <field name="groups" eval="[(4, ref('group_conversation_all'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+    </data>
+</odoo>

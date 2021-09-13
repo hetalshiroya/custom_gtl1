@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_or_details">
+        <t t-call="web.html_container">
+            <div class="header">
+                <div>
+                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style=" margin-right:15px; max-height: 120px; max-width: 200px; float: left" alt="Logo"/>
+                    <t t-if="res_company.partner_id">
+                        <b><span t-field="res_company.partner_id.name" style="font-family:arial;font-size:15pt;"/><br/></b>
+                        <span t-field="res_company.partner_id.street"/><br/>
+                        <span t-field="res_company.partner_id.zip"/>
+                        <span t-field="res_company.partner_id.city"/>,
+                        <span t-field="res_company.partner_id.state_id.name"/>,
+                        <span t-field="res_company.partner_id.country_id.name"/><br/>
+                        Hunting Line: <span t-field="res_company.partner_id.phone"/>
+                        <![CDATA[&nbsp;&nbsp;]]>
+                        Reg No: <span t-field="res_company.company_registry"/><br/>
+                        Email : <span t-field="res_company.partner_id.email"/>
+                        <![CDATA[&nbsp;]]>
+                        Website : <span t-field="res_company.partner_id.website"/>
+                    </t>
+                </div>
+            </div>
+            <div class="page" style="font-family:arial;font-size:12px">
+            <br/><br/>
+                <h4 class="text-center" style="font-family:arial;font-size:16.0pt;"><center>Credit Note</center></h4>
+            <br/><br/>
+            <table style="line-height: 150%; font-size:14px; width:100%;">
+                <tr>
+
+                    <td style="vertical-align: top; padding-left: 5px; width:50%;">
+                        <strong>To :</strong><br/>
+                        <strong><u><span t-esc="partner_info['name']"/></u></strong><br/>
+                        <t t-if="partner_info['street']">
+                            <span t-esc="partner_info['street']"/><br/>
+                        </t>
+                        <t t-if="partner_info['street2']">
+                            <span t-esc="partner_info['street2']"/>&#160;
+                        </t>
+                        <t t-if="partner_info['zip']">
+                            <span t-esc="partner_info['zip']"/>,
+                        </t>
+                        <t t-if="partner_info['city']">
+                            <span t-esc="partner_info['city']"/>,&#160;
+                        </t>
+                        <t t-if="partner_info['state']">
+                            <span t-esc="partner_info['state']"/>,&#160;
+                        </t>
+                        <t t-if="partner_info['country']">
+                            <span t-esc="partner_info['country']"/><br/>
+                        </t>
+                        <t t-if="partner_info['phone']">
+                            Tel:&#160;<span t-esc="partner_info['phone']"/>,&#160;Fax:&#160;<span t-esc="partner_info['fax']"/><br/>
+                        </t>
+                    </td>
+                    <td style="vertical-align: top; padding-left: 5px; width:20%; text-align:right">
+                        <b>Doc No:</b><br/>
+                        <b>Date:</b><br/>
+                        <b>Account:</b>
+                    </td>
+                    <td style="vertical-align: top; padding-left: 5px; width:30%;">
+                        <span t-field="o.freight_booking.consignee"/><br/>
+                        <span t-field="o.freight_booking.consignee"/><br/>
+                        <span t-field="o.freight_booking.consignee"/>
+                    </td>
+                </tr>
+            </table>
+
+
+                <table style="border-collapse: collapse; line-height: 150%; font-size:14px; width:100%; text-align:center">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width:25%;"><strong>A/C</strong></th>
+                            <th class="text-center" style="width:55%;"><strong>Description</strong></th>
+                            <th class="text-center" style="width:20%;"><strong>Amount(RM)</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="docs" t-as="doc">
+                            <td class="text-center">
+                                <span t-esc="partner_info['ref']"/>&#160;&#160;<span t-esc="partner_info['name']"/>
+                            </td>
+                            <td class="text-center">
+                                PYMT FOR INV: <span t-esc="doc['invoice_no']"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="doc['amount']"
+                                      t-options='{"widget": "monetary", "display_currency": doc["currency_id"]}'/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table style="border-collapse: collapse; line-height: 150%; font-size:14px; width:50%; text-align:center">
+                    <thead>
+                        <tr>
+                            <th class="text-center"><strong>Doc No.</strong></th>
+                            <th class="text-center"><strong>Doc Date</strong></th>
+                            <th class="text-center"><strong>Org. Amt</strong></th>
+                            <th class="text-center"><strong>Paid Amt</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="docs" t-as="doc">
+                            <td class="text-center">
+                                <span t-esc="doc['invoice_no']"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="doc['invoice_date']"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="doc['invoice_amount']"
+                                      t-options='{"widget": "monetary", "display_currency": doc["currency_id"]}'/>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="doc['amount']"
+                                      t-options='{"widget": "monetary", "display_currency": doc["currency_id"]}'/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="last-page row" id="signature" style="position:absolute; bottom:100px; page-break-inside: avoid;">
+                    <hr/>
+                    <table style="line-height: 150%; font-size:14px; width:100%;">
+                        <tr>
+                            <td style="vertical-align: top; padding-left: 5px; width:70%;">
+                                RINGGIT MALAYSIA : <span t-esc="payment_receipt_info['total_en']"/><br/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px; width:10%;text-align:right">
+                                Total:<br/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px; width:20%;">
+                                <span t-esc="payment_receipt_info['total_amount']"
+                                      t-options='{"widget": "monetary", "display_currency": payment_receipt_info["currency_id"]}'/><br/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="line-height: 150%; font-size:14px; width:100%;">
+                        <tr>
+                            <td style="vertical-align: top; padding-left: 5px; width:40%;">
+                                <br/><br/><br/>
+                                N.B.<br/>
+                                Validity of This Receipt<br/>
+                                Subject to Clearing of Cheque<br/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px; width:30%;text-align:center">
+
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px; width:30%;text-align:center">
+                                <br/><br/><br/>
+                                ................................................................................<br/>
+                                <center><b>For GLOBAL TRACK LINES (M) SDN. BHD.</b></center>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+        </t>
+    </template>
+
+
+
+    <!--<template id="payment_receipt_template">
+		<t t-call="web.html_container">
+		    <t t-foreach="docs" t-as="o">
+		        <t t-call="account_voucher_report.report_payment_receipt_details" />
+		    </t>
+		</t>
+	</template>
+-->
+
+</odoo>

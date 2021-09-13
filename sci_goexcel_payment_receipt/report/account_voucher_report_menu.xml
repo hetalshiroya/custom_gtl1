@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+   <!--  <record id="paperformat_account_voucher" model="report.paperformat">
+        <field name="name">Payment Receipt A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_right">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+    </record>-->
+
+
+
+	<report id="report_sr_action"
+        model="account.voucher"
+        string="Official Receipt"
+        report_type="qweb-pdf"
+        name="sci_goexcel_payment_receipt.report_sr_details"
+        file="sci_goexcel_payment_receipt.report_sr_details"
+        menu="False"/>
+
+
+   <report id="report_av_pr_action"
+        model="account.voucher"
+        string="Payment Receipt"
+        report_type="qweb-pdf"
+        name="sci_goexcel_payment_receipt.report_av_pr_details"
+        file="sci_goexcel_payment_receipt.report_av_pr_details"
+        menu="False"/>
+        
+    
+
+    
+    <!--<record id="account_voucher_report.report_payment_receipt_action" model="ir.actions.report">
+        <field name="paperformat_id" ref="account_voucher_report.paperformat_payment_receipt" />
+    </record>-->
+    
+        
+        
+</odoo>

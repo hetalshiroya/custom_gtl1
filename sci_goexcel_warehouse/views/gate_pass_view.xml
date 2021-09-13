@@ -1,0 +1,133 @@
+<odoo>
+
+	<!-- Tree View Gate Pass -->
+     <record id='view_tree_warehouse_gate_pass' model='ir.ui.view'>
+        <field name="name">Gate Pass Tree</field>
+        <field name="model">warehouse.gate.pass.line</field>
+        <field name="arch" type="xml">
+			<tree string='Warehouse Gate Pass'>
+                <field name="sequence" widget="handle"/>
+                 <field name="container_no"/>
+                 <field name="seal_no"/>
+                 <field name="time_in"/>
+                <field name="time_out"/>
+                <field name="truck_no"/>
+                <field name="driver"/>
+                <field name="prepared_by"/>
+                <field name="received_by"/>
+                <field name="security"/>
+                <field name="job_status"/>
+                <field name="remark_line"/>
+                <field name="write_date"/>
+			</tree>
+		</field>
+	</record>
+
+
+
+	  <!-- Form View Packing -->
+    <record id="view_form_warehouse_gate_pass" model="ir.ui.view">
+        <field name="name">Gate Pass Form</field>
+        <field name="model">warehouse.gate.pass.line</field>
+        <field name="arch" type="xml">
+           <form string="Warehouse Gate Pass">
+                <header>
+                    <button name="action_cancel_gatepass"
+							type="object"
+							string="Cancel Gate Pass"
+							class="oe_button"
+                            confirm="Are you sure you want to Cancel Gate Pass?"
+                            attrs="{'invisible': [('job_status', 'in', ['03','04'])]}"/>
+                    <field name="job_status" widget="statusbar" clickable="True" statusbar_visible="01,02,03,04"/>
+
+                </header>
+                <sheet>
+                    <!-- <div class="oe_button_box"
+							name="button_box">
+			        </div>-->
+                    <group string="Gate Pass" name="gate_pass">
+                        <group>
+                            <field name="job_no"/>
+                            <field name="container_no"/>
+                            <field name="seal_no"/>
+                             <field name="time_in"/>
+                            <field name="time_out"/>
+                            <field name="truck_no"/>
+                            <field name="driver"/>
+                        </group>
+                        <group>
+                            <field name="prepared_by"/>
+                            <field name="received_by"/>
+                            <field name="security"/>
+                            <field name="container_gatepass_line_id"/>
+                            <field name="remark_line"/>
+                            <field name="create_date"/>
+							<field name="create_uid"/>
+							<field name="write_date"/>
+							<field name="write_uid"/>
+                        </group>
+                    </group>
+                </sheet>
+                 <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- Search Gate Pass -->
+    <record id="view_search_gate_pass" model="ir.ui.view">
+       <field name="name">warehouse.gate.pass.line.search</field>
+        <field name="model">warehouse.gate.pass.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="job_no"/>
+                <field name="container_no"/>
+                <field name="seal_no"/>
+                <filter string="Draft" name="job status" domain="[('job_status', '=', '01')]"/>
+                <filter string="In Progress" name="job status" domain="[('job_status', '=', '02')]"/>
+                <filter string="Done" name="job status" domain="[('job_status', '=', '03')]"/>
+                <filter string="Time In" name="filter_time_in" date="time_in"/>
+                <filter string="Time Out" name="filter_time_out" date="time_out"/>
+            </search>
+        </field>
+    </record>
+
+
+     <record id="view_calendar_gate_pass" model="ir.ui.view">
+         <field name="name">warehouse.gate.pass.line.calendar</field>
+         <field name="model">warehouse.gate.pass.line</field>
+        <field name="arch" type="xml">
+            <calendar color="job_no" date_start="time_in" string="Gate Pass" mode="week" quick_add="0"
+                      all_day="time_in">
+                     <field name="job_status" />
+                    <!-- <field name="shipment_close_date_time" />
+                     <field name="port_of_discharge_eta" />-->
+            </calendar>
+        </field>
+    </record>
+
+
+
+     <record id="action_gate_pass" model="ir.actions.act_window">
+		<field name="name">Gate Pass</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">warehouse.gate.pass.line</field>
+		<field name="view_mode">tree,form,calendar</field>
+
+ 	</record>
+
+
+<!--
+    <menuitem id="menu_warehouse_gatepass" name="GoExcel Warehouse" parent="stock.menu_stock_root" sequence="3"/>
+-->
+<!--
+    <menuitem id="menu_warehouse_gatepass_1" name="Gate Pass" parent="menu_warehouse_tallysheet" action="action_gate_pass" sequence="6"/>
+-->
+
+
+
+</odoo>

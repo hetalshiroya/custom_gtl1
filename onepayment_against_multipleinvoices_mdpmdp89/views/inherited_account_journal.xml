@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="view_account_journal_form_exchange" model="ir.ui.view">
+            <field name="name">view.account.journal.form.exchange</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                  <field name="default_credit_account_id" position="after">
+                        <field name="bank_charge_account_id" attrs="{'invisible': [('type', '!=', 'bank')]}"/>
+                  </field>
+            </field>
+        </record>
+           
+
+    </data>
+</odoo>

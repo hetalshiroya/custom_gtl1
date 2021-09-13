@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="res_compnay_view_form_gdrie" model="ir.ui.view">
+        <field name="name">res.company.view.form.inherit.google.drive</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//page[last()]" position="after">
+				<page string="Google Drive Folder" name="google_drive_att">
+					<group>
+						<field name="drive_folder_id"/>
+						<field name="folder_type"/>
+						<field name="model_ids" widget="many2many_tags" options="{'no_create_edit':True,'no_open':True,'no_edit':True,'no_create':True}"/>
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

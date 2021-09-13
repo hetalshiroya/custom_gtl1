@@ -1,0 +1,19 @@
+<odoo>
+	<record model="ir.ui.view" id="view_form_booking_noa_inherit">
+		<field name="name">Booking Inherit</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_create_bl']" position="after">
+				<button name="action_send_noa"
+						type="object" class="oe_highlight"
+						string="Send NOA"
+						attrs="{'invisible': ['|', ('direction', '=', 'export')]}"/>
+			</xpath>
+		</field>
+	</record>
+
+
+
+</odoo>

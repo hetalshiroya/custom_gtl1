@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- tree view -->
+	<record id="cost_profit_tree_view" model="ir.ui.view">
+		<field name="name">freight.cost_profit.tree.view</field>
+		<field name="model">freight.cost_profit</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="product_id"/>
+                <field name="vendor_id"/>
+				<field name="cost_price"/>
+				<field name="list_price"/>
+			</tree>
+		</field>
+	</record>
+
+	<!-- form view -->
+	<record id="cost_profit_form_view" model="ir.ui.view">
+		<field name="name">freight.cost_profit.form.view</field>
+		<field name="model">freight.cost_profit</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<group>
+							<field name="product_id" required="1"/>
+							<field name="profit_qty" required="1"/>
+							<field name="uom_id"/>
+							<field name="sale_total"/>
+						</group>
+						<group>
+							<field name="vendor_id" required="1"/>
+							<field name="list_price"/>
+							<field name="cost_price"/>
+							<field name="cost_total"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<!-- Action -->
+	<record id="action_cost_profit" model="ir.actions.act_window">
+		<field name="name">Cost_Profit</field>
+		<field name="res_model">freight.cost_profit</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_type">form</field>
+	</record>
+
+	<!-- Smartbutton Action Of Operation Services -->
+	<record id="action_open_cost_profit"
+			model="ir.actions.act_window">
+		<field name="name">Cost_Profit</field>
+		<field name="res_model">freight.cost_profit</field>
+		<field name="view_mode">tree,form</field>
+        <!--
+		<field name="domain">[('operation_id', '=', active_id)]
+		</field>
+		<field name="context">{'default_operation_id': active_id}</field>
+		-->
+	</record>
+</odoo>

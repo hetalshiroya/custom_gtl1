@@ -1,0 +1,28 @@
+<odoo>
+
+
+	 <!--inherit onepaymentagainstmultipleinvocies Form-->
+	<!--<record model="ir.ui.view" id="view_invoice_vendor_form_bhl">
+		<field name="name">account.invoice.form.vendor.inherit.bhl</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="onepayment_against_multipleinvoices_mdpmdp89.view_account_payment_form_inherited"/>
+        <field name="type">form</field>
+		<field name="priority" eval="16"/>
+		<field name="arch" type="xml">
+
+		</field>
+	</record>-->
+
+	 <record id="view_account_payment_gtl" model="ir.ui.view">
+        <field name="name">Account Payment</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_search"/>
+        <field name="arch" type="xml">
+            <search>
+				<!--<field name="reference" string="Payment Reference"/>-->
+				<field name="payment_date"/>
+			</search>
+        </field>
+    </record>
+
+</odoo>

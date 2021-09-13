@@ -1,0 +1,36 @@
+<odoo>
+
+ 		<record id="loading_plan_view_form" model="ir.ui.view">
+            <field name="name">loading.plan.wizard.form</field>
+            <field name="model">loading.plan.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Loading Plan">
+                    <group class="oe_title">
+                        <field name="container_line_loadingplan_ids2">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="add_to_loading_plan"/>
+                                <field name="loading_date"/>
+                                <field name="container_product_id"/>
+                                <field name="product"/>
+                                <field name="container_no"/>
+                                <field name="marking"/>
+                                <field name="seal_no"/>
+                                <field name="no_of_packages"/>
+                                <field name="no_of_package_uom"/>
+                                <field name="warehouse_location"/>
+                                <field name="transporter"/>
+                                <field name="truck_no"/>
+                                <field name="driver"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="action_create_loading_plan" string="Create" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+</odoo>

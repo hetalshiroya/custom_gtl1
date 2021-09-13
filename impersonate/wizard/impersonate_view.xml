@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_impersonate" model="ir.ui.view">
+			<field name="name">impersonate.form</field>
+			<field name="model">impersonate</field>
+			<field name="arch" type="xml">
+				<form string="Impersonate User">
+					<group>
+						<field name="user_id" options="{'no_create': True}"
+							context="{'impersonate_selection': True}" string="User" />
+					</group>
+
+					<footer>
+						<button type="object" name="apply" string="Impersonate" class="btn-primary" />
+						<button string="Cancel" special="cancel" class="btn-default" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_impersonate" model="ir.actions.act_window">
+			<field name="name">Select User to Impersonate</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">impersonate</field>
+			<field name="target">new</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+		</record>
+
+		<record id="action_impersonate_view" model="ir.actions.act_window.view">
+			<field eval="10" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_impersonate" />
+			<field name="act_window_id" ref="action_impersonate" />
+		</record>
+
+	</data>
+</odoo>

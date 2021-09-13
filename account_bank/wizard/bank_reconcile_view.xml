@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="bank_reconcile_wizard_form" model="ir.ui.view">
+        <field name="name">Bank Reconcile</field>
+        <field name="model">bank.reconcile</field>
+        <field name="arch" type="xml">
+            <form string="Reconcile">
+                <group>
+                    <group>
+                        <field name="starting_bal"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="button_reconcile" string="Reconcile"
+                        type="object" class="oe_highlight" />
+                    or
+                    <button string="Cancel" class="oe_link"
+                        special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <act_window id="bank_reconcile_action"
+            multi="True"
+            key2="client_action_multi"
+            name="Reconcile"
+            res_model="bank.reconcile"
+            src_model="account.payment"
+            view_mode="form"
+            target="new"/>
+</odoo>
+

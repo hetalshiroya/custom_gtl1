@@ -1,0 +1,405 @@
+<odoo>
+
+    <template id="assets_backend"
+              name="stock_card_report assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link href="/stock_card_report/static/src/css/report.css" rel="stylesheet"/>
+            <script type="text/javascript"
+                    src="/stock_card_report/static/src/js/stock_card_report_backend.js"/>
+        </xpath>
+    </template>
+
+    <template id="stock_card_report.internal_layout">
+        <div class="article">
+            <link href="/stock_card_report/static/src/css/report.css" rel="stylesheet"/>
+            <t t-raw="0"/>
+        </div>
+        <div class="footer">
+            <div class="row">
+                <div class="col-6 custom_footer">
+<!--                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>-->
+                </div>
+                <div class="col-6 text-right custom_footer">
+                    <span class="page"/>/<span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_buttons">
+        <div class="button_row">
+            <button class="o_stock_card_reports_print btn btn-sm oe_button"><span class="fa fa-print"/>Print</button>
+<!--
+            <button class="o_stock_card_reports_export btn btn-sm oe_button"><span class="fa fa-download"/>Export</button>
+-->
+        </div>
+    </template>
+
+    <template id="report_stock_card_report_html">
+        <div class="o_stock_card_reports_page">
+            <t t-call="stock_card_report.report_buttons"/>
+            <t t-call="stock_card_report.report_stock_card_report_base"/>
+        </div>
+    </template>
+
+    <template id="stock_card_report.report_stock_card_report_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                 <t t-call="web.external_layout">
+                    <t t-call="stock_card_report.internal_layout">
+                        <t t-call="stock_card_report.report_stock_card_report_base"/>
+                    </t>
+                 </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="stock_card_report.report_stock_card_report_base">
+       <!-- <t t-foreach="o.product_ids" t-as="product">-->
+            <div class="page">
+                 <style>
+                     body {
+                     font-family: san-serif;
+                     font-size:10pt;
+                     }
+                </style>
+                <div class="row" style="text-decoration:underline">
+                    <div class="col-12" style="text-align: center;">
+                        <h2><b>Stock Card</b></h2>
+                    </div>
+                </div>
+                <!-- Display filters -->
+                <t t-call="stock_card_report.report_stock_card_report_filters"/>
+                <!-- Display stock card table -->
+                <div class="act_as_table data_table mt4" style="width: 100%;">
+                    <!-- Display header line-->
+                    <t t-call="stock_card_report.report_stock_card_lines_header"/>
+                    <!-- Display initial lines -->
+<!--
+                    <t t-set="initial" t-value="o._get_initial(o.results.filtered(lambda l: l.product_id == product and l.is_initial))"/>
+-->
+              <!--      <t t-set="initial" t-value="o._get_initial(o.results)"/>
+                    <div class="act_as_row lines">
+                        <div class="act_as_cell"/>
+                        <div class="act_as_cell">
+                            Initial
+                        </div>
+                        <div class="act_as_cell"/>
+                        <div class="act_as_cell"/>
+                        <div class="act_as_cell right">
+                            <t t-esc="'{0:,.3f}'.format(initial)"/>
+                        </div>
+                    </div>-->
+                    <!-- Display each lines -->
+                    <t t-set="product_balance" t-value="0"/>
+                    <t t-set="job_no" t-value=""/>
+                    <t t-set="doc_no" t-value=""/>
+                    <t t-set="name" t-value=""/>
+                    <t t-set="date_in" t-value=""/>
+                    <t t-set="date_out" t-value=""/>
+                    <t t-set="uom" t-value=""/>
+                     <t t-set="product_id" t-value="0"/>
+                    <t t-set="qty_in" t-value="0"/>
+                    <t t-set="qty_out" t-value="0"/>
+                     <t t-if="o.results">
+                        <t t-set="max_row" t-value="len(o.results)"/>
+                     </t>
+                    <t t-set="row_count" t-value="0"/>
+                    <t t-set="balance" t-value="0"/>
+                    <t t-foreach="o.results" t-as="product_line">
+                        <t t-set="skip" t-value="False"/>
+                         <t t-set="row_count" t-value="row_count+1"/>
+                         <t t-if="not job_no">   <!-- first row  -->
+                             <t t-set="job_no" t-value="product_line.job_no"/>
+                              <t t-set="doc_no" t-value="product_line.doc_no"/>
+                             <t t-set="product_id" t-value="product_line.product_id"/>
+                              <t t-set="uom" t-value="product_line.total_volume_uom.name"/>
+                             <t t-set="name" t-value="product_line.name"/>
+                             <t t-if="product_line.product_in > 0">
+                                <t t-set="qty_in" t-value="product_line.product_in"/>
+                                 <t t-set="date_in" t-value="product_line.date_in"/>
+                                 <t t-set="balance" t-value="balance + product_line.product_in"/>
+                             </t>
+                             <t t-if="product_line.product_out > 0">
+                                <t t-set="qty_out" t-value="product_line.product_out"/>
+                                  <t t-set="date_out" t-value="product_line.date_out"/>
+                                 <t t-set="balance" t-value="balance - product_line.product_out"/>
+                             </t>
+                               <!--<t t-if="max_row == row_count">-->
+                                <t t-call="stock_card_report.report_stock_card_lines"/>
+                                <t t-set="date_in" t-value=""/>
+                                <t t-set="date_out" t-value=""/>
+                               <t t-set="qty_in" t-value="0"/>
+                               <t t-set="qty_out" t-value="0"/>
+                                <!-- </t>-->
+                               <t t-set="skip" t-value="True"/>
+                         </t>
+                        <t t-if="skip == False">
+                            <!-- same product and same job no  -->
+                             <t t-if="job_no and job_no == product_line.job_no and product_id == product_line.product_id">
+                                 <t t-set="job_no" t-value="product_line.job_no"/>
+                                  <t t-set="doc_no" t-value="product_line.doc_no"/>
+                                 <t t-se="product_id" t-value="product_line.product_id"/>
+                                  <t t-set="uom" t-value="product_line.total_volume_uom.name"/>
+                                 <t t-set="name" t-value="product_line.name"/>
+                                 <t t-if="product_line.product_in > 0">
+                                    <t t-set="qty_in" t-value="product_line.product_in"/>
+                                     <t t-set="date_in" t-value="product_line.date_in"/>
+                                     <t t-set="balance" t-value="balance + product_line.product_in"/>
+                                 </t>
+                                 <t t-if="product_line.product_out > 0">
+                                    <t t-set="qty_out" t-value="product_line.product_out"/>
+                                      <t t-set="date_out" t-value="product_line.date_out"/>
+                                     <t t-set="balance" t-value="balance - product_line.product_out"/>
+                                 </t>
+                                 <t t-set="skip" t-value="True"/>
+                                <!-- <t t-if="max_row == row_count">-->
+                                    <t t-call="stock_card_report.report_stock_card_lines"/>
+                                     <t t-set="date_in" t-value=""/>
+                                    <t t-set="date_out" t-value=""/>
+                                   <t t-set="qty_in" t-value="0"/>
+                                   <t t-set="qty_out" t-value="0"/>
+                                <!-- </t>-->
+                            </t>
+                        </t>
+                        <t t-if="skip == False">
+                             <!-- different job no  -->
+                             <t t-if="job_no and job_no != product_line.job_no">
+                                <!-- <t t-call="stock_card_report.report_stock_card_lines"/>
+                                 <t t-set="date_in" t-value=""/>
+                                 <t t-set="date_out" t-value=""/>
+                                 <t t-set="qty_in" t-value="0"/>
+                                 <t t-set="qty_out" t-value="0"/>-->
+                                 <t t-set="job_no" t-value="product_line.job_no"/>
+                                  <t t-set="doc_no" t-value="product_line.doc_no"/>
+                                 <t t-set="product_id" t-value="product_line.product_id"/>
+                                  <t t-set="uom" t-value="product_line.total_volume_uom.name"/>
+                                 <t t-set="name" t-value="product_line.name"/>
+                                  <t t-if="product_line.product_in > 0">
+                                    <t t-set="qty_in" t-value="product_line.product_in"/>
+                                     <t t-set="date_in" t-value="product_line.date_in"/>
+                                     <t t-set="balance" t-value="balance + product_line.product_in"/>
+                                 </t>
+                                 <t t-if="product_line.product_out > 0">
+                                    <t t-set="qty_out" t-value="product_line.product_out"/>
+                                      <t t-set="date_out" t-value="product_line.date_out"/>
+                                     <t t-set="balance" t-value="balance - product_line.product_out"/>
+                                 </t>
+                                 <t t-set="skip" t-value="True"/>
+                                 <!-- <t t-if="max_row == row_count">-->
+                                    <t t-call="stock_card_report.report_stock_card_lines"/>
+                                     <t t-set="date_in" t-value=""/>
+                                    <t t-set="date_out" t-value=""/>
+                                   <t t-set="qty_in" t-value="0"/>
+                                   <t t-set="qty_out" t-value="0"/>
+                                <!-- </t>-->
+
+                            </t>
+                        </t>
+                        <t t-if="skip == False">
+                            <!-- same job no but different product  -->
+                             <t t-if="job_no and job_no == product_line.job_no and product_id != product_line.product_id">
+                                 <!-- <t t-call="stock_card_report.report_stock_card_lines"/>
+                                 <t t-set="date_in" t-value=""/>
+                                 <t t-set="date_out" t-value=""/>
+                                 <t t-set="qty_in" t-value="0"/>
+                                 <t t-set="qty_out" t-value="0"/>-->
+                                 <t t-set="job_no" t-value="product_line.job_no"/>
+                                  <t t-set="doc_no" t-value="product_line.doc_no"/>
+                                 <t t-set="product_id" t-value="product_line.product_id"/>
+                                  <t t-set="uom" t-value="product_line.total_volume_uom.name"/>
+                                 <t t-set="name" t-value="product_line.name"/>
+                                 <t t-if="product_line.product_in > 0">
+                                    <t t-set="qty_in" t-value="product_line.product_in"/>
+                                     <t t-set="date_in" t-value="product_line.date_in"/>
+                                     <t t-set="balance" t-value="balance + product_line.product_in"/>
+                                 </t>
+                                 <t t-if="product_line.product_out > 0">
+                                    <t t-set="qty_out" t-value="product_line.product_out"/>
+                                      <t t-set="date_out" t-value="product_line.date_out"/>
+                                     <t t-set="balance" t-value="balance - product_line.product_out"/>
+                                 </t>
+                                 <t t-set="skip" t-value="True"/>
+                                 <!-- <t t-if="max_row == row_count">-->
+                                    <t t-call="stock_card_report.report_stock_card_lines"/>
+                                     <t t-set="date_in" t-value=""/>
+                                    <t t-set="date_out" t-value=""/>
+                                   <t t-set="qty_in" t-value="0"/>
+                                   <t t-set="qty_out" t-value="0"/>
+                                 <!--</t>-->
+                            </t>
+                        </t>
+
+                        <!-- <t t-if="skip == 'True'">
+                             <t t-if="job_no != product_line.job_no and not job_no">
+                                 <t t-call="stock_card_report.report_stock_card_lines"/>
+                                 <t t-set="job_no" t-value="product_line.job_no"/>
+                                 <t t-set="product_id" t-value="product_line.product_id"/>
+                                 <t t-set="name" t-value="product_line.name"/>
+                                 <t t-if="product_line.product_in > 0">
+                                    <t t-set="qty_in" t-value="qty_in + product_line.product_in"/>
+                                 </t>
+                                 <t t-if="product_line.product_out > 0">
+                                    <t t-set="qty_out" t-value="qty_out + product_line.product_out"/>
+                                 </t>
+                                 <t t-set="skip" t-value="True"/>
+    &lt;!&ndash;                             <t t-call="stock_card_report.report_stock_card_lines"/>&ndash;&gt;
+                            </t>
+                         </t>-->
+
+                        <!--<t t-if="job_no !='' and product_id != product_line.product_id">
+                             <t t-set="job_no" t-value="product_line.job_no"/>
+                             <t t-set="product_id" t-value="product_line.product_id"/>
+                             <t t-set="name" t-value="product_line.name"/>
+                             <t t-if="product_line.product_in > 0">
+                                <t t-set="qty_in" t-value="qty_in + product_line.product_in"/>
+                             </t>
+                             <t t-if="product_line.product_out > 0">
+                                <t t-set="qty_out" t-value="qty_out + product_line.product_out"/>
+                             </t>
+                            <t t-call="stock_card_report.report_stock_card_lines"/>
+                        </t>-->
+                        <!--<t t-set="job_no" t-value="product_line.job_no"/>
+                        <t t-set="product_id" t-value="product_line.product_id"/>
+                        <t t-set="name" t-value="product_line.name"/>-->
+
+                    </t>
+
+                </div>
+                <p style="page-break-before:always;"></p>
+            </div>
+       <!-- </t>-->
+    </template>
+
+    <template id="stock_card_report.report_stock_card_report_filters">
+        <div class="act_as_table data_table" style="width: 100%;">
+            <div class="act_as_row labels">
+                <div class="act_as_cell">Customer</div>
+                <div class="act_as_cell">Date</div>
+                <div class="act_as_cell">Date From</div>
+                <div class="act_as_cell">Date To</div>
+            </div>
+            <div class="act_as_row">
+                <div class="act_as_cell">
+                    <strong><h6><b><span t-field="o.customer.name"/></b></h6></strong>
+                     <t t-if="o.customer.street">
+                        <span t-field="o.customer.street"/>,<br/>
+                     </t>
+                    <t t-if="o.customer.street2">
+                        <span t-field="o.customer.street2"/>,<br/>
+                    </t>
+                    <t t-if="o.customer.zip">
+                        <span t-field="o.customer.zip"/>&#160;
+                    </t>
+                    <t t-if="o.customer.city">
+                        <span t-field="o.customer.city"/>,&#160;
+                    </t>
+                    <t t-if="o.customer.state_id">
+                        <span t-field="o.customer.state_id.name"/>,
+                    </t>
+                    <t t-if="o.customer.country_id">
+                        <span t-field="o.customer.country_id.name"/>
+                    </t>
+                </div>
+                <div class="act_as_cell">
+                    <!-- <span t-field="o.current_date"/>-->
+                    <span t-esc="datetime.datetime.now().strftime('%d/%m/%Y')"></span>
+                </div>
+                <div class="act_as_cell">
+                    <span t-field="o.date_from"/>
+                </div>
+                <div class="act_as_cell">
+                    <span t-field="o.date_to"/>
+                </div>
+               <!-- <div class="act_as_cell">
+                    <span t-field="o.location_id"/>
+                </div>-->
+            </div>
+        </div>
+    </template>
+
+    <template id="stock_card_report.report_stock_card_lines_header">
+        <div class="act_as_thead">
+            <div class="act_as_row labels">
+                <div class="act_as_cell">Job Sheet</div>
+                 <div class="act_as_cell">Doc No</div>
+                <div class="act_as_cell">Description</div>
+                <div class="act_as_cell">Date In</div>
+                <div class="act_as_cell">Qty In</div>
+                <div class="act_as_cell">Vol In</div>
+                <div class="act_as_cell">Date Out</div>
+                <div class="act_as_cell">Qty Out</div>
+                <div class="act_as_cell">Vol Out</div>
+                <div class="act_as_cell">Bal. Qty</div>
+                <div class="act_as_cell">Bal. Vol</div>
+                <div class="act_as_cell">UoM</div>
+            </div>
+        </div>
+    </template>
+
+    <template id="stock_card_report.report_stock_card_lines">
+        <div class="act_as_row lines">
+            <div class="act_as_cell left">
+                <t t-esc="job_no"/>
+            </div>
+            <div class="act_as_cell left">
+                <t t-esc="doc_no"/>
+            </div>
+            <div class="act_as_cell left">
+                <t t-esc="name"/>
+            </div>
+             <div class="act_as_cell right">
+                 <t t-if="date_in">
+                    <t t-esc="date_in.strftime('%d/%m/%Y')"/>
+                 </t>
+                 <t t-if="not date_in">
+                    -
+                 </t>
+            </div>
+            <div class="act_as_cell right">
+                <t t-if="qty_in">
+                    <t t-esc="'{0:,.3f}'.format(qty_in)"/>
+                </t>
+            </div>
+            <div class="act_as_cell right">
+                <t t-if="qty_in > 0">
+                    <t t-esc="'{0:,.3f}'.format(qty_in * product_line.volume)"/>
+                </t>
+            </div>
+            <div class="act_as_cell right">
+                 <t t-if="date_out">
+                    <t t-esc="date_out.strftime('%d/%m/%Y')"/>
+                 </t>
+                 <t t-if="not date_out">
+                    -
+                 </t>
+            </div>
+            <div class="act_as_cell right">
+                 <t t-if="qty_out">
+                    <t t-esc="'{0:,.1f}'.format(qty_out)"/>
+                 </t>
+            </div>
+             <div class="act_as_cell right">
+                <t t-if="qty_out > 0">
+                    <t t-esc="'{0:,.3f}'.format((qty_out) * product_line.volume)"/>
+                </t>
+            </div>
+            <div class="act_as_cell right">
+                 <t t-if="qty_in > 0 or qty_out > 0">
+                    <t t-esc="'{0:,.1f}'.format(balance)"/>
+                 </t>
+            </div>
+            <div class="act_as_cell right">
+                 <t t-if="qty_in > 0 or qty_out > 0">
+                    <t t-esc="'{0:,.4f}'.format((balance) * product_line.volume)"/>
+                 </t>
+            </div>
+             <div class="act_as_cell left">
+                 <t t-if="qty_in > 0 or qty_out > 0">
+                    <t t-esc="uom"/>
+                 </t>
+            </div>
+        </div>
+   </template>
+
+</odoo>

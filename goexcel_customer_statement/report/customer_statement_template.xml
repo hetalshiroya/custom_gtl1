@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="cust_statement_main_template">  
+		<t t-call="web.external_layout">
+			<div class="page">
+				<style>
+
+				.aging_table{
+					width:100%;
+					font-size:12px;
+				}
+				.aging_table td{
+					padding:5px;
+					border:1px solid black;
+				}
+				.my_table{
+				    width:100%;
+				}
+				.my_table th{
+				    padding:3px;
+				    border-bottom:1px solid black;
+				}
+				.my_table td{
+				    padding:3px;
+				}
+				</style>
+				<div class="row">
+				    <br/><br/>
+				    <div class="col-12 text-center">
+				        <h3><t t-if="o.account_type == 'ar'">
+								Customer Statement Of Account
+							</t>
+							<t t-if="o.account_type == 'ap'">
+								Supplier Statement Of Account
+							</t>
+							<t t-if="o.account_type == 'both'">
+								Statement Of Account
+							</t>
+						</h3>
+				    </div>
+				</div>
+				<div class="row">
+					<div style="font-size:13px" class="col-7">
+						<strong><u><span t-esc="o.name"/></u></strong><br/>
+						   <t t-if="o.street">
+								<span t-esc="o.street"/><br/>
+							</t>
+							<t t-if="o.street2">
+								<span t-esc="o.street2"/>&#160;
+							</t>
+							<t t-if="o.zip">
+								<span t-esc="o.zip"/>,
+							</t>
+							<t t-if="o.city">
+								<span t-esc="o.city"/>,&#160;
+							</t>
+							 <t t-if="o.state_id">
+								<span t-esc="o.state_id.name"/>,&#160;
+							 </t>
+							<t t-if="o.country_id">
+								<span t-esc="o.country_id.name"/><br/>
+							</t>
+							 <t t-if="o.phone">
+								Tel:&#160;<span t-esc="o.phone"/><!-- ,&#160;Fax:&#160;<span t-esc="o.fax"/> --><br/>
+							 </t>
+					</div>
+                     <div class="col-5 pull-right" style="font-size:13px;">
+                         	<div class="col-12 text-left">
+								<b>As of <span t-esc="o.overdue_date.strftime('%d-%m-%Y')"/></b><br/>
+							</div>
+							 <div class="col-12 text-left">
+								 <b>Currency:</b>&#160;<span t-esc="o.currency_id.name"/>
+							 </div>
+                    	</div>
+                	</div>
+                <br/>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <!--<th style="width:20%">Description</th>-->
+                            <t t-if="o.aging_by == 'inv_date'">
+                            	<th style="width:20%" class="text-center">Date</th>
+                            </t>
+                        	<t t-if="o.aging_by == 'due_date'">
+                            	<th style="width:20%" class="text-center">Due Date</th>
+                            </t>
+                            <th style="width:20%" class="text-center">Invoice #</th>
+                            <!--<th style="width:10%" class="text-center">DO No</th>-->
+                            <th style="width:20%" class="text-center">Ref</th>
+
+                            <th style="width:20%" class="text-right">Debit</th>
+                            <th style="width:20%" class="text-center">Credit</th>
+                            <th style="width:20%" class="text-right">&#160;&#160;&#160;&#160;Balance&#160;&#160;</th>
+                        </tr>
+                    </thead>
+                    <t class="invoice_tbody">
+                        <t t-set="get_lines" t-value="get_lines(o)"/>
+                        <t t-set="l_debit" t-value="0" />
+                        <t t-set="l_credit" t-value="0" />
+                         <t t-set="l_balance" t-value="0" />
+                        <t t-set="l_total" t-value="0" />
+                        <t t-foreach="get_lines" t-as="l" >
+                            <t t-if="not l.get('date')">
+                                <tr>
+                                    <td class="text-center">
+
+                                    </td>
+
+                                    <td class="text-center" style="color:blue">
+                                        <span t-esc="l.get('ref')"/>
+                                    </td>
+                                  <!--  <td class="text-center">
+
+                                    </td>-->
+                                    <td class="text-center">
+
+                                    </td>
+                                    <td class="text-center">
+
+                                    </td>
+                                    <td class="text-center">
+                                    </td>
+                                    <td class="text-right" style="color:blue">
+                                        <span t-esc="set_amount(l.get('total'))"/>
+                                    </td>
+                                    <t t-set="l_total" t-value="l_total+ l.get('total')" />
+                                </tr>
+                            </t>
+                            <t t-else="">
+                                <tr>
+                                    <!-- <td class="text-center">
+                                        <span t-esc="l.get('date').strftime('%d-%m-%Y')"/>
+                                    </td> -->
+                                    <t t-if="o.aging_by == 'inv_date'">
+			                            <td class="text-center">
+			                            	<span t-esc="l.get('date').strftime('%d-%m-%Y')"/>
+			                            </td>
+			                        </t>
+			                        <t t-if="o.aging_by == 'due_date'">
+			                            <td class="text-center">
+			                            	<span t-esc="l.get('date_maturity').strftime('%d-%m-%Y')"/>
+			                            </td>
+			                        </t>
+                                   <!-- <td class="text-center">
+                                        <span t-esc="l.get('ref')"/>
+                                    </td>-->
+                                    <td class="text-center">
+                                        <span t-esc="l.get('inv_ref')"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="l.get('payment_ref')"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="l_debit" t-value="l_debit + l.get('debit')" />
+										<t t-if="l.get('debit') == 0">
+                                        	-
+										</t>
+										 <t t-else="">
+											  <span t-esc="set_amount(l.get('debit'))"/>
+										 </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-set="l_credit" t-value="l_credit + l.get('credit')" />
+										<t t-if="l.get('credit') == 0">
+                                        	-
+										</t>
+										 <t t-else="">
+											 <span t-esc="set_amount(l.get('credit'))"/>
+										 </t>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="l_total" t-value="l_total+ l.get('total')" />
+                                        <t t-if="l.get('l_total') == 0">
+                                        	-
+										</t>
+										 <t t-else="">
+											  <span t-esc="set_amount(l_total)"/>
+										 </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+
+                        <tr style="background:#e0e0e0;">
+                            <td style="border-top:1px solid black" colspan="2"></td>
+                            <td style="border-top:1px solid black"><strong>Sub-Total</strong></td>
+                            <td style="border-top:1px solid black" class="text-right"><span t-esc="set_amount(l_debit)"/></td>
+                            <td style="border-top:1px solid black" class="text-center"><span t-esc="set_amount(l_credit)"/></td>
+                            <td style="border-top:1px solid black" class="text-right"><span t-esc="set_amount(l_total)"/></td>
+                        </tr>
+                    </t>
+                </table>
+
+				<div class="row" t-if="not get_lines">
+					<div class="col-12">
+						<p>
+		                    <strong>There is no invoices with this customer for the latest period.</strong>
+		                </p>
+					</div>
+				</div>
+				<br/><br/>
+				<t t-if="get_lines">
+					<t t-set="aging" t-value="set_ageing(o)"/>
+					<table class="col-12 aging_table" t-if="aging">
+						<tr t-if="o.aging_group == 'by_month'">
+							<td class="text-center">
+								<b>Current Month</b>
+							</td>
+                            <td class="text-center">
+								<b>1 Month</b>
+							</td>
+                            <td class="text-center">
+								<b>2 Months</b>
+							</td>
+                            <td class="text-center">
+								<b>3 Months</b>
+							</td>
+                            <td class="text-center">
+								<b>4 Months</b>
+							</td>
+                            <td class="text-center">
+								<b>5 Months &amp; Above</b>
+							</td>
+							<td class="text-center">
+								<b>Total</b>
+							</td>
+						</tr>
+						<tr t-if="o.aging_group == 'by_days'">
+							<td class="text-center">
+								<b>0-30</b>
+							</td>
+                            <td class="text-center">
+								<b>31-60</b>
+							</td>
+                            <td class="text-center">
+								<b>60-90</b>
+							</td>
+                            <td class="text-center">
+								<b>90-120</b>
+							</td>
+                            <td class="text-center">
+								<b>Over 120</b>
+							</td>
+							<td class="text-center">
+								<b>Total</b>
+							</td>
+						</tr>
+						<tr>
+							<t t-foreach="aging[1]" t-as="a_val" >
+								<td class="text-center">
+									<b><span t-esc="set_amount(aging[0].get(a_val))"/></b>
+								</td>
+							</t>
+						</tr>
+					</table>
+                </t>
+				<div class="row">
+				    <br/><br/>
+				    <div class="col-12 text-left"  style="font-size:13px;">
+				        <br/><br/>
+<!--						Please note that the following payment are now Due.If your payment has been sent,kindly forward your payment details.If payment will
+						be delayed further, Please contact us to discuss.<br/>
+						Kindly remit payment to <b><span t-esc="o.company_id.name"/> </b> and fax us the remittance advise of bank-in slip.-->
+
+                        	<span t-field="o.soa_note"/>
+						<br/>
+
+				    </div>
+				</div>
+		</div>
+		</t>
+	</template>
+	
+	
+	<template id="cust_statement_template">
+		<t t-call="web.html_container">
+		    <t t-foreach="docs" t-as="o">
+		        <t t-call="goexcel_customer_statement.cust_statement_main_template" />
+		    </t>
+		</t>
+	</template>
+</odoo>
+

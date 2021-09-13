@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <template id="report_sale_document_with_sale_term" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//div[@name='signature']" position="after">
+                <p t-if="doc.print_term">
+                    <span t-field="doc.sale_term"/>
+                </p>
+            </xpath>
+        </template>
+</odoo>

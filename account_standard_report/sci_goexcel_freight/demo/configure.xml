@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data noupdate="1">
+        <record id="demo_status_1" model="freight.status.shipment">
+            <field name="name">Quotation Created</field>
+            <field name="code">01</field>
+            <field name="active">True</field>
+        </record>
+        <record id="demo_status_2" model="freight.status.shipment">
+            <field name="name">Quotation Confirmed</field>
+            <field name="code">02</field>
+            <field name="active">True</field>
+        </record>
+        <record id="demo_status_3" model="freight.status.shipment">
+            <field name="name">Linear Pending</field>
+            <field name="code">03</field>
+            <field name="active">True</field>
+        </record>
+        <record id="demo_status_4" model="freight.status.shipment">
+            <field name="name">	Linear Confirmed</field>
+            <field name="code">04</field>
+            <field name="active">True</field>
+        </record>
+        <record id="demo_status_5" model="freight.status.shipment">
+            <field name="name">Booking Created</field>
+            <field name="code">05</field>
+            <field name="active">True</field>
+        </record>
+        <record id="demo_status_6" model="freight.status.shipment">
+            <field name="name">Booking Confirmed</field>
+            <field name="code">06</field>
+            <field name="active">True</field>
+        </record>
+        <record id="demo_status_7" model="freight.status.shipment">
+            <field name="name">SI Received</field>
+            <field name="code">07</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

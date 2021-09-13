@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+    	<record id="sequence_hbl" model="ir.sequence">
+            <field name="name">Shipping Note</field>
+            <field name="code">sn</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">SN-%(y)s%(month)s%(day)s-</field>
+            <field name="sequence_size">3</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+    	</record>
+	</data>
+</odoo>

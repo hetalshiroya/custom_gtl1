@@ -1,0 +1,18 @@
+<odoo>
+	<!-- Inherit res.partner search view -->
+
+	<!-- Inherit res.partner form view -->
+	<record model="ir.ui.view" id="res_partner_inherit_view">
+		<field name="name">res.partner.inherit</field>
+		<field name="model">res.partner</field>
+        <field name="type">form</field>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='parent_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+		</field>
+	</record>
+
+
+</odoo>

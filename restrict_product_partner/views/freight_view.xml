@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="users_restrict_customer_create_bol" model="ir.ui.view">
+		<field name="name">user.restrict.customer.create.bol</field>
+	 	<field name="model">freight.bol</field>
+	 	<field name="inherit_id" ref="sci_goexcel_freight.view_form_bol"/>
+	 	<field name="arch" type="xml">
+			<xpath expr="//field[@name='customer_name']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+		</field>
+	</record>
+	<record id="users_restrict_customer_create_booking" model="ir.ui.view">
+		<field name="name">user.restrict.customer.create.booking</field>
+	 	<field name="model">freight.booking</field>
+	 	<field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+	 	<field name="arch" type="xml">
+			<xpath expr="//field[@name='customer_name']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='contact_name']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='billing_address']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='shipper']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='consignee']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='notify_party']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='oversea_agent']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='carrier']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='principal_agent_code']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='shipping_agent_code']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='transporter_company']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='forwarding_agent_code']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='air_agent']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='pickup_from']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='delivery_to']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+
+			<xpath expr="//field[@name='customer_collection_from']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='delivery_to_address']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+		</field>
+	</record>
+	<record id="users_restrict_customer_create_si" model="ir.ui.view">
+		<field name="name">user.restrict.customer.create.si</field>
+	 	<field name="model">freight.website.si</field>
+	 	<field name="inherit_id" ref="sci_goexcel_freight.view_form_si"/>
+	 	<field name="arch" type="xml">
+			<xpath expr="//field[@name='customer_name']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='carrier']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='carrier_contact']" position="attributes">
+				<attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+			</xpath>
+		</field>
+	</record>
+</odoo>

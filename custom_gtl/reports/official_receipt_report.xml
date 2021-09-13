@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_or_details_inherit" inherit_id="sci_goexcel_payment_receipt.report_or_details">
+        <xpath expr="//div[@class='page']" position="replace">
+              <!-- This is for Official Receipt for account.payment Inbound  -->
+
+                <div class="page" style="font-family:sans-serif;font-size:15px">
+                     <div class="row mt32 mb32 text-right">
+                          <div class="col-12 bm-2">
+                              <!-- <t t-if="payment_receipt_info['payment_type'] == 'outbound'">
+                                        <strong><h3 class="text-center" style="font-family:arial;font-size:20px;"> Payment Voucher </h3></strong>
+                                </t>-->
+                                <t t-if="payment_receipt_info['payment_type'] == 'inbound'">
+                                        <strong><h1 class="text-center" style="font-family:arial;font-size:20px;"> Official Receipt </h1></strong>
+                                </t>
+
+                          </div>
+                     </div>
+
+                    <div class="row">
+                       <!--<style>
+                            body {font-family:sans-serif;};
+                        </style>-->
+                         <div style="font-family:arial;font-size:15px" class="col-7">
+                             <!--<t t-set="partner_info" t-value="partner"/>-->
+                             <t t-if="payment_receipt_info['payment_type'] == 'inbound'">
+                                <strong>Received From:</strong><br/>
+                             </t>
+
+                             <strong><u><span t-esc="partner_info['name']"/></u></strong><br/>
+                               <t t-if="partner_info['street']">
+                                    <span t-esc="partner_info['street']"/><br/>
+                                </t>
+                                <t t-if="partner_info['street2']">
+                                    <span t-esc="partner_info['street2']"/>&#160;
+                                </t>
+                                <t t-if="partner_info['zip']">
+                                    <span t-esc="partner_info['zip']"/>
+                                </t>
+                                <t t-if="partner_info['city']">
+                                    ,<span t-esc="partner_info['city']"/>
+                                </t>
+                                 <t t-if="partner_info['state']">
+                                    ,&#160;<span t-esc="partner_info['state']"/>
+                                 </t>
+                                <t t-if="partner_info['country']">
+                                    ,&#160;<span t-esc="partner_info['country']"/><br/>
+                                </t>
+                                 <t t-if="partner_info['phone']">
+                                    Tel:&#160;<span t-esc="partner_info['phone']"/>
+                                    <t t-if="partner_info['fax']">
+                                     ,&#160;Fax:&#160;<span t-esc="partner_info['fax']"/>
+                                    </t>
+                                 </t><br/>
+                         </div>
+                        <div class="col-5 pull-right" style="font-family:arial;font-size:15px">
+                            <!--<div class="col-12 text-left">-->
+                             <div class="col-12 text-left">
+                                  <t t-if="payment_receipt_info['payment_type'] == 'inbound'">
+                                      <b>Official Receipt No:</b>&#160;<span t-esc="payment_receipt_info['payment_receipt_no']"/><br/>
+                                  </t>
+                             </div>
+                            <div class="col-12 text-left">
+                                <b>Date:</b>&#160;<span t-esc="payment_receipt_info['payment_receipt_date'].strftime('%d/%m/%Y')"/><br/>
+                            </div>
+                            <div class="col-12 text-left">
+                                <t t-if="payment_receipt_info['cheque_no']">
+                                    <b>Cheque No:</b>&#160;<span t-esc="payment_receipt_info['cheque_no']"/><br/>
+                                </t>
+                            </div>
+                            <!--<div class="col-12 text-left">
+                                <b>State:</b>&#160;Done<br/>
+                            </div>-->
+                        </div>
+                     </div>
+
+                     <br/>
+                     <div class="row">
+                        <div class="col-12 text-left" style="font-family:arial;font-size:16px">
+                       <strong>THE SUM OF &#160;</strong><span t-esc="payment_receipt_info['total_en']"/>&#160;ONLY<br/>
+                        </div>
+                    </div>
+                       <br/>
+                    <div class="row">
+                        <div class="col-12 text-left" style="font-family:arial;font-size:16px">
+                            <t t-if="payment_receipt_info['payment_ref']">
+                                <strong>Payment ref:&#160;</strong><span t-esc="payment_receipt_info['payment_ref']"/><br/>
+                            </t>
+                        </div>
+                    </div>
+                    <br/>
+                   <!-- <div class="row mt32 mb32 text-left" style="font-family:arial;font-size:15px">
+                        &#160;&#160;&#160;&#160;&#160;<strong>THE SUM OF &#160;</strong><span t-esc="payment_receipt_info['total_en']"/>&#160;ONLY<br/>
+                         <t t-if="payment_receipt_info['payment_ref']">
+                             <br/>
+                            &#160;&#160;&#160;&#160;&#160;<strong>Payment ref:&#160;</strong><span t-esc="payment_receipt_info['payment_ref']"/>
+                        </t>
+                    </div>-->
+
+                     <table class="table table-sm o_main_table" style="font-family:arial;font-size:15px">
+                        <thead>
+                            <t t-if="payment_receipt_info['payment_type'] == 'inbound'">
+                                <tr>
+                                    <th class="text-center"><strong>Serial No</strong></th>
+                                    <th class="text-center"><strong>Invoice Date</strong></th>
+                                    <th class="text-center"><strong>Invoice Number</strong></th>
+                                    <th class="text-center"><strong>Source Document</strong></th>
+                                    <th class="text-center"><strong>Org. Amount</strong></th>
+                                 <!--   <th class="text-center"><strong>Payment Ref</strong></th>-->
+                                   <!-- <th class="text-center"><strong>Period</strong></th>-->
+                                    <th class="text-right"><strong>Amount</strong></th>
+                                </tr>
+                            </t>
+                        </thead>
+                        <tbody>
+                            <t t-if="payment_receipt_info['payment_type'] == 'inbound'">
+                               <tr t-foreach="docs" t-as="doc">
+                                   <t t-if="doc['amount'] > 0">
+                                        <td class="text-center">
+                                           <span t-esc="doc['serial_no']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="doc['invoice_date'].strftime('%d/%m/%Y')"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="doc['invoice_no']"/>
+                                        </td>
+                                       <td class="text-center">
+                                            <span t-esc="doc['source_doc']"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="doc['original_amount']"
+                                                       t-options='{"widget": "monetary", "display_currency": doc["currency_id"]}'/>
+                                            </td>
+                                       <td class="text-right">
+                                            <span t-esc="doc['amount']"
+                                                   t-options='{"widget": "monetary", "display_currency": doc["currency_id"]}'/>
+                                        </td>
+                                   </t>
+                                   <t t-else="">
+                                         <td class="text-center">
+                                        </td>
+                                       <td class="text-center">
+                                        </td>
+                                       <td class="text-center">
+                                        </td>
+                                        <td class="text-center">
+                                        </td>
+                                        <td class="text-right">
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+
+                        </tbody>
+                     </table>
+
+                    <div id="total" class="row justify-content-end">
+                        <div class="col-4">
+                            <table class="table table-sm" style="font-family:arial;font-size:15px">
+                                <tr class="border-black o_total">
+                                    <td colspan="3" class="text-right" ><strong>Total Amount</strong></td>
+                                    <td class="text-right">
+                                        <span t-esc="payment_receipt_info['total_amount']"
+                                            t-options='{"widget": "monetary", "display_currency": payment_receipt_info["currency_id"]}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+                     <t t-if="payment_receipt_info['payment_type'] == 'inbound'">
+                        <p style="font-family:arial;font-size:15px"><strong>This is Computer Generated</strong></p>
+                        <p style="font-family:arial;font-size:15px"><strong>No Signature is Required</strong></p>
+                     </t>
+                </div>
+        </xpath>
+    </template>
+
+
+
+    <!--<template id="payment_receipt_template">
+		<t t-call="web.html_container">
+		    <t t-foreach="docs" t-as="o">
+		        <t t-call="account_voucher_report.report_payment_receipt_details" />
+		    </t>
+		</t>
+	</template>
+-->
+
+</odoo>

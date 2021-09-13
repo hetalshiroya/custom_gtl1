@@ -1,0 +1,139 @@
+from odoo import api, fields, models
+import logging
+_logger = logging.getLogger(__name__)
+from odoo import exceptions
+
+
+class FreightBookingJobCost(models.Model):
+    _name = 'freight.booking.job.cost'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
+    #booking_job = fields.Many2one('freight.booking', string='Booking Job')
+    booking_job_no = fields.Char(string='Booking Job No', help='Enter Booking Job No to search for Job Cost')
+    carrier_job_no = fields.Char(string='Carrier Job No', help='Enter Carrier Booking No to search for Job Cost')
+    vendor_id = fields.Many2one('res.partner', string='Vendor', domain="[('supplier','=',True)]")
+    product_id = fields.Many2one('product.product', string='Product')
+    customer_name = fields.Many2one('res.partner', string='Customer')
+    job_cost_lines = fields.One2many('freight.cost_profit', 'job_id')
+
+    @api.model
+    def default_get(self, fields):
+        rec = super().default_get(fields)
+        rec.update({
+            'vendor_id': self.env.context.get('partner_id'),
+            'product_id': self.env.context.get('product_id'),
+        })
+        return rec
+
+    @api.multi
+    def action_assign_job_cost(self):
+        for job_cost in self.job_cost_lines:
+            if job_cost.add_to_vendor_bill:
+                bookings = self.env['freight.booking'].search([('booking_no', '=', self.booking_job_no),])
+                for booking in bookings:
+                    if not booking.analytic_account_id:
+                        values = {
+                            'partner_id': booking.customer_name.id,
+                            'name': '%s' % booking.booking_no,
+                            'company_id': self.env.user.company_id.id,
+                        }
+                        analytic_account = self.env['account.analytic.account'].sudo().create(values)
+                        booking.write({'analytic_account_id': analytic_account.id,
+                                       })
+
+                    # update the invoice_line_ids
+                    invoice_lines = self.env['account.invoice.line'].browse(self.env.context.get('invoice_line_id'))
+                    voucher_lines = self.env['account.voucher.line'].browse(self.env.context.get('invoice_line_id'))
+                    if invoice_lines:
+                        for invoice_line in invoice_lines:
+                            invoices = self.env['account.invoice'].browse(self.env.context.get('vendor_bill_id'))
+                            for invoice in invoices:
+                                inv_value = {
+                                    'freight_booking': booking.id,
+                                    'origin': booking.booking_no,
+                                    'account_analytic_id': booking.analytic_account_id.id,
+                                    'booking_line_id': job_cost.id,
+                                }
+                                print(job_cost.id)
+                                invoice_line.write(inv_value)
+                                value = {
+                                    'invoiced': True,
+                                    'vendor_id': self.vendor_id.id,
+                                    'cost_amount': invoice_line.price_subtotal,
+                                    'cost_price': invoice_line.price_unit,
+                                    'cost_qty': invoice_line.quantity,
+                                    'vendor_bill_id': invoice.id,
+                                }
+                                print(invoice.id)
+                    if voucher_lines:
+                        for invoice_line in voucher_lines:
+                            invoices = self.env['account.voucher'].browse(self.env.context.get('voucher_id'))
+                            for invoice in invoices:
+                                inv_value = {
+                                    'freight_booking': booking.id,
+                                    'origin': booking.booking_no,
+                                    'account_analytic_id': booking.analytic_account_id.id,
+                                }
+                                invoice.write({
+                                    'line_ids': [
+                                        (1, invoice_line.id, inv_value),
+                                    ]
+                                })
+                                value = {
+                                    'invoiced': True,
+                                    'vendor_id': self.vendor_id.id,
+                                    'cost_amount': invoice_line.price_subtotal,
+                                    'cost_price': invoice_line.price_unit,
+                                    'cost_qty': invoice_line.quantity,
+                                }
+
+                    booking.write({
+                        'cost_profit_ids': [
+                            (1, job_cost.id, value),
+                        ]
+                    })
+
+    @api.onchange('booking_job_no')
+    def onchange_booking_job_no(self):
+        for job_cost in self:
+            if job_cost.booking_job_no:
+                bookings = self.env['freight.booking'].search([
+                    ('booking_no', '=', job_cost.booking_job_no),
+                ])
+                for booking in bookings:
+                    job_cost.job_cost_lines = booking.cost_profit_ids
+                    job_cost.customer_name = booking.customer_name.id
+                    """
+                    cost_lines = []
+                    for booking in bookings:
+                        for booking_line in booking.cost_profit_ids:
+                            if booking_line.product_id.id == job_cost.product_id.id:
+                                cost_lines.append({'id': booking_line.id, })
+                        print(cost_lines)
+                        job_cost.job_cost_lines = cost_lines
+                        job_cost.customer_name = booking.customer_name.id
+                     """
+
+    @api.onchange('carrier_booking_no')
+    def onchange_carrier_job_no(self):
+        for job_cost in self:
+            if job_cost.carrier_booking_no:
+                booking = self.env['freight.booking'].search([
+                    ('carrier_booking_no', '=', job_cost.carrier_booking_no),
+                ], limit=1)
+                if booking:
+                    job_cost.job_cost_lines = booking.cost_profit_ids
+                    job_cost.customer_name = booking.customer_name.id
+
+
+class FreightBookingJobCostLine(models.Model):
+    _inherit = "freight.cost_profit"
+
+    job_id = fields.Many2one('freight.booking.job.cost', 'Job Cost', copy=False)
+    add_to_vendor_bill = fields.Boolean(string='Add', default=False, copy=False)
+
+    # @api.onchange('add_to_vendor_bill')
+    # def onchange_add_to_vendor_bill(self):
+    #     for cost_profit in self:
+    #         if cost_profit.add_to_vendor_bill:
+    #             print('onchange_add_to_vendor_bill=' + cost_profit.id)

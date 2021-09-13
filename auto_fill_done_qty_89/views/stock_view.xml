@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="view_picking_form_inherited" model="ir.ui.view">
+                <field name="name">stock.picking.form.view.inherited</field>
+                <field name="model">stock.picking</field>
+                <field name="inherit_id" ref="stock.view_picking_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='move_ids_without_package']" position="before">
+                        <button name="auto_fill_done_qty_from_reserved_qty" type="object" string="Auto Fill Done Qty  From Reserved Qty" attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}" class="oe_right" help="it will copy the reserved qty to done qty."/>
+                    </xpath>
+                </field>
+        </record>
+    </data>
+</odoo>

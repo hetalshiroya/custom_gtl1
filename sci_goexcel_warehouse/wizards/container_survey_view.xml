@@ -1,0 +1,28 @@
+<odoo>
+
+ 		<record id="container_survey_view_form" model="ir.ui.view">
+            <field name="name">container.survey.wizard.form</field>
+            <field name="model">container.survey.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Container Survey">
+                    <group class="oe_title">
+                        <field name="container_line_survey_ids2">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                 <field name="container_door" string='     Left/Right Door    ' widget="radio" options="{'horizontal': true}"/>
+                                <field name="container_panel" string='     Left/Right Panel    ' widget="radio" options="{'horizontal': true}"/>
+                                <field name="front_panel" string='     Front Panel      ' widget="radio" options="{'horizontal': true}"/>
+                                <field name="internal_floor" string='    Internal Floor    ' widget="radio" options="{'horizontal': true}"/>
+                                <field name="remark_line"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="action_create_container_survey" string="Create" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+</odoo>

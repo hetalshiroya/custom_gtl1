@@ -1,0 +1,32 @@
+<odoo>
+    <record id="shipping_instruction_wizard_view_form" model="ir.ui.view">
+        <field name="name">shipping.instruction.wizard.view.form</field>
+        <field name="model">shipping.instruction.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Shipping Instruction" >
+                <field name="service_type" invisible="1"/>
+                <sheet >
+                    <group>
+                        <field name="report_type" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                    <group attrs="{'invisible': ['|',('service_type', '!=', 'air'),('report_type', '!=', '1')]}">
+                        <field name="to_char"/>
+                        <field name="attn_char"/>
+                        <field name="shipper"/>
+                        <field name="consignee"/>
+                        <field name="oversea_agent"/>
+                        <field name="pcs_weight_m3"/>
+                        <field name="commodity"/>
+                        <field name="remarks"/>
+                        <field name="type" widget="radio"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_print" string="Print" type="object" class="btn-primary"/>
+                    <button name="action_send" string="Send" type="object" class="btn-primary" attrs="{'invisible': [('report_type', '=', '3')]}"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

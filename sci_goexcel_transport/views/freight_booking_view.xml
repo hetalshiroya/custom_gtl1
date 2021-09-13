@@ -1,0 +1,41 @@
+<odoo>
+
+     <!-- Must place before the form view button that call this -->
+   <!-- Call action window to view RFT -->
+     <record id="view_rft_freight_booking" model="ir.actions.act_window">
+        <field name="name">RFT History</field>
+        <field name="res_model">transport.rft</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="view_id" ref="sci_goexcel_transport.view_tree_transport_rft"/>
+		<field name="domain">[('booking_reference', '=', active_id)]</field>
+    </record>
+
+    <!-- Inherited the freight booking view and added 'Copy to RFT' button -->
+     <record model="ir.ui.view" id="view_freight_booking_copy_to_rft">
+        <field name="name">Copy to RFT</field>
+        <field name="model">freight.booking</field>
+        <field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='action_cancel_booking']" position="before">
+                <button name="action_copy_to_rft" type="object" string="RFT" attrs="{'invisible': [('shipment_booking_status', 'in', ['01'])]}"/>
+            </xpath>
+            <button name="operation_bill" position="after">
+				<button class="oe_stat_button" type="action" name="%(sci_goexcel_transport.view_rft_freight_booking)d"
+                    icon="fa-truck" attrs="{'invisible': [('booking_rft_count', '=', 0)]}">
+                    <field string="RFT" name="booking_rft_count" widget="statinfo"/>
+				<!--attrs="{'invisible': [('type', '=', 'contact')]}"-->
+					<!-- for type 'contact', company and contact is the  same -->
+                </button>
+			</button>
+           <!-- <xpath expr="//field[@name='laden_back_terminal']" position="before">
+                <field name="empty_pick_up_depot" attrs="{'readonly':[('shipment_booking_status', 'in', ['08', '09'])]}"/>
+                <field name="empty_pick_up_depot_address" attrs="{'readonly':True}"/>
+                <field name="empty_pick_up_depot_contact" attrs="{'readonly':True}"/>
+            </xpath>  -->
+        </field>
+    </record>
+
+
+
+</odoo>

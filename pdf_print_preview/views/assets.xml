@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/pdf_print_preview/static/src/scss/dialog.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/pdf_print_preview/static/src/scss/content.scss"/>
+        </xpath>
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/pdf_print_preview/static/src/js/dialog.js"/>
+            <script type="text/javascript" src="/pdf_print_preview/static/src/js/pdf_preview.js"/>
+            <script type="text/javascript" src="/pdf_print_preview/static/src/js/user_menu.js"/>
+        </xpath>
+    </template>
+</odoo>

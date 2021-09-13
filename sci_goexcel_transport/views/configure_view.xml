@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Depot -->
+    <record id='view_tree_depot' model='ir.ui.view'>
+        <field name="name">Depot List</field>
+        <field name="model">transport.depot</field>
+        <field name="arch" type="xml">
+			<tree string='Depot'>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_depot" model="ir.ui.view">
+        <field name="name">Depot Form</field>
+        <field name="model">transport.depot</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="code" />
+                        <field name="address" />
+                        <field name="contact" />
+                        <field name="active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_depot" model="ir.ui.view">
+        <field name="name">Depot Filter</field>
+        <field name="model">transport.depot</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Accept Hour -->
+    <record id='view_tree_accept_hour' model='ir.ui.view'>
+        <field name="name">Accept Hour List</field>
+        <field name="model">transport.accept.hour</field>
+        <field name="arch" type="xml">
+			<tree string='Accept Hour'>
+				<field name="name"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_accept_hour" model="ir.ui.view">
+        <field name="name">Accept Hour Form</field>
+        <field name="model">transport.accept.hour</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_accept_hour" model="ir.ui.view">
+        <field name="name">Accept Hour Filter</field>
+        <field name="model">transport.accept.hour</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+
+     <!-- Vehicle Location -->
+    <record id='view_tree_vehicle_location' model='ir.ui.view'>
+        <field name="name">Vehicle Location List</field>
+        <field name="model">vehicle.location</field>
+        <field name="arch" type="xml">
+			<tree string='Vehicle Location'>
+				<field name="name"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_vehicle_location" model="ir.ui.view">
+        <field name="name">Vehicle Location Form</field>
+        <field name="model">vehicle.location</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_vehicle_location" model="ir.ui.view">
+        <field name="name">Vehicle Location Filter</field>
+        <field name="model">vehicle.location</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Trip Route -->
+    <record id='view_tree_trip_route' model='ir.ui.view'>
+        <field name="name">Trip Route List</field>
+        <field name="model">trip.route</field>
+        <field name="arch" type="xml">
+			<tree string='Trip Route'>
+				<field name="name"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+    <record id="view_form_trip_route" model="ir.ui.view">
+        <field name="name">Trip Route  Form</field>
+        <field name="model">trip.route</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="active" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_trip_route" model="ir.ui.view">
+        <field name="name">Trip Route Filter</field>
+        <field name="model">trip.route</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                  <filter name="filter_inactive"
+                          string="Inactive"
+                          domain="[('active','=',True)]"/>
+                  <filter name="filter_active"
+                          string="Active"
+                          domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+   <act_window id="action_configure_depot"
+        name="Depot"
+        res_model="transport.depot"
+        view_mode="tree,form"
+    />
+
+     <act_window id="action_configure_accept_hour"
+        name="Accept Hour"
+        res_model="transport.accept.hour"
+        view_mode="tree,form"
+    />
+
+      <act_window id="action_configure_vehicle_location"
+        name="Vehicle Location"
+        res_model="vehicle.location"
+        view_mode="tree,form"
+    />
+
+      <act_window id="action_configure_trip_route"
+        name="Trip Route"
+        res_model="trip.route"
+        view_mode="tree,form"
+    />
+
+
+    <menuitem id="menu_transport_configure"    name="Configuration"    parent="menu_goexcel_transport" sequence="6"/>
+    <menuitem id="menu_transport_configure_depot"    name="Depot"    parent="menu_transport_configure"    action="action_configure_depot"/>
+    <menuitem id="menu_transport_configure_accept_hour"    name="Accept Hour"    parent="menu_transport_configure"    action="action_configure_accept_hour"/>
+    <menuitem id="menu_transport_configure_vehicle_location"    name="Vehicle Location"    parent="menu_transport_configure"    action="action_configure_vehicle_location"/>
+    <menuitem id="menu_transport_configure_trip_route"    name="Trip Route"    parent="menu_transport_configure"    action="action_configure_trip_route"/>
+
+</odoo>

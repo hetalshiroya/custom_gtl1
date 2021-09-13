@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+	
+	<div t-name="PDFjsFrame" class="o_preview_pdfjs">
+		<iframe allowfullscreen="allowfullscreen" 
+			webkitallowfullscreen="webkitallowfullscreen"
+			t-att-src="url">
+		</iframe>
+	</div>
+	
+</templates>

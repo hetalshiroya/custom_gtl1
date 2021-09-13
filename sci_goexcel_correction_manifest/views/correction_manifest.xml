@@ -1,0 +1,46 @@
+<odoo>
+
+ 		<record id="correction_manifest_view_form" model="ir.ui.view">
+            <field name="name">correction.manifest.form</field>
+            <field name="model">correction.manifest</field>
+            <field name="arch" type="xml">
+                <form string="Correction Manifest">
+                     <sheet>
+                         <group string="To">
+                            <field name="to_char"/>
+                            <field name="tel_char"/>
+                            <field name="attn_char"/>
+                            <field name="from_char"/>
+                            <field name="date"/>
+                         </group>
+                         <group string="Container No/ Description">
+                            <field name="description_char"/>
+                            <field name="gross_weight_char"/>
+                            <field name="measurement_char"/>
+                         </group>
+                         <group>
+                             <group>
+                                 <field name="original_consignee_id" options='{"always_reload": True}'/>
+                                 <field name="original_consignee"/>
+                                 <field name="changed_consignee_id" context="{'search_default_customer':1}" options='{"always_reload": True}'/>
+                                 <field name="changed_consignee" />
+                             </group>
+                             <group>
+                                 <field name="original_shipper_id" options='{"always_reload": True}'/>
+                                 <field name="original_shipper"/>
+                                  <field name="changed_shipper_id" options='{"always_reload": True}'/>
+                                 <field name="changed_shipper" />
+                             </group>
+                        </group>
+                     </sheet>
+                    <footer>
+                        <button name="action_update_booking" string="Update Correction Manifest" type="object" class="btn-primary"/>
+                        <button name="action_update_send" string="Update &amp; Send" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+</odoo>

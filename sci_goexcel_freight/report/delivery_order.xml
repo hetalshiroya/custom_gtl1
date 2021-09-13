@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="action_delivery_order_report"
+            string="Delivery Order"
+            model="freight.bol"
+            report_type="qweb-pdf"
+            name="sci_goexcel_freight.report_delivery_order"
+            print_report_name = "('DO - '+ object.bol_no)"
+    />
+          <!--    paperformat="paperformat_A4_portrait_report"/>
+           file="sci_goexcel_freight.report_booking_confirmation" -->
+
+    <template id="report_delivery_order">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">  <!-- define in general settings -> document template, for logo, address -->
+                    <div class="page">
+                        <br/>
+                        <h3 style="border-left:1pt solid black;border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;background-color:#E0E0E0;width:100%">
+                            <center>Delivery Order</center>
+                        </h3>
+                        <br/>
+
+                        <table style="width:100% ;font-size:10px;">
+                            <tr>
+                                <th class="text-left" style="width:25%">DATE:</th>
+                                <td><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/></td>
+                                <th>JOB NO:</th>
+                                <td><span t-esc="o.booking_ref.booking_no"/></td>
+                            </tr>
+                        </table>
+                        <table style="width:100%;font-size:10px;">
+                            <tr>
+                                <th class="text-left" style="width:25%">ATTENTION:</th>
+                                <td><span t-field="o.delivery_contact"/></td>
+                                <th class="text-left" style="width:15%"></th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="width:25%">COLLECTION FROM:</th>
+                                <td style="width:50%"><span t-field="o.port_of_loading_input"/></td>
+                                <th class="text-left" style="width:15%"></th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="width:25%">PLACE OF DELIVERY:</th>
+                                <td style="width:50%"><span t-field="o.place_of_delivery" /></td>
+                                <th class="text-left" style="width:10%"></th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="width:25%">CUSTOMER:</th>
+                                <td><span t-field="o.customer_name.name"/></td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="width:25%">PORT:</th>
+                                <td><span t-field="o.port_of_loading_input"/></td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="width:25%">COMMODITY:</th>
+                                <td><span t-field="o.commodity1.name"/></td>
+                            </tr>
+                            <t t-if="o.service_type == 'land'" t-foreach="o.cargo_line_ids" t-as="line">
+                                <tr>
+                                    <th class="text-left" style="width:25%">VOLUME(M3):</th>
+                                    <td><span t-field="line.exp_vol"/></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" style="width:25%">GROSS WEIGHT(KGS):</th>
+                                    <td><span t-field="line.exp_gross_weight"/></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" style="width:25%">MEASURE(KGS):</th>
+                                    <td><span t-field="line.exp_net_weight"/></td>
+                                </tr>
+                            </t>
+                            <br/>
+                            <tr>
+                                <th>REMARK:</th>
+                                <td><span t-field="o.note"/></td>
+                            </tr>
+                        </table>
+                        <table style="border-collapse: collapse; line-height: 150%; font-size:10px; width:100%;">
+                            <tr>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:15%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Item No.
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:35%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Description
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:10%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Qty
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:15%
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Unit
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:15%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Wgt(kgm)
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:10%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Vol(m3)
+                                </th>
+                            </tr>
+                            <t t-set="line_no" t-value="1"/>
+                            <t t-set="max_line" t-value="10"/>
+                            <t t-set="qty" t-value="0"/>
+                            <t t-set="wgt" t-value="0"/>
+                            <t t-set="vol" t-value="0"/>
+                            <t t-foreach="o.cargo_line_ids" t-as="line">
+                                <tr>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line_no"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.container_product_name"/>
+                                    </td>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.packages_no_value"/>
+                                    </td>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.packages_no_uom.name"/>
+                                    </td>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.exp_gross_weight"/>
+                                    </td>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.exp_vol"/>
+                                    </td>
+                                </tr>
+                                <t t-set="qty" t-value="qty + line.packages_no_value"/>
+                                <t t-set="wgt" t-value="wgt + line.exp_gross_weight"/>
+                                <t t-set="vol" t-value="vol + line.exp_vol"/>
+                                <t t-set="line_no" t-value="line_no+1"/>
+                                <t t-set="max_line" t-value="max_line-1"/>
+                            </t>
+                            <t t-foreach="range(max_line)" t-as="l">
+                                <tr>
+                                    <td style="text-align:center; border-left:1px solid; border-top:1px solid; border-right:1px solid;"><span t-esc="line_no"/></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                </tr>
+                                <t t-set="line_no" t-value="line_no+1"/>
+                            </t>
+
+                            <tr>
+                                <td colspan="2" style="text-align:right; vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+                                    TOTAL :
+                                </td>
+                                <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+                                    <span t-esc="qty"/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+
+                                </td>
+                                <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+                                    <span t-esc="wgt"/>
+                                </td>
+                                <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+                                    <span t-esc="vol"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="border-collapse: collapse; line-height: 150%; font-size:10px; width:100%;">
+                            <tr>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:75%;"></th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:15%;">KGS</th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:10%;">M3</th>
+                            </tr>
+                        </table>
+                        <div style="font-size:10px;">
+                            <br/><br/><br/> <!-- Report footer content -->
+                            <left>REMEASUREMENT:</left><br/>
+                            <left>* This Transportation Order to be acknowledge receipt by consignee receipient of cargo upon delivery.</left><br/>
+                            <left>* This document is important to furnish the safe delivery of goods from warehouse to consignee and
+                              it shall be consider as supporting documents for insurance claims(if any) </left><br/>
+                            <left>Please bill for transport to&#160;<b><span t-field="res_company.partner_id"/></b>.</left><br/>
+                            <br/><br/>
+                            <left>Received By:</left>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            <right>Warehouse Received By:</right><br/><br/><br/><br/>
+                            <left>____________________________</left>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            <right>____________________________</right><br/>
+                            <left>Chop &amp; Sign by Transporter</left>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                            <right>Chop &amp; Sign by Warehouse</right><br/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="invoice_form_term" model="ir.ui.view">
+            <field name="name">invoice.form.term</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//page[last()]" position="after">
+                        <page string="Terms and Conditions">
+                            <group>
+                                <field name="template_id"/>
+                                <field name="print_term"/>
+                            </group>
+                            <field name="sale_term"/>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record id="do_form_term" model="ir.ui.view">
+            <field name="name">stock.picking.form.term</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <data>
+                     <xpath expr="//page[last()]" position="after">
+                        <page string="Terms and Conditions">
+                            <group>
+                                <field name="template_id"/>
+                                <field name="print_term"/>
+                            </group>
+                            <field name="sale_term"/>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+
+        <record id="po_form_term" model="ir.ui.view">
+            <field name="name">purchase.order.form.term</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+
+                    <xpath expr="/form/sheet/notebook/page[2]" position="after">
+                        <page string="Terms and Conditions">
+                            <group>
+                                <field name="template_id"/>
+                                <field name="print_term"/>
+                            </group>
+                            <field name="sale_term"/>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    
+
+</odoo>

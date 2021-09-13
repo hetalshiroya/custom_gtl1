@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <report id="action_door_to_door_delivery_order_report"
+            string="Door to Door Delivery Order"
+            model="transport.rft"
+            report_type="qweb-pdf"
+            name="sci_goexcel_transport.report_door_to_door_delivery_order"
+            print_report_name = "('DO - '+ object.rft_no)"
+     />
+
+    <template id="report_door_to_door_delivery_order">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h3>
+                            <center>Delivery Order</center>
+                        </h3>
+                        <br/>
+                        <table style="table-layout: fixed; line-height: 200%; font-size:12px; width:100%;">
+                            <tr>
+                                <t t-set="container_no" t-value=""/>
+                                <t t-foreach="o.container_line_ids" t-as="line">
+                                    <t t-if="container_no">
+                                        <t t-set="container_no" t-value="container_no+','+line.container_no"/>
+                                    </t>
+                                    <t t-if="not container_no">
+                                        <t t-set="container_no" t-value="line.container_no"/>
+                                    </t>
+                                </t>
+                                <td style="vertical-align: top; width:5%;"></td>
+                                <td style="vertical-align: top; text-align:right; width:15%;">Container REF</td>
+                                <td style="vertical-align: top; text-align:center; width:2%;">:</td>
+                                <td style="padding-left: 5px;  vertical-align: top; width:28%;">
+                                    <t t-if="o.container_line_ids">
+                                        <span t-esc="container_no"/>
+                                    </t>
+                                </td>
+                                <td style="vertical-align: top; width:10%;"></td>
+                                <td style="vertical-align: top; text-align:center; width:10%;">Date</td>
+                                <td style="vertical-align: top; text-align:center; width:2%;">:</td>
+                                <td style="padding-left: 5px;  vertical-align: top; width:28%;">
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="border-collapse: collapse; line-height: 150%; font-size:12px; width:100%;">
+                            <tr>
+                                <td style="vertical-align: top; width:5%;"></td>
+                                <td style="vertical-align: top; text-align:right; width:15%;">Loading date</td>
+                                <td style="vertical-align: top; text-align:center; width:2%;">:</td>
+                                <td style="padding-left: 5px;  vertical-align: top; width:28%;">
+                                    <span t-field="o.loading_eta"/>
+                                </td>
+                                <td style="vertical-align: top; width:10%;"></td>
+                                <td style="width:10%; text-align:center; border-left:1px solid ;border-top:1px solid;">Pick Up Date</td>
+                                <td style="width:2%;  text-align:center; border-top:1px solid; border-right:1px solid;">:</td>
+                                <td style="padding-left: 5px; width:28%; border-top:1px solid; border-right:1px solid;">
+                                    <t t-if="o.required_date_time">
+                                        <span t-esc="o.required_date_time.strftime('%d/%m/%Y')"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;"></td>
+                                <td style="vertical-align: top; text-align:right;">ETD</td>
+                                <td style="vertical-align: top; text-align:center;">:</td>
+                                <td style="padding-left: 5px;  vertical-align: top;">
+                                    <span t-field="o.vessel_etd"/>
+                                </td>
+                                <td style="vertical-align: top;"></td>
+                                <td style="text-align:center; border-left:1px solid ;border-top:1px solid ;">Date Arrived</td>
+                                <td style="text-align:center; border-top:1px solid ; border-right:1px solid ;">:</td>
+                                <td style="padding-left: 5px;  border-top:1px solid ; border-right:1px solid ;"></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;"></td>
+                                <td style="vertical-align: top; text-align:right;">ETA Port</td>
+                                <td style="vertical-align: top; text-align:center;">:</td>
+                                <td style="padding-left: 5px;  vertical-align: top;">
+                                    <span t-field="o.vessel_eta_etd"/>
+                                </td>
+                                <td style="vertical-align: top;"></td>
+                                <td style="text-align:center; border-bottom:1px solid ; border-left:1px solid ;border-top:1px solid ;">Job Number</td>
+                                <td style="text-align:center; border-bottom:1px solid ; border-top:1px solid ; border-right:1px solid ;">:</td>
+                                <td style="padding-left: 5px; border-bottom:1px solid ; border-top:1px solid ; border-right:1px solid ;"><span t-field="o.rft_no"/></td>
+                            </tr>
+                        </table>
+                        <br/>
+
+                        <table style="border-collapse: collapse; line-height: 150%; width:100%;">
+                            <tr>
+                                <td style="width:45%; font-size:16px; text-align:center; vertical-align: top;background-color:black;color:white; border-right:1px solid;">
+                                    Pick Up:
+                                </td>
+                                <td style="width:5%;"></td>
+                                <td style="width:50%; font-size:16px; text-align:center; vertical-align: top; background-color:black;color:white;">
+                                    Delivery:
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="border-collapse: collapse; line-height: 150%; font-size:12px; width:100%;">
+                            <tr>
+                                <td style="vertical-align: top; padding-left: 5px; width:15%; border-left:1px solid;">Address:</td>
+                                <td style="vertical-align: top; padding-left: 5px; width:30%; border-right:1px solid;">
+                                    <span t-field="o.pickup_from_address_input"/><br/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px; width:5%"></td>
+                                <td style="vertical-align: top; padding-left: 5px; width:15%; border-left:1px solid;">Address:</td>
+                                <td style="vertical-align: top; padding-left: 5px; width:35%; border-right:1px solid;">
+                                    <span t-field="o.delivery_to_address_input"/><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; padding-left: 5px; border-left:1px solid;">Person In Charge:</td>
+                                <td style="vertical-align: top; padding-left: 5px; border-right:1px solid;">
+                                    <span t-field="o.pickup_from_contact_name.name"/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;"></td>
+                                <td style="vertical-align: top; padding-left: 5px; border-left:1px solid;">Person In Charge:</td>
+                                <td style="vertical-align: top; padding-left: 5px; border-right:1px solid;">
+                                    <span t-field="o.delivery_to_contact_name.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; padding-left: 5px; border-left:1px solid; border-bottom:1px solid;">Contact:</td>
+                                <td style="vertical-align: top; padding-left: 5px; border-right:1px solid; border-bottom:1px solid;">
+                                    <t t-if="o.pickup_from_contact_name.phone">
+                                        <span t-field="o.pickup_from_contact_name.phone"/>
+                                    </t>
+                                    <t t-if="not o.pickup_from_contact_name.phone">
+                                        <span t-field="o.pickup_from_contact_name.mobile"/>
+                                    </t>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;"></td>
+                                <td style="vertical-align: top; padding-left: 5px; border-left:1px solid; border-bottom:1px solid;">Contact:</td>
+                                <td style="vertical-align: top; padding-left: 5px; border-right:1px solid; border-bottom:1px solid;">
+                                    <t t-if="o.delivery_to_contact_name.phone">
+                                        <span t-field="o.delivery_to_contact_name.phone"/>
+                                    </t>
+                                    <t t-if="not o.delivery_to_contact_name.phone">
+                                        <span t-field="o.delivery_to_contact_name.mobile"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <table style="border-collapse: collapse; line-height: 150%; font-size:12px; width:100%;">
+                            <tr>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:15%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Item No.
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:35%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Description
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:10%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Qty
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:15%
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Unit
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:15%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Wgt(kgm)
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:10%;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                    Vol(m3)
+                                </th>
+                            </tr>
+                            <t t-set="line_no" t-value="1"/>
+                            <t t-set="max_line" t-value="10"/>
+                            <t t-set="qty" t-value="0"/>
+                            <t t-set="wgt" t-value="0"/>
+                            <t t-set="vol" t-value="0"/>
+                            <t t-foreach="o.container_line_ids" t-as="line">
+                                <tr>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line_no"/>
+                                    </td>
+                                    <td style="vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.container_product_name"/>
+                                    </td>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.packages_no"/>
+                                    </td>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.packages_no_uom.name"/>
+                                    </td>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.exp_gross_weight"/>
+                                    </td>
+                                    <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                    border-left:1px solid; border-top:1px solid; border-right:1px solid;">
+                                        <span t-esc="line.exp_vol"/>
+                                    </td>
+                                </tr>
+                                <t t-set="qty" t-value="qty + line.packages_no"/>
+                                <t t-set="wgt" t-value="wgt + line.exp_gross_weight"/>
+                                <t t-set="vol" t-value="vol + line.exp_vol"/>
+                                <t t-set="line_no" t-value="line_no+1"/>
+                                <t t-set="max_line" t-value="max_line-1"/>
+                            </t>
+                            <t t-foreach="range(max_line)" t-as="l">
+                                <tr>
+                                    <td style="text-align:center; border-left:1px solid; border-top:1px solid; border-right:1px solid;"><span t-esc="line_no"/></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                    <td style="border-left:1px solid; border-top:1px solid; border-right:1px solid;"></td>
+                                </tr>
+                                <t t-set="line_no" t-value="line_no+1"/>
+                            </t>
+
+                            <tr>
+                                <td colspan="2" style="text-align:right; vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+                                    TOTAL :
+                                </td>
+                                <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+                                    <span t-esc="qty"/>
+                                </td>
+                                <td style="vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+
+                                </td>
+                                <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+                                    <span t-esc="wgt"/>
+                                </td>
+                                <td style="text-align:center; vertical-align: top; padding-left: 5px;
+                                border-left:1px solid; border-top:1px solid; border-right:1px solid;border-bottom:1px solid;">
+                                    <span t-esc="vol"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="border-collapse: collapse; line-height: 150%; font-size:12px; width:100%;">
+                            <tr>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:75%;"></th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:15%;">KGS</th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:10%;">M3</th>
+                            </tr>
+                        </table>
+                        <br/><br/>
+                        <table style="border-collapse: collapse; line-height: 150%; font-size:12px; width:100%;">
+                            <tr>
+                                <th style="vertical-align: top; padding-left: 5px; width:35%; text-align:center;">
+                                    <span t-field="res_company.partner_id.name"/>
+                                </th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:30%;"></th>
+                                <th style="text-align:center; vertical-align: top; padding-left: 5px; width:35%;"></th>
+                            </tr>
+                            <tr height="70px">
+                                <td style="border-bottom:1px solid;"></td>
+                                <td></td>
+                                <td style="border-bottom:1px solid;"></td>
+                            </tr>
+                            <tr>
+                                <td  style="text-align:center;">(Authorized Signature)</td>
+                                <td></td>
+                                <td style="text-align:center;">Received by</td>
+                            </tr>
+                            <tr>
+                                <td  style="text-align:center;"><span t-field="o.owner.name"/>
+                                    <t t-if="o.owner.phone">
+                                        (<span t-field="o.owner.phone"/>)
+                                    </t>
+                                </td>
+                                <td></td>
+                                <td>Name:</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>IC:</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>Date:</td>
+                            </tr>
+                            <tr height="20px">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>GOOD RECEIVED IN GOOD CONDITION AND ORDER</td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,155 @@
+<odoo>
+
+	 <!-- Tree View Dispatch Job -->
+    <record id='view_tree_dispatch_job' model='ir.ui.view'>
+        <field name="name"></field>
+        <field name="model">freight.dispatch.job</field>
+        <field name="arch" type="xml">
+			<tree string='Dispatch Job' decoration-muted="dispatch_job_status=='03'">
+                <field name="dispatch_job_status"/>
+				<field name="dispatch_job_no"/>
+                <field name="booking_ref"/>
+                <field name="type" />
+                <field name="deadline" />
+                <field name="received_date"/>
+                <field name="completion_date"/>
+                <field name="customer_received_date"/>
+                <field name="customer_id"/>
+                <field name="dispatcher_id"/>
+                <field name="request_by"/>
+                <field name="verify_by"/>
+			</tree>
+		</field>
+	</record>
+
+
+    <!-- Form View dispatch_job -->
+    <record id="view_form_dispatch_job" model="ir.ui.view">
+        <field name="name">Dispatch Job</field>
+        <field name="model">freight.dispatch.job</field>
+        <field name="arch" type="xml">
+            <form string="Dispatch Job">
+                <header>
+                     <button name="action_cancel_dispatch_job"
+							type="object"
+							string="Cancel Dispatch Job"
+							class="oe_button"
+                            confirm="Are you sure you want to Cancel Dispatch Job?"
+                            attrs="{'invisible': [('dispatch_job_status', 'in', ['02','03'])]}"/>
+                    <field name="dispatch_job_status" widget="statusbar" statusbar_visible="01,02,03" options='{"always_reload": True}'/>
+                    <button name="action_post_journal"
+							type="object"
+							string="Confirm and Post"
+							class="oe_highlight" attrs="{'invisible': ['|', ('dispatch_job_status', 'in', ['01','03','04']), ('post_journal', '=', False)]}"/>
+                     <!--<button name="action_confirm"
+							type="object"
+							string="Confirm"
+							class="oe_highlight" attrs="{'invisible': ['|', ('dispatch_job_status', 'in', ['02','03']), ('post_journal', '=', True)]}"/>
+-->                </header>
+                <sheet>
+					<group string="Dispatch Job">
+                        <group>
+                            <field name="dispatch_job_no"/>
+                            <field name="booking_ref" readonly="1"/>
+                            <field name="type" widget="radio" options="{'horizontal': true}" required="1"/>
+                            <field name="task" widget="radio" options="{'horizontal': true}"/>
+                            <field name="others" attrs="{'invisible': [('task', 'in', ['01','02'])]}"/>
+                            <field name="customer_id" domain="[('is_company','=',True)]" options='{"always_reload": True}'/>
+                            <field name="dispatcher_id" domain="[('is_company','=',False)]" options='{"always_reload": True}'/>
+                            <field name="request_by" options='{"always_reload": True}'/>
+                            <field name="verify_by"  options='{"always_reload": True}'/>
+                        </group>
+                        <group>
+                            <field name="post_journal"/>
+                            <field name="amount" attrs="{'invisible': [('post_journal', '=', False)]}"/>
+                            <field name="deadline" />
+                            <field name="received_date"/>
+                            <field name="completion_date"/>
+                            <field name="customer_received_date"/>
+                            <field name="note"/>
+                            <field name="create_date"/>
+                            <field name="create_uid"/>
+                            <field name="write_date"/>
+                            <field name="write_uid"/>
+                        </group>
+                    </group>
+                     <notebook>
+                          <page string="Journal Items" groups="account.group_account_user">
+                            <group>
+                                <field name="account_id"/>
+                                <field name="property_account_expense_id"/>
+                                <field name="payment_journal_id"/>
+                                <field name="account_date"/>
+                              <!--  <field name="move_id"/>-->
+                                <field name="move_id" readonly="1"/>
+                            </group>
+                        </page>
+
+                     </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- Search View Dispatch Job -->
+    <record id="view_search_dispatch_job" model="ir.ui.view">
+        <field name="name">Dispatch Job</field>
+        <field name="model">freight.dispatch.job</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="dispatch_job_no"/>
+                <field name="booking_ref"/>
+                <field name="dispatcher_id"/>
+                <field name="customer_id"/>
+                <field name="request_by"/>
+                <filter string="Post Journal" name="Posted" domain="[('post_journal', '=', True)]"/>
+                <filter string="Type - Job" name="Job" domain="[('type', '=', 'job')]"/>
+                <filter string="Type - Non-Job" name="Job" domain="[('type', '=', 'non')]"/>
+                <filter string="Creation Date" name="Creation Date" date="create_date"/>
+                <filter string="Completion Date" name="Completion Date" date="completion_date"/>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Calendar View Dispatch Job -->
+      <record id="view_calendar_dispatch_job" model="ir.ui.view">
+        <field name="name">Dispatch Job Calendar</field>
+        <field name="model">freight.dispatch.job</field>
+        <field name="arch" type="xml">
+            <calendar color="dispatcher_id" date_start="received_date"
+                      string="Dispatch Job" mode="week" quick_add="0"
+                      all_day="received_date">
+                     <field name="dispatcher_id" />
+                     <field name="customer_id" />
+                      <field name="dispatch_job_no" />
+                     <field name="dispatch_job_status" />
+            </calendar>
+        </field>
+    </record>
+
+
+    <record id="view_pivot_dispatch_job" model="ir.ui.view">
+         <field name="name">Dispatch Job pivot</field>
+         <field name="model">freight.dispatch.job</field>
+         <field name="arch" type="xml">
+             <pivot string="Dispatch Job Analysis">
+                <field name="dispatcher_id" type="row"/>
+                 <field name="received_date" interval="month" type="row"/>
+                 <field name="customer_id" type="col"/>
+             </pivot>
+         </field>
+    </record>
+
+    <act_window id="action_dispatch_job" name="Dispatch Job" res_model="freight.dispatch.job" view_mode="tree,form,calendar,pivot"/>
+
+
+    <menuitem id="menu_dispatch_job" name="Dispatch Job" parent="sci_goexcel_freight.main_menu_document" action="action_dispatch_job"/>
+
+</odoo>

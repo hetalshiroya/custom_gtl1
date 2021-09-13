@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+            id="action_report_trial_balance"
+            model="account.balance.report"
+            string="Trial Balance"
+            report_type="qweb-pdf"
+            name="account_v12.report_trialbalance"
+            file="account_v12.report_trialbalance"
+            />
+
+        <report
+            id="action_report_general_ledger"
+            model="account.report.general.ledger"
+            string="General Ledger"
+            report_type="qweb-pdf"
+            name="account_v12.report_generalledger"
+            file="account_v12.report_generalledger"
+            />
+
+        <report
+            id="action_report_partnerledger"
+            model="account.report.partner.ledger"
+            string="Partner Ledger"
+            report_type="qweb-pdf"
+            name="account_v12.report_partnerledger"
+            file="account_v12.report_partnerledger"
+            />
+
+        <report
+            id="action_report_financial"
+            model="account.financial.report"
+            string="Financial report"
+            menu="False"
+            report_type="qweb-pdf"
+            name="account_v12.report_financial"
+            file="account_v12.report_financial"
+            />
+
+        <!--<report
+            id="action_report_print_overdue"
+            model="res.partner"
+            report_type="qweb-pdf"
+            string="Due Payments"
+            name="account_v12.report_overdue"
+            file="account_v12.report_overdue"
+            print_report_name="'Due Payments - %s' % (object.name)"
+        />-->
+
+        <report
+            id="action_report_aged_partner_balance_v12"
+            model="res.partner"
+            string="Aged Partner Balance"
+            menu="False"
+            report_type="qweb-pdf"
+            name="account_v12.report_agedpartnerbalance"
+            file="account_v12.report_agedpartnerbalance"
+        />
+
+        <report
+            id="action_report_account_tax"
+            model="account.tax.report"
+            string="Tax Report"
+            report_type="qweb-pdf"
+            name="account_v12.report_tax"
+            file="account_v12.report_tax"
+            />
+
+
+    <!-- Report of Balance 1, 2, 3 and 4th Column -->
+    <report id="account_pf_balance_report"
+        string="Balance 1 Column"
+        menu="True"
+        model="account.wizard.report"
+        report_type="qweb-pdf"
+        name="account_v12.financial_report_balance_full_temp"
+        file="account_v12.financial_report_balance_full_temp"/>
+
+    <!-- Report of Balance 13 Column -->
+    <report id="account_pf_balance_13_report"
+        string="Balance 13 Column"
+        menu="True"
+        model="account.wizard.report"
+        report_type="qweb-pdf"
+        name="account_v12.account_full_13_balance_cols"
+        file="account_v12.account_full_13_balance_cols"/>
+
+    <!-- Report of Balance QTR Column -->
+    <report id="account_pf_balance_qtr_report"
+        string="Balance QTR Column"
+        menu="True"
+        model="account.wizard.report"
+        report_type="qweb-pdf"
+        name="account_v12.account_full_qtr_balance_cols"
+        file="account_v12.account_full_qtr_balance_cols"/>
+
+
+    </data>
+</odoo>

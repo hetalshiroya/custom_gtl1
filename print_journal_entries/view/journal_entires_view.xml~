@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <template id="project_journal_entries_id">
+          <t t-foreach="docs" t-as="doc">
+            <t t-call="report.internal_layout">
+                 <div class="page">
+                     <div>
+                         <p>
+                             <h3 class="text-center">
+                                 Journal Entry
+                             </h3>
+                         </p>
+                         <p>
+                             <h3>
+                                 <span t-field="doc.name"/> - <span t-field="doc.state"/>
+                             </h3>
+                         </p>
+                         <p class="row">
+                            <div class="col-xs-6">
+                                <strong>Journal:</strong>
+                                <span t-field="doc.journal_id.name"/>
+                            </div>
+                            <div class="col-xs-6">
+                                <strong>Date:</strong>
+                                <span t-field="doc.date"/>
+                            </div>
+                         </p>
+                         <p class="row">
+                            <div class="col-xs-6">
+                                <strong>Reference:</strong>
+                                <span t-field="doc.ref"/>
+                            </div>
+                            <div class="col-xs-6">
+                                <strong>Company:</strong>
+                                <span t-field="doc.company_id.name"/>
+                            </div>
+                         </p>
+                         <p class="row">
+                            <div class="col-xs-6">
+                                <strong>Amount:</strong>
+                                <span t-field="doc.amount"/>
+                            </div>
+                         </p>
+                         <br/>
+                         <h3>Journal Items</h3>
+                         <table class="table table-responsive">
+                            <tr style="border: 2px solid black;">
+                                <th>Account</th>
+                                <th>Date</th>
+                                <th>Due Date</th>
+                                <th>Partner</th>
+                                <th>Label</th>
+                                <th>Analytic Account</th>
+                                <th>Amount</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <tr style="border: 2px solid black;">
+                                    <td><span t-field="line.account_id.name"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td><span t-field="line.date_maturity"/></td>
+                                    <td><span t-field="line.partner_id.name"/></td>
+                                    <td><span t-field="line.name"/></td>
+                                    <td><span t-field="line.analytic_account_id.name"/></td>
+                                    <td><span t-field="line.amount_currency" /></td>
+                                    <td><span t-field="line.debit" /></td>
+                                    <td><span t-field="line.credit" /></td>
+                                </tr>
+                            </t>
+                         </table>
+                         <h3 t-if="doc.narration">Narration</h3>
+                         <p>
+                             <span t-field="doc.narration"/>
+                         </p>
+                     </div>
+                </div>
+              </t>
+            </t>
+        </template>
+        
+    </data>
+</openerp>

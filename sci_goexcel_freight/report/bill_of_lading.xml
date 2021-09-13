@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="report.paperformat" id="paperformat_freight_bl_report">
+        <field name="name">paperformat.freight.bl.report</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_width">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_right">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+     <report id="action_bill_of_lading_report"
+            string="Bill Of Lading"
+            model="freight.booking"
+            report_type="qweb-pdf"
+             menu="False"
+            name="sci_goexcel_freight.report_bill_of_lading"
+             paperformat="paperformat_freight_bl_report"/>
+
+    <template id="report_bill_of_lading">
+        <t t-call="web.html_container">
+            <t t-name="web.external_layout_standard">
+             <div class="header">
+                 <div class="row">
+                    <div class="col-3 mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                    </div>
+                     <br/>
+                     <div class="col-9 text-right" style="margin-top:22px;">
+                           <!-- <h2 style="text-align:right">-->
+                         <span>Bill Of Lading</span>
+                          <!--  </h2>-->
+                     </div>
+                 </div>
+            </div>
+            <t t-foreach="docs" t-as="o">
+                    <div class="page" style="font-family: Arial Narrow;font-size:10px;">
+                        <!-- Report header content -->
+                            <table style="width:100%">
+                                <tr>
+                                    <th style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">SHIPPER/EXPORTER:</th>
+                                    <td style="width:53.2%;font-family: Arial Narrow;font-size:10px;padding:5px;border-top:1pt solid black;"><span t-field="o.shipper_address_input"/></td>
+                                    <th style="padding:5px;border-top:1pt solid black;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;">B/L NUMBER:&#160;<span t-field="o.hbl_no"/></th>
+                                    <td style="width:50%;padding:5px;border-right:1pt solid black;border-top:1pt solid black;"></td>
+                                </tr>
+                                <tr>
+                                    <th style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">CONSIGNEE:</th>
+                                    <td style="width:53.2%;font-family: Arial Narrow;font-size:10px;padding:5px;border-top:1pt solid black;"><span t-field="o.consignee_address_input"/></td>
+                                    <th style="width:50%;padding:5px;border-top:1pt solid black;border-left:1pt solid black;font-family: Arial Narrow;font-size:10px;"><span t-esc="res_company.partner_id" t-options='{"widget": "contact", "fields": ["name", "address", "phone", "fax"],"no_marker": True}'/></th>
+                                    <td style="padding:5px;border-right:1pt solid black;border-top:1pt solid black;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">NOTIFY PARTY:</th>
+                                    <td style="width:53.2%;font-family: Arial Narrow;font-size:10px;padding:5px;border-top:1pt solid black;">
+                                    <span t-field="o.notify_party_address_input"/>
+                                    </td>
+
+                                    <th style="width:50%;padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;">NON NEGOTIABLE UNLESS CONSIGNED 'TO ORDER'
+                                     <br/>RECEIVED by the carriage of Goods as specified below in apparent good order and
+                                     condition unless otherwise stated to the transportation to such place as agreed,
+                                         authorized or permitted, herein and subject to all terms and conditions appearing
+                                         on the front and reverse of this Bill of Lading to which the Merchant agrees by
+                                         accepting this Bill of Lading, any local privileges and customs notwithstanding.<br/>
+                                        The particular given below as stated by the shipper and the weight, measure, quantity,
+                                        condition, content and the value of Goods are unknown for the Carrier.<br/>
+                                        In WITNESS where of one (1) original Bill of Lading has been signed if not otherwise
+                                        stated hereafter, the same being accomplished the other(s). If any, to be void. If required
+                                        by the Carrier one (1) original Bill of Lading must be surrendered duly endorsed in exchange
+                                        for the Goods or Delivery Order.
+                                     </th>
+                                    <td style="padding:5px;border-right:1pt solid black;">
+                                    </td>
+                                </tr>
+                                </table>
+                                <table style="width:100%">
+                                 <tr>
+                                    <th style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">PRE-CARRIAGE BY</th>
+                                        <td style="width:11%;font-family: Arial Narrow;font-size:9px;padding:5px;border-top:1pt solid black;"><span t-esc="o.transport_company" t-options='{"widget": "contact", "fields": ["name"],"no_marker": True}'/></td>
+                                    <th style="padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;border-top:1pt solid black;color:175FAF;">*PLACE OF RECEIPT</th>
+                                        <td style="width:12%;padding:5px;border-right:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:9px"><span t-field="o.place_of_receipt"/>
+                                        </td>
+                                     <th style="padding:5px;font-family: Arial Narrow;font-size:10px;border-top:1pt solid black;color:175FAF;">FOR DELIVERY, PLEASE CONTACT</th>
+                                     <td style="width:10%;padding:5px;border-right:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:8px"></td>
+                                    <!-- <td style="width:50%;padding:5px;border-right:1pt solid black;font-family:Arial Narrow;font-size:8px"><span t-esc="o.notify_party"  t-options='{"widget": "contact", "fields": ["name", "address", "phone", "fax"],"no_marker": True}'/>
+                                        </td>-->
+                                 </tr>
+                                 <tr>
+                                   <th style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">OCEAN VESSEL</th>
+                                        <td style="width:11%;font-family: Arial Narrow;font-size:9px;padding:5px;border-top:1pt solid black;"><span t-field="o.vessel_id"/></td>
+                                   <th style="padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;border-top:1pt solid black;color:175FAF;">PORT OF LOADING</th>
+                                        <td style="width:12%;padding:5px;border-right:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:9px"><span t-field="o.port_of_loading_input"/>
+                                        </td>
+                                 <th style="padding:5px;font-family: Arial Narrow;font-size:9px;"><span t-esc="o.notify_party"  t-options='{"widget": "contact", "fields": ["name", "address", "phone", "fax"],"no_marker": True}'/></th>
+                                     <td style="padding:5px;border-right:1pt solid black;font-family:Arial Narrow;font-size:8px"></td>
+
+                                 </tr>
+                                    <tr>
+                                   <th style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">PORT OF DISCHARGE</th>
+                                        <td style="width:11%;font-family: Arial Narrow;font-size:9px;padding:5px;border-top:1pt solid black;"><span t-field="o.port_of_discharge_input"/></td>
+                                   <th style="padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;border-top:1pt solid black;color:175FAF;">PLACE OF DELIVERY</th>
+                                        <td style="width:12%;padding:5px;border-right:1pt solid black;border-top:1pt solid black;font-family:Arial Narrow;font-size:9px"><span t-field="o.place_of_delivery"/>
+                                        </td>
+                                 <th style="padding:5px;font-family: Arial Narrow;font-size:9px;"></th>
+                                     <td style="padding:5px;border-right:1pt solid black;font-family:Arial Narrow;font-size:8px"></td>
+
+                                 </tr>
+	                	        </table>
+                                <table style="width:100%">
+                                 <tr>
+                                     <th class="text-left" style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">MARKS &amp; NUMBERS</th>
+                                     <th class="text-left" style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">NO OF PKGS</th>
+                                     <th class="text-left" style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">DESCRIPTION OF GOODS &amp; PACKAGES</th>
+                                     <th class="text-left" style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">GROSS WEIGHT (KG)</th>
+                                     <th class="text-left" style="padding:5px;border-left:1pt solid black;border-top:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">MEASUREMENT (CBM)</th>
+
+                                </tr>
+                                    <t t-if="o.cargo_type == 'fcl'" t-foreach="o.operation_line_ids" t-as="line">
+                                        <tr>
+                                            <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;"></td>
+                                            <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.packages_no"/>&#160;PACKAGES</td>
+                                            <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.fcl_container_qty"/>&#160;X&#160;<span t-field="line.container_product_id.name"/>
+                                            &#160;SAID TO CONTAIN&#160;<span t-field="line.container_product_name"/>
+                                            </td>
+                                            <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.exp_gross_weight"/>&#160;KGS</td>
+                                            <td style="padding:2px;border-left:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.exp_vol"/>&#160;M3</td>
+                                        </tr>
+
+                                   </t>
+                                    <t t-if="o.cargo_type == 'lcl'" t-foreach="o.operation_line_ids2" t-as="line">
+                                        <tr>
+                                            <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.shipping_mark"/></td>
+                                            <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.packages_no"/>&#160;PACKAGES</td>
+                                            <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.packages_no"/>&#160;PACKAGES SAID TO CONTAIN&#160;<span t-field="line.container_product_name"/>
+                                            </td>
+                                            <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.exp_gross_weight"/>&#160;KGS</td>
+                                            <td style="padding:2px;border-left:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;"><span t-field="line.exp_vol"/>&#160;M3</td>
+                                        </tr>
+                                    </t>
+                                     <tr>
+                                            <td style="height:190px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                            <td style="height:190px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                            <td style="height:190px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                            <td style="height:190px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                            <td style="height:190px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                     </tr>
+	                	        </table>
+                                <table style="width:100%">
+                                     <tr>
+                                        <th class="text-left" style="padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">FREIGHT DETAILS, CHARGES ETC</th>
+                                         <th class="text-left" style="padding:5px;border-left:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">TOTAL NUMBER OF PACKAGES IN WORDS</th>
+                                     </tr>
+                                    <tr>
+                                        <td style="height:10px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                        <td style="height:10px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                    </tr>
+                                </table>
+                                <table style="width:100%">
+                                    <tr>
+                                          <th class="text-left" style="width:25%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">DESCRIPTION</th>
+                                          <th class="text-left" style="width:25%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">RATING</th>
+                                          <th class="text-left" style="width:23%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">PREPAID</th>
+                                          <th class="text-left" style="width:27%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">COLLECT</th>
+                                    </tr>
+                                     <tr>
+                                        <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                         <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                         <td style="padding:2px;border-left:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                        <td style="padding:2px;border-left:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:40px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                         <td style="height:40px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                         <td style="height:40px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                        <td style="height:40px;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                    </tr>
+                                </table>
+                                <table style="width:100%">
+                                    <tr>
+                                        <th class="text-left" style="width:40%;padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">JURISDICTION AND LAW CLAUSE</th>
+                                          <th class="text-left" style="width:12%;padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">EXCHANGE RATE</th>
+                                          <th class="text-left" style="width:21%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">PAYABLE AT</th>
+                                          <th class="text-left" style="width:27%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;"></th>
+                                    </tr>
+                                     <tr>
+                                        <th class="text-left" style="width:40%;padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">The Contractor by and contained in this Bill of Lading is governed by the Law of Malaysia
+                                        and any claim and dispute arising hereunder or in connection herewith shall be determined by the courts in Malaysia and no other courts</th>
+                                          <th class="text-left" style="width:12%;padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;"></th>
+                                          <th class="text-left" style="width:21%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">NO. OF ORIGINAL B/L(S)</th>
+                                          <th class="text-left" style="width:27%; padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;"></th>
+                                    </tr>
+                                     <tr>
+                                        <th class="text-left" style="width:40%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;"></th>
+                                          <th class="text-left" style="width:12%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;"></th>
+                                          <th class="text-left" style="width:21%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">PLACE AND DATE OF ISSUE</th>
+                                          <th class="text-left" style="width:27%;padding:5px;border-left:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;"></th>
+                                    </tr>
+                                </table>
+                          <table style="width:100%">
+                                    <tr>
+                                         <tr>
+                                        <th class="text-left" style="width:40%;padding:5px;border-left:1pt solid black;font-family:Arial Narrow;font-size:9px;color:175FAF;">EXCESS VALUE DESCRIPTION. REFER TO CLAUSE 6(4)(B)+(C) ON REVERSE SIDE</th>
+                                         <th class="text-left" style="padding:5px;border-left:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:10px;color:175FAF;">SIGNED ON BEHALF OF THE CARRIER</th>
+                                     </tr>
+                                    <tr>
+                                        <td style="width:40%;padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                        <td style="padding:2px;border-left:1pt solid black;border-bottom:1pt solid black;border-right:1pt solid black;font-family:Arial Narrow;font-size:9px;">&#160;</td>
+                                    </tr>
+                                    </tr>
+                                </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

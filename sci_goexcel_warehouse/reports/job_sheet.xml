@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="action_tally_sheet"
+            model="warehouse.tally.sheet"
+            string="Job Sheet"
+            report_type="qweb-pdf"
+            name="sci_goexcel_warehouse.report_tally_sheet"
+        />
+
+    <template id="report_tally_sheet">
+		<t t-call="web.html_container">
+		    <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                     <div class="page" style="font-family:sans-serif">
+                          <table class="table table-sm table-bordered" style="font-size:12px">
+                          <thead>
+
+                          </thead>
+                          <tbody>
+                               <tr style="background:#e0e0e0;">
+                                     <td class="text-left" colspan="4">
+                                         <h5><span t-field="o.company_id.name"/></h5>
+                                    </td>
+                                    <td class="text-left" colspan="4">
+                                        <h5>JOB SHEET:&#160;
+                                        <strong><span t-field="o.job_no"/></strong></h5>
+                                    </td>
+                                </tr>
+                               <tr>
+                                   <td class="text-left" colspan="2">
+                                       <strong>CUSTOMER:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="2">
+                                        <span t-field="o.customer.name"/>
+                                     </td>
+                                   <td class="text-left" colspan="2">
+                                       <strong>SHIPMENT MODE:</strong>
+                                    </td>
+                                      <td class="text-left" colspan="2">
+                                        <span t-field="o.shipment_type"/>&#160;/&#160;<span t-field="o.cargo_type"/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-left" colspan="2">
+                                       <strong>CUSTOMER REF NO:</strong>
+                                    </td>
+                                     <td class="text-left" colspan="2">
+                                        <span t-field="o.customer_reference_no"/>
+                                    </td>
+                                      <td class="text-left" colspan="2">
+                                           <strong>RECEIPT DATE:</strong>
+                                    </td>
+                                      <td class="text-left" colspan="2">
+                                        <span t-field="o.receipt_date"/>
+                                    </td>
+                                 </tr>
+                                  <tr>
+                                        <td class="text-left" colspan="2">
+                                           <strong>CONTAINER SIZE:</strong>
+                                        </td>
+                                         <td class="text-left" colspan="2">
+                                            <span t-field="o.container_product_id.name"/>
+                                        </td>
+                                          <td class="text-left" colspan="2">
+                                               <strong>CONTAINER Qty:</strong>
+                                        </td>
+                                          <td class="text-left" colspan="2">
+                                            <span t-field="o.container_qty"/>
+                                        </td>
+                                  </tr>
+                                    <tr>
+                                        <td class="text-left" colspan="2">
+                                           <strong>JOB SCOPE:</strong>
+                                        </td>
+                                         <td class="text-left" colspan="2">
+                                            <span t-field="o.job_scope.name"/>
+                                        </td>
+                                          <td class="text-left" colspan="2">
+                                               <strong>PACKING:</strong>
+                                        </td>
+                                          <td class="text-left" colspan="2">
+                                            <span t-field="o.packing_type.name"/>&#160;/&#160;<span t-field="o.packing_on_pallet.name"/>
+                                        </td>
+                                  </tr>
+                          </tbody>
+                     </table>
+
+
+                        <table class="table table-sm table-bordered" style="font-size:12px">
+                             <thead>
+                                <tr>
+                                    <th class="text-left" style="width:10%">CONTAINER NO</th>
+                                     <th class="text-left" style="width:20%">DESCRIPTION</th>
+                                    <th class="text-left" style="width:10%">LOCATION</th>
+                                    <th class="text-left" style="width:10%">RECEIPT DATE</th>
+<!--                                    <th class="text-left" style="width:10%">UNIT VOL.</th>-->
+                                    <th class="text-left" style="width:10%">STOCK IN QTY</th>
+                                    <th class="text-left" style="width:10%">STOCK IN VOL.</th>
+                                    <th class="text-left" style="width:10%">STOCK OUT QTY</th>
+                                    <th class="text-left" style="width:10%">STOCK OUT VOL.</th>
+                                    <th class="text-left" style="width:10%">BAL. QTY</th>
+                                     <th class="text-left" style="width:10%">BAL. VOL.</th>
+                                </tr>
+                             </thead>
+                            <tbody>
+                                <t t-if="o.cargo_type == 'fcl'">
+                                    <t t-set="total_packages" t-value="0"/>
+                                    <t t-set="stock_in_vol" t-value="1"/>
+                                    <t t-set="stock_out_vol" t-value="1"/>
+                                    <t t-set="total_volume" t-value="0"/>
+                                    <t t-set="balance_vol" t-value="1"/>
+                                    <t t-foreach="o.container_line_ids" t-as="line">
+                                        <t t-set="total_packages" t-value="total_packages+line.no_of_packages"/>
+                                        <t t-set="total_volume" t-value="total_volume+line.total_volume"/>
+                                        <t t-set="total_balance" t-value="line.receipt_no_of_packages - line.delivered_no_of_packages"/>
+                                        <t t-set="stock_in_vol" t-value="line.receipt_no_of_packages * line.volume"/>
+                                        <t t-set="stock_out_vol" t-value="line.delivered_no_of_packages * line.volume"/>
+                                        <t t-set="balance_vol" t-value="total_balance * line.volume"/>
+                                        <tr>
+                                            <td><span t-field="line.container_no"/></td>
+                                            <td><span t-field="line.product_name"/></td>
+                                            <td><span t-field="line.warehouse_location.name"/></td>
+                                            <td><span t-field="line.receipt_date"/></td>
+                                            <td><span t-field="line.receipt_no_of_packages"/></td>
+                                            <td><span t-esc="stock_in_vol"/>&#160;<span t-field="line.total_volume_uom.name"/></td>
+                                            <td><span t-field="line.delivered_no_of_packages"/></td>
+                                            <td><span t-esc="stock_out_vol"/>&#160;<span t-field="line.total_volume_uom.name"/></td>
+                                            <td><span t-esc="total_balance"/></td>
+                                            <td><span t-esc="balance_vol"/>&#160;<span t-field="line.total_volume_uom.name"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-if="o.cargo_type == 'lcl'">
+                                    <t t-set="total_packages" t-value="0"/>
+                                    <t t-set="total_volume" t-value="0"/>
+                                    <t t-foreach="o.container_line_ids" t-as="line">
+                                        <t t-set="total_packages" t-value="total_packages+line.no_of_packages"/>
+                                        <t t-set="total_volume" t-value="total_volume+line.total_volume"/>
+                                        <t t-set="total_balance" t-value="line.receipt_no_of_packages - line.delivered_no_of_packages"/>
+                                        <t t-set="stock_in_vol" t-value="line.receipt_no_of_packages * line.dim_width * line.dim_height * line.dim_length"/>
+                                        <t t-set="stock_out_vol" t-value="line.delivered_no_of_packages * line.dim_width * line.dim_height * line.dim_length"/>
+                                        <t t-set="balance_vol" t-value="total_balance  * line.dim_width * line.dim_height * line.dim_length"/>
+                                        <tr>
+                                            <td><span t-field="line.container_no"/></td>
+                                            <td><span t-field="line.product_name"/></td>
+                                            <td><span t-field="line.warehouse_location.name"/></td>
+                                            <td><span t-field="line.receipt_date"/></td>
+                                            <td><span t-field="line.receipt_no_of_packages"/></td>
+                                            <td><span t-esc="stock_in_vol"/>&#160;<span t-field="line.total_volume_uom.name"/></td>
+                                            <td><span t-field="line.delivered_no_of_packages"/></td>
+                                            <td><span t-esc="stock_out_vol"/>&#160;<span t-field="line.total_volume_uom.name"/></td>
+                                            <td><span t-esc="total_balance"/></td>
+                                            <td><span t-esc="balance_vol"/>&#160;<span t-field="line.total_volume_uom.name"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+
+                         <table class="table table-sm table-bordered" style="font-size:13px">
+                        <thead>
+                            <tr>
+                                <th style="width:60%; padding-left: 5px;">
+                                ITEMS
+                                </th>
+                                <th style="width:20%; padding-left: 5px;">
+                                    COSTING(RM)
+                                </th>
+                                <th style="width:20%; padding-left: 5px;">
+                                    BILLING(RM)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="sale_total" t-value="0"/>
+                            <t t-set="cost_total" t-value="0"/>
+                            <t t-foreach="o.cost_profit_ids" t-as="line">
+                                <t t-set="sale_total" t-value="sale_total+line.sale_total"/>
+                                <t t-set="cost_total" t-value="cost_total+line.cost_total"/>
+                                <tr>
+                                    <td>
+                                        <span t-field="line.product_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.cost_total"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.sale_total"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-if="cost_total == 0">
+                                <t t-set="cost_total" t-value="1"/>
+                            </t>
+                            <t t-set="margin" t-value="sale_total*100/cost_total"/>
+                            <t t-set="profit" t-value="sale_total-cost_total"/>
+                            <tr>
+                                <td>
+                                    <b>PROFIT (RM) : </b>
+                                    <u><t t-esc=" '%.2f'% profit"/> (<t t-esc=" '%.2f'% margin"/>%)</u>
+                                    <span style="float:right;"><b>TOTAL (RM) : </b></span>
+                                </td>
+                                <td>
+                                    <u><t t-esc="cost_total"/></u>
+                                </td>
+                                <td>
+                                    <u><t t-esc="sale_total"/></u>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                        <!--  <div style="border-top: 1px solid black;"/>
+                            <table width="100%" style="line-height: 200%;" name="total">
+                                <tr>
+                                    <td width="49%"> </td>
+                                     <td width="10%"><strong>TOTAL: </strong></td>
+                                    <td></td>
+                                    <td>
+                                         <strong><t t-esc="total_packages"/></strong>
+                                    </td>
+                                    <td width="5%"></td>
+                                    <td>
+                                        <strong><t t-esc="total_volume"/></strong>
+                                    </td>
+                                </tr>
+                            </table>-->
+                    </div>
+                </t>
+
+		    </t>
+		</t>
+	</template>
+
+
+
+</odoo>

@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<odoo>
+   <data>
+        <record id="view_picking_form_warehouse" model="ir.ui.view">
+                <field name="name">stock.picking.form.view.warehouse</field>
+                <field name="model">stock.picking</field>
+                <field name="inherit_id" ref="stock.view_picking_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//button[@name='button_validate']" position="after">
+                        <button name="auto_fill_done_qty_from_reserved_qty" type="object" string="Auto Fill Done" attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}" help="it will copy the reserved qty to done qty."/>
+                    </xpath>
+                    <xpath expr="//field[@name='picking_type_id']" position="after">
+    			        <field name="tallysheet_reference" readonly="1"/>
+                        <field name="delivery_to" context="{'show_address': 1}" options='{"always_reload": True}'
+                               attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>
+                        <field name="delivery_to_address_input" options='{"always_reload": True}'
+                               attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>
+                        <field name="delivery_to_contact_name" domain="[('parent_id', '=', delivery_to)]"
+                               options='{"always_reload": True}' attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>
+
+<!--                        <field name="pickup_from" options='{"always_reload": True}'/>-->
+<!--                        <field name="pickup_from_address_input" options='{"always_reload": True}'/>-->
+<!--                        <field name="pickup_from_contact_name" domain="[('parent_id', '=', pickup_from)]" options='{"always_reload": True}' />-->
+  			        </xpath>
+                    <xpath expr="//field[@name='partner_id']" position="attributes">
+					    <attribute name="attrs">{'invisible': True}</attribute>
+			        </xpath>
+                   <!--  <xpath expr="//field[@name='invoice_ids']" position="attributes">
+					    <attribute name="attrs">{'invisible': True}</attribute>
+			        </xpath>-->
+                    <xpath expr="//field[@name='owner_id']" position="attributes">
+					   <attribute name="attrs">{'invisible': True}</attribute>
+			        </xpath>
+                     <xpath expr="//button[@name='do_print_picking']" position="attributes">
+					   <attribute name="invisible">1</attribute>
+			        </xpath>
+                     <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
+					   <attribute name="invisible">1</attribute>
+			        </xpath>
+                    <xpath expr="//field[@name='location_id']" position="before">
+					   <field name="owner_id"/>
+			        </xpath>
+                     <xpath expr="//field[@name='owner_id']" position="after">
+    			        <!--<field name="attention" attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>-->
+                        <!-- <field name="customer_reference_no" attrs="{'invisible': [('picking_type_id', '!=', 1)]}"/>-->
+                         <field name="shipment_type" attrs="{'invisible': [('picking_type_id', '!=', 1)]}"/>
+                         <field name="packing_type" attrs="{'invisible': [('picking_type_id', '!=', 1)]}"/>
+                         <field name="job_scope" attrs="{'invisible': [('picking_type_id', '!=', 1)]}"/>
+                         <!--<field name="packing_on_pallet" attrs="{'invisible': [('picking_type_id', '!=', 1)]}"/>-->
+  			        </xpath>
+                      <xpath expr="//field[@name='scheduled_date']" position="before">
+                           <field name="owner" options='{"always_reload": True}'/>
+                      </xpath>
+                      <xpath expr="//field[@name='scheduled_date']" position="after">
+                          <field name="pickup_date" attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>
+                          <field name="date_arrived" attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>
+    			        <field name="container_product_id" attrs="{'invisible': [('picking_type_id', '!=', 1)]}"/>
+                         <field name="container_qty" attrs="{'invisible': [('picking_type_id', '!=', 1)]}"/>
+                         <field name="cargo_type" attrs="{'invisible': [('picking_type_id', '!=', 1)]}"/>
+  			        </xpath>
+                    <xpath expr="//field[@name='date_done']" position="after">
+    			        <field name="unstuff_date" attrs="{'invisible': [('cargo_type', '!=', 'fcl')]}"/>
+                         <field name="transporter" attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>
+                         <field name="driver" attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>
+                         <field name="truck_no" attrs="{'invisible': [('picking_type_id', '!=', 2)]}"/>
+
+  			        </xpath>
+                    <xpath expr="//field[@name='origin']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                     <xpath expr="//button[@name='action_assign_owner']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+<!--                     <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/field[@name='move_ids_without_package']/tree[1]/field[@name='name']" position="attributes">-->
+<!--                        <attribute name="invisible">0</attribute>-->
+<!--                    </xpath>-->
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/field[@name='move_ids_without_package']/tree[1]/field[@name='name']" position="before">
+                        <field name="container_no" attrs="{'column_invisible': ['|', ('parent.picking_type_id', '!=', 1), ('parent.cargo_type', '!=', 'fcl')]}"/>
+                        <field name="seal_no" attrs="{'column_invisible': ['|', ('parent.picking_type_id', '!=', 1), ('parent.cargo_type', '!=', 'fcl')]}"/>
+                    </xpath>
+                     <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/field[@name='move_ids_without_package']/tree[1]/field[@name='product_uom_qty']" position="before">
+                         <field name="marking" attrs="{'column_invisible': [('parent.picking_type_id', '!=', 1)]}"/>
+                         <field name="inventory_marking" attrs="{'column_invisible': [('parent.picking_type_id', '!=', 5)]}"/>
+                    </xpath>
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/field[@name='move_ids_without_package']/tree[1]/field[@name='product_uom']" position="after">
+                         <field name="total_volume" />
+                        <field name="total_volume_uom" />
+                        <field name="dim_length" attrs="{'column_invisible': [('parent.cargo_type', '!=', 'lcl')]}"/>
+                         <field name="dim_width" attrs="{'column_invisible': [('parent.cargo_type', '!=', 'lcl')]}"/>
+                         <field name="dim_height" attrs="{'column_invisible': [('parent.cargo_type', '!=', 'lcl')]}"/>
+                        <field name="volume" attrs="{'column_invisible': [('parent.cargo_type', '!=', 'fcl')]}"/>
+                        <field name="remark_line" />
+                    </xpath>
+                     <xpath expr="//page[last()]" position="after">
+                         <page string="Attachments" name="gdrive_jobsheet_documents">
+                            <group>
+                                <field name="google_drive_attachments_ids" nolabel="1" >
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name" string="Remarks" invisible="1"/>
+                                        <field name="file_name" required="1"/>
+                                        <field name="file" filename="file_name" />
+                                        <field name="file_url" widget="url" invisible="1"/>
+                                        <button type="object" name="upload_document" string="Upload to Google Drive" icon="fa-cloud-upload" context="{'rec_id':parent.id,'rec_model':'account.invoice'}" attrs="{'invisible':[('file','=',False)]}"/>
+                                        <button type="object" name="download_document" string="Download from Google Drive" icon="fa-download" attrs="{'invisible':[('file_url','=',False)]}"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                     </xpath>
+                    <xpath expr="//page[last()]" position="after">
+                         <page string="Delivery Instruction" attrs="{'invisible': [('picking_type_id', '!=', 2)]}">
+                             <field name="delivery_instruction" />
+                         </page>
+                    </xpath>
+
+                </field>
+        </record>
+
+         <record id="view_picking_list_warehouse" model="ir.ui.view">
+                <field name="name">stock.picking.list.view.warehouse</field>
+                <field name="model">stock.picking</field>
+                <field name="inherit_id" ref="stock.vpicktree"/>
+                <field name="arch" type="xml">
+                     <xpath expr="//field[@name='partner_id']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='location_dest_id']" position="after">
+                        <field name="owner_id"/>
+                    </xpath>
+                </field>
+        </record>
+
+       <record id="action_receipt" model="ir.actions.act_window">
+            <field name="name">Tally Sheet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_picking_list_warehouse"/>
+           <field name="domain">[('picking_type_id','=', 1)]</field>
+ 	    </record>
+
+        <record id="action_do" model="ir.actions.act_window">
+            <field name="name">Delivery Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_picking_list_warehouse"/>
+           <field name="domain">[('picking_type_id','=', 2)]</field>
+ 	    </record>
+
+
+       <record id="action_picking" model="ir.actions.act_window">
+            <field name="name">Pick List</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_picking_list_warehouse"/>
+           <field name="domain">[('picking_type_id','=', 3)]</field>
+ 	    </record>
+
+
+        <record id="action_storage" model="ir.actions.act_window">
+            <field name="name">Storage Transfer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_picking_list_warehouse"/>
+           <field name="domain">[('picking_type_id','=', 5)]</field>
+ 	    </record>
+
+
+
+       <menuitem id="menu_warehouse_receipt_1" name="Tally Sheet" parent="menu_warehouse_tallysheet" action="action_receipt" sequence="4"/>
+       <menuitem id="menu_warehouse_transfer_1" name="Storage" parent="menu_warehouse_tallysheet" action="action_storage" sequence="5"/>
+       <menuitem id="menu_warehouse_picking_1" name="Pick List" parent="menu_warehouse_tallysheet" action="action_picking" sequence="6"/>
+       <menuitem id="menu_warehouse_do_1" name="Delivery Order" parent="menu_warehouse_tallysheet" action="action_do" sequence="7"/>
+
+
+
+  </data>
+
+</odoo>

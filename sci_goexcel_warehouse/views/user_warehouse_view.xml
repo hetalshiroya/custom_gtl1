@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<odoo>
+   <data>
+        <record id="warehouse_res_user_form_view" model="ir.ui.view">
+        <field name="name">User Form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+           <!-- <xpath expr="//field[@name='sel_groups_1_9_10']" position="after">
+                <field name="context_default_warehouse_id"/>
+            </xpath>-->
+            <xpath expr="//page" position="after">
+                <page string="Warehouse">
+                   <field name="context_default_warehouse_id"/>
+                   <!-- <field name="context_default_receipt_location_id"/>
+                    <field name="context_default_delivery_location_id"/>-->
+                </page>
+            </xpath>
+
+        </field>
+        </record>
+
+
+  </data>
+
+</odoo>

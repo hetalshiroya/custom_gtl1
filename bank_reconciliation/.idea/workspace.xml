@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b5147b9c-b140-441e-9840-ce6bc0a82604" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1YhZjik4TF5JPvHthEbfe1ORtJy" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunManager" selected="Python.odoo-bin">
+    <configuration name="bank_statement_wiz" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="bank_reconciliation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/wizard" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wizard/bank_statement_wiz.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="odoo-bin" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="bank_reconciliation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Program Files (x86)\Odoo 12.0\python\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../.." />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../../odoo-bin" />
+      <option name="PARAMETERS" value="--conf &quot;C:\Program Files (x86)\Odoo 12.0\server\odoo.conf&quot;" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.bank_statement_wiz" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b5147b9c-b140-441e-9840-ce6bc0a82604" name="Default Changelist" comment="" />
+      <created>1583396923877</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1583396923877</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="0" y="18" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583399125690">
+      <screen x="0" y="0" width="1024" height="728" />
+    </state>
+    <state x="0" y="18" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1024.728@0.0.1024.728" timestamp="1583399125690" />
+    <state x="365" y="149" key="FileChooserDialogImpl" timestamp="1583806643617">
+      <screen x="0" y="0" width="1280" height="920" />
+    </state>
+    <state x="292" y="118" key="FileChooserDialogImpl/0.0.1024.728@0.0.1024.728" timestamp="1583398901111" />
+    <state x="365" y="149" key="FileChooserDialogImpl/0.0.1280.920@0.0.1280.920" timestamp="1583806643617" />
+    <state width="1259" height="242" key="GridCell.Tab.0.bottom" timestamp="1583806651242">
+      <screen x="0" y="0" width="1280" height="920" />
+    </state>
+    <state width="1003" height="179" key="GridCell.Tab.0.bottom/0.0.1024.728@0.0.1024.728" timestamp="1583650899079" />
+    <state width="1259" height="242" key="GridCell.Tab.0.bottom/0.0.1280.920@0.0.1280.920" timestamp="1583806651242" />
+    <state width="1259" height="242" key="GridCell.Tab.0.center" timestamp="1583806651242">
+      <screen x="0" y="0" width="1280" height="920" />
+    </state>
+    <state width="1003" height="179" key="GridCell.Tab.0.center/0.0.1024.728@0.0.1024.728" timestamp="1583650899079" />
+    <state width="1259" height="242" key="GridCell.Tab.0.center/0.0.1280.920@0.0.1280.920" timestamp="1583806651242" />
+    <state width="1259" height="242" key="GridCell.Tab.0.left" timestamp="1583806651242">
+      <screen x="0" y="0" width="1280" height="920" />
+    </state>
+    <state width="1003" height="179" key="GridCell.Tab.0.left/0.0.1024.728@0.0.1024.728" timestamp="1583650899079" />
+    <state width="1259" height="242" key="GridCell.Tab.0.left/0.0.1280.920@0.0.1280.920" timestamp="1583806651242" />
+    <state width="1259" height="242" key="GridCell.Tab.0.right" timestamp="1583806651242">
+      <screen x="0" y="0" width="1280" height="920" />
+    </state>
+    <state width="1003" height="179" key="GridCell.Tab.0.right/0.0.1024.728@0.0.1024.728" timestamp="1583650899079" />
+    <state width="1259" height="242" key="GridCell.Tab.0.right/0.0.1280.920@0.0.1280.920" timestamp="1583806651242" />
+    <state width="1003" height="223" key="GridCell.Tab.1.bottom" timestamp="1583649246999">
+      <screen x="0" y="0" width="1024" height="728" />
+    </state>
+    <state width="1003" height="223" key="GridCell.Tab.1.bottom/0.0.1024.728@0.0.1024.728" timestamp="1583649246999" />
+    <state width="1003" height="223" key="GridCell.Tab.1.center" timestamp="1583649246999">
+      <screen x="0" y="0" width="1024" height="728" />
+    </state>
+    <state width="1003" height="223" key="GridCell.Tab.1.center/0.0.1024.728@0.0.1024.728" timestamp="1583649246999" />
+    <state width="1003" height="223" key="GridCell.Tab.1.left" timestamp="1583649246999">
+      <screen x="0" y="0" width="1024" height="728" />
+    </state>
+    <state width="1003" height="223" key="GridCell.Tab.1.left/0.0.1024.728@0.0.1024.728" timestamp="1583649246999" />
+    <state width="1003" height="223" key="GridCell.Tab.1.right" timestamp="1583649246999">
+      <screen x="0" y="0" width="1024" height="728" />
+    </state>
+    <state width="1003" height="223" key="GridCell.Tab.1.right/0.0.1024.728@0.0.1024.728" timestamp="1583649246999" />
+    <state x="259" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1583657316943">
+      <screen x="0" y="0" width="1280" height="920" />
+    </state>
+    <state x="207" y="187" key="com.intellij.ide.util.TipDialog/0.0.1024.728@0.0.1024.728" timestamp="1583649325109" />
+    <state x="259" y="236" key="com.intellij.ide.util.TipDialog/0.0.1280.920@0.0.1280.920" timestamp="1583657316943" />
+  </component>
+</project>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_bank_statement_detail_doc">
+        <t t-call="web.external_layout">
+            <t t-set="o"
+               t-value="o.with_context({'lang':o.company_id.partner_id.lang})"/>
+            <div class="page">
+                <h4 style='text-align:center;'>
+                    <span>Bank Reconciliation at</span>
+                    <span t-field="o.ending_date"/>
+                </h4>
+                <br/>
+                <h5 style='text-align:left;'>
+                    <span><strong>Bank Account:</strong></span>
+                    <span t-field="o.account_id.name"/>
+                </h5>
+                <div>
+                     <table class="table table-sm o_main_table">
+                            <tr>
+                                <td>
+                                    <b>
+                                        <span>Balance As Per Bank Statement:</span>
+                                    </b>
+                                </td>
+                                <td class="text-right">
+                                    <b><span t-field="o.ending_balance"/></b>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td>
+                                    <b>ADD: Deposits Not Credited By Bank</b>
+                                </td>
+                                 <td></td>
+                             </tr>
+                    </table>
+                </div>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th width="7%">Date</th>
+                            <th width="15%" class="text-center">Doc No.</th>
+                            <th width="25%" class="text-center">Partner</th>
+                            <th width="20%" class="text-center">Name</th>
+                            <th width="25%" class="text-center">Reference</th>
+                           <!-- <th class="text-center">Cleared</th>-->
+                            <th width="5%" class="text-right">
+                                Amount
+                            </th>
+                          <!--  <th class="text-right">
+                                <span t-field="o.account_id.currency_id.symbol"/>
+                            </th>-->
+                        </tr>
+                    </thead>
+                </table>
+                <table class="table table-sm o_main_table">
+                    <tbody class="invoice_tbody">
+                        <tr t-foreach="o.debit_move_line_ids" t-as="debit"
+                            t-if="not debit.cleared_bank_account">
+                            <td></td>
+                            <td width="5%">
+                                <span t-field="debit.date"/>
+                            </td>
+                            <td width="15%">
+                                <span t-field="debit.move_line_id.move_id.name"/>
+                            </td>
+                            <td width="25%">
+                                <span t-field="debit.partner_id.name"/>
+                            </td>
+                            <td width="22%">
+                                <span t-field="debit.name"/>
+                            </td>
+                            <td width="25%">
+                                <span t-field="debit.ref"/>
+                            </td>
+                         <!--   <td class="text-right">
+                                <t t-if="debit.cleared_bank_account">
+                                    <input type="checkbox" checked="1"/>
+                                </t>
+                            </td>-->
+                            <td width="5%" class="text-right">
+                                <span t-field="debit.amount"/>
+                            </td>
+                           <!-- <td class="text-right">
+                                <span t-field="debit.amountcur"
+                                      t-options='{"widget": "monetary", "display_currency": o.account_id.currency_id}'/>
+                            </td>-->
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <div id="total" class="row" name="total">
+                        <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                            <table class="table table-sm">
+                                <tr class="border-black o_subtotal" style="">
+                                    <td><strong>Total Uncleared</strong></td>
+                                    <td class="text-right">
+                                        <b><span t-field="o.sum_of_udebits"/></b>
+                                    </td>
+                                </tr>
+                                <tr class="border-black o_total">
+                                    <td><strong>Total</strong></td>
+                                    <td class="text-right">
+                                        <t t-set="l_total" t-value="o.sum_of_udebits + o.ending_balance" />
+                                         <b><span t-esc="l_total" t-options='{"widget": "float", "precision": 2}'/></b>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <table class="table table-sm o_main_table">
+                        <tr>
+                        </tr>
+                         <tr>
+                            <td>
+                                <b>LESS: Unpresented Cheques</b>
+                            </td>
+                             <td></td>
+                         </tr>
+                    </table>
+                </div>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th width="7%">Date</th>
+                            <th width="15%" class="text-center">Doc No.</th>
+                            <th width="25%" class="text-center">Partner</th>
+                            <th width="20%" class="text-center">Name</th>
+                            <th width="25%" class="text-center">Reference</th>
+                           <!-- <th class="text-center">Cleared</th>-->
+                            <th width="5%" class="text-right">
+                                Amount
+                            </th>
+                          <!--  <th class="text-right">
+                                <span t-field="o.account_id.currency_id.symbol"/>
+                            </th>-->
+                        </tr>
+                    </thead>
+                </table>
+                <table class="table table-sm o_main_table">
+                    <tbody class="invoice_tbody">
+                        <tr t-foreach="o.credit_move_line_ids" t-as="credit"
+                            t-if="not credit.cleared_bank_account">
+                            <td></td>
+                            <td width="5%">
+                                <span t-field="credit.date"/>
+                            </td>
+                            <td width="15%">
+                                <span t-field="credit.move_line_id.move_id.name"/>
+                            </td>
+                            <td width="25%">
+                                <span t-field="credit.partner_id.name"/>
+                            </td>
+                            <td width="22%">
+                                <span t-field="credit.name"/>
+                            </td>
+                            <td width="25%">
+                                <span t-field="credit.ref"/>
+                            </td>
+                         <!--   <td class="text-right">
+                                <t t-if="debit.cleared_bank_account">
+                                    <input type="checkbox" checked="1"/>
+                                </t>
+                            </td>-->
+                            <td width="5%" class="text-right">
+                                <span t-field="credit.amount"/>
+                            </td>
+                           <!-- <td class="text-right">
+                                <span t-field="debit.amountcur"
+                                      t-options='{"widget": "monetary", "display_currency": o.account_id.currency_id}'/>
+                            </td>-->
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <div id="total" class="row" name="total">
+                        <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                            <table class="table table-sm">
+                                <tr class="border-black o_subtotal" style="">
+                                    <td><strong>Total Uncleared</strong></td>
+                                    <td class="text-right">
+                                        <b><span t-field="o.sum_of_ucredits"/></b>
+                                    </td>
+                                </tr>
+                               <!-- <tr class="border-black o_total">
+                                    <td><strong>Total</strong></td>
+                                    <td class="text-right">
+                                        <t t-set="l_total" t-value="o.sum_of_ucredits + o.ending_balance" />
+                                         <b><span t-esc="l_total" t-options='{"widget": "float", "precision": 2}'/></b>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                     <table class="table table-sm o_main_table">
+                            <tr>
+                                <td>
+                                    <b>
+                                        <span>Balance As Per Bank Account:</span>
+                                    </b>
+                                </td>
+                                <td class="text-right">
+                                    <t t-set="l_sub_total" t-value="o.sum_of_udebits + o.ending_balance - o.sum_of_ucredits" />
+                                     <b><span t-esc="l_sub_total" t-options='{"widget": "float", "precision": 2}'/></b>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_bank_statement_detail">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="account_banking_reconciliation.report_bank_statement_detail_doc"
+                   t-lang="o.company_id.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

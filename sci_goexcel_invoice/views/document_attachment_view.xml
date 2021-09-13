@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record model="ir.ui.view" id="view_document_attachment_tree">
+        <field name="name">document.attachment.tree</field>
+        <field name="model">document.attachments</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+            	<field name="name" string="Remarks" invisible="1"/>
+				<field name="file_name" required="1"/>
+				<field name="file" filename="file_name" />
+				<field name="file_url" widget="url" invisible="1"/>
+				<button type="object" name="download_document" string="Download from Google Drive" icon="fa-download" attrs="{'invisible':[('file_url','=',False)]}"/>
+			</tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_document_attachment">
+        <field name="name">Document Attachments</field>
+        <field name="res_model">document.attachments</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_document_attachment_tree"/>
+    </record>
+</odoo>

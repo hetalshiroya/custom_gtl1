@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <report id="action_notice_of_arrival_report_gtl"
+             string="Notice Of Arrival"
+             model="freight.bol"
+             report_type="qweb-pdf"
+             name="sci_goexcel_freight.report_notice_of_arrival_gtl"
+             print_report_name = "'NOA %s' % (object.bol_no)"
+     />
+
+    <template id="report_notice_of_arrival_gtl">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h3 style="padding-top: 2px; padding-bottom: 2px; border-left:1pt solid black;border-top:1pt solid black;border-right:1pt solid black;border-bottom:1pt solid black;width:100%">
+                            <center>DEBIT ADVICE / NOTICE OF ARRIVAL</center>
+                        </h3>
+                        <table style="width:100%; font-size:10px;">
+                            <tr>
+                                <td style="width:18%;">CONSIGNEE</td>
+                                <td style="width:2% ;">:</td>
+                                <td style="width:28%;"><span t-field="o.consignee"/></td>
+                                <td style="width:5%;"></td>
+                                <td style="width:18%;">DEBIT ADVICE NO</td>
+                                <td style="width:2% ;">:</td>
+                                <td style="width:27%;"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td>ETA/ETD Date</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.booking_date_time"/></td>
+                            </tr>
+                            <tr>
+                                <td>POL</td>
+                                <td>:</td>
+                                <td><span t-field="o.port_of_loading_input"/></td>
+                                <td></td>
+                                <td>JOB NO</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.booking_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>POD</td>
+                                <td>:</td>
+                                <td><span t-field="o.place_of_delivery"/></td>
+                                <td></td>
+                                <td>ETD</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.port_of_loading_eta"/></td>
+                            </tr>
+                            <tr>
+                                <td>VESSEL</td>
+                                <td>:</td>
+                                <td><span t-field="o.vessel"/></td>
+                                <td></td>
+                                <td>ETA</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.port_of_discharge_eta"/></td>
+                            </tr>
+                            <tr>
+                                <td>OBL NO</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.obl_no"/></td>
+                                <td></td>
+                                <td>WEIGHT</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.lcl_weight"/></td>
+                            </tr>
+                            <tr>
+                                <td>HBL NO</td>
+                                <td>:</td>
+                                <td><span t-field="o.bol_no"/></td>
+                                <td></td>
+                                <td>VOLUME</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.lcl_volume"/></td>
+                            </tr>
+                            <tr>
+                                <td>SHIPPER</td>
+                                <td>:</td>
+                                <td><span t-field="o.shipper"/></td>
+                                <td></td>
+                                <td>B/L STATUS</td>
+                                <td>:</td>
+                                <td><span t-field="o.bol_status"/></td>
+                            </tr>
+                            <tr>
+                                <td>CONSIGNEE</td>
+                                <td>:</td>
+                                <td><span t-field="o.consignee"/></td>
+                                <td></td>
+                                <td>PACKAGE</td>
+                                <td>:</td>
+                                <td>
+                                    <t t-foreach="o.cargo_line_ids" t-as="line">
+                                        <span t-field="line.packages_no"/><br/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>NOTIFY PARTY</td>
+                                <td>:</td>
+                                <td><span t-field="o.notify_party"/></td>
+                                <td></td>
+                                <td>MANIFEST NO</td>
+                                <td>:</td>
+                                <td><span t-field="o.manifest_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>PORT</td>
+                                <td>:</td>
+                                <td><span t-field="o.port_of_discharge_input"/></td>
+                                <td></td>
+                                <td>FREIGHT STATUS</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.shipment_booking_status"/></td>
+                            </tr>
+                            <tr>
+                                <td>S/AGENT CODE</td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.shipping_agent_code"/></td>
+                                <td></td>
+                                <td>VSL ID</td>
+                                <td>:</td>
+                                <td><span t-field="o.voyage_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>CONTAINER NO</td>
+                                <td>:</td>
+                                <td colspan="5">:
+                                    <t t-foreach="o.cargo_line_ids" t-as="line">
+                                        <span t-field="line.container_product_id.name"/><br/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>UNSTUFF AT</td>
+                                <td>:</td>
+                                <td colspan="5"><span t-field="o.unstuff_at"/></td>
+                            </tr>
+                            <tr>
+                                <td>REMARK</td>
+                                <td>:</td>
+                                <td colspan="5">: <span t-field="o.note"/></td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <table class="table table-sm o_main_table" style="font-size:10px;">
+                            <thead >
+                                <tr>
+                                    <th style="padding-bottom: 5px; border-style:solid;border-width: 1px 0px 1px 0px; width:40%">DESCRIPTION</th>
+                                    <th style="padding-bottom: 5px; border-style:solid;border-width: 1px 0px 1px 0px;">QTY/UNIT</th>
+                                    <th style="padding-bottom: 5px; border-style:solid;border-width: 1px 0px 1px 0px;">RATE</th>
+                                    <th style="padding-bottom: 5px; border-style:solid;border-width: 1px 0px 1px 0px;">CURR</th>
+                                    <th style="padding-bottom: 5px; border-style:solid;border-width: 1px 0px 1px 0px;">EXCH. RATE</th>
+                                    <th style="padding-bottom: 5px; border-style:solid;border-width: 1px 0px 1px 0px;">SUBTOTAL</th>
+                                    <th style="padding-bottom: 5px; border-style:solid;border-width: 1px 0px 1px 0px;">SST</th>
+                                    <th style="padding-bottom: 5px; border-style:solid;border-width: 1px 0px 1px 0px;">AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="subtotal" t-value="0"/>
+                                <t t-foreach="o.cost_profit_ids" t-as="line">
+                                    <t t-set="subtotal" t-value="subtotal+line.sale_total"/>
+                                    <tr>
+                                        <td style="padding-bottom: 5px;"><span t-field="line.product_name"/></td>
+                                        <td style="padding-bottom: 5px;"><span t-field="line.profit_qty"/></td>
+                                        <td style="padding-bottom: 5px;"><span t-field="line.list_price"/></td>
+                                        <td style="padding-bottom: 5px;"><span t-field="line.profit_currency"/></td>
+                                        <td style="padding-bottom: 5px;"><span t-field="line.profit_currency_rate"/></td>
+                                        <td style="padding-bottom: 5px;"><span t-field="line.sale_total"/></td>
+                                        <td style="padding-bottom: 5px;"></td>
+                                        <td style="padding-bottom: 5px; text-align:right;"><span t-field="line.sale_total"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="clearfix" style="font-size:10px;">
+                            <div id="total" class="row" name="total">
+                                <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                    <table class="table table-sm">
+                                        <tr class="border-black o_subtotal" style="">
+                                            <td><strong>SUBTOTAL (EXCL.SST)</strong></td>
+                                            <td class="text-right">
+                                                <t t-esc="subtotal"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>SST 6%</td>
+                                            <td class="text-right">
+                                                0.0
+                                            </td>
+                                        </tr>
+                                        <tr class="border-black o_total">
+                                            <td><strong>TOTAL</strong></td>
+                                            <td class="text-right">
+                                                <t t-esc="subtotal"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <p style="font-size:10px;">STORAGE AND DETENTION CHARGES WILL BE ASSESSED ON ALL UNDELIVERED CARGO AND DETAINED CONTAINER (S)
+                            REMAINING LONGER THAN THE FREE TIME IN ACCORDANE WITH THE APPLICABLE TARIFF.
+                        </p>
+                        <p style="font-size:10px;">CHEQUE SHOULD BE CROSSED AND MADE PAYABLE TO <b><span t-field="res_company.partner_id.name"/><br/>
+                            Bank Name : <span t-field="res_company.default_bank_account.journal_id.name"/><br/>
+                            Account No : <span t-field="res_company.default_bank_account.acc_number"/><br/></b>
+                            ** COMPUTER GENERATED DOCUMENT, NO SIGNATURE IS REQUIRED. <br/>
+                            Created by : <span t-field="o.create_uid.name"/>
+                        </p>
+                        <b style="font-size:10px;">** PLEASE BRING NOA &amp; PAYMENT DURING D/O COLLECTION ! **</b>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

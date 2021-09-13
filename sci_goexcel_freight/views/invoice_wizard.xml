@@ -1,0 +1,50 @@
+<odoo>
+
+ 		<record id="invoice_view_form" model="ir.ui.view">
+            <field name="name">booking.invoice.form</field>
+            <field name="model">invoice.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Invoice">
+                    <group>
+                        <field name="customer_name" readonly="1"/>
+                        <field name="booking_no" readonly="1" attrs="{'invisible': [('booking_no', '=', False)]}"/>
+                        <field name="bl_no" readonly="1" attrs="{'invisible': [('bl_no', '=', False)]}"/>
+                    </group>
+
+                    <group class="oe_title">
+                        <field name="select_add" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+
+                    <group class="oe_title" attrs="{'invisible': [('booking_no', '=', False)]}">
+                        <field name="cost_profit_ids" nolabel="1">
+                            <tree create="false" delete="0" editable="bottom" string="Line Item">
+                                <field name="product_id" readonly="1"/>
+                                <field name="add_to_invoice" />
+                                <field name="list_price" readonly="1"/>
+                                <field name="profit_qty" readonly="1"/>
+                                <field name="sale_total" readonly="1"/>
+                                <field name="analytic_account_id" readonly="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group class="oe_title" attrs="{'invisible': [('bl_no', '=', False)]}">
+                        <field name="cost_profit_bl_ids" nolabel="1">
+                            <tree create="false" delete="0" editable="bottom" string="Line Item">
+                                <field name="product_id" readonly="1"/>
+                                <field name="add_to_invoice" />
+                                <field name="list_price" readonly="1"/>
+                                <field name="profit_qty" readonly="1"/>
+                                <field name="sale_total" readonly="1"/>
+                                <field name="analytic_account_id" readonly="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+</odoo>

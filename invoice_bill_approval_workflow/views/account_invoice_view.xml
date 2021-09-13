@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="invoice_form_inherit_ip" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit.ip</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[@name='action_invoice_open']" position="replace">
+                	<button name="action_invoice_open_ip" type="object" states="draft" string="Validate" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//header/button[@name='preview_invoice']" position="replace">
+                </xpath>
+                <xpath expr="//header" position="inside">
+                	<button name="action_invoice_approve" type="object" states="approve" string="Approve" class="oe_highlight" groups="account.group_account_manager"/>
+                </xpath>
+                 <xpath expr="//header" position="inside">
+                	<button name="action_invoice_reject" type="object" states="approve" string="Reject" class="oe_highlight" groups="account.group_account_manager"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                	<button name="%(account.account_invoices)d" states="open,to approve,approve,draft,paid" string="Print" type="action"/>
+                </xpath>
+               <!-- <xpath expr="//header" position="inside">
+                	<button name="%(account.account_invoices_without_payment)d" states="open" string="Invoices without Payment" type="action"/>
+                </xpath>-->
+
+                <xpath expr="//header/field[@name='state']" position="replace">
+                	<field name="state" widget="statusbar" statusbar_visible="draft,approve,open,paid"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="approve_by" readonly="1" force_save="1"/>
+                    <field name="approve_date_time" readonly="1" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="invoice_supplier_form_inherit_ip" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form.inherit.ip</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[@name='action_invoice_open']" position="replace">
+                	<button name="action_invoice_open_ip" type="object" states="draft" string="Validate" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                	<button name="action_invoice_approve" type="object" states="approve" string="Approve" class="oe_highlight" groups="account.group_account_manager"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                	<button name="action_invoice_reject" type="object" states="approve" string="Reject" class="oe_highlight" groups="account.group_account_manager"/>
+                </xpath>
+                <xpath expr="//header/field[@name='state']" position="replace">
+                	<field name="state" widget="statusbar" statusbar_visible="draft,open,paid"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="approve_by" readonly="1"/>
+                     <field name="approve_date_time" readonly="1" force_save="1"/>
+                </xpath>
+                  <xpath expr="//header" position="inside">
+                	<button name="%(account.account_invoices)d" states="open,to approve,approve,draft,paid" string="Print" type="action"/>
+                </xpath>
+            </field>
+        </record>
+
+        <report
+            id="account.account_invoices"
+            model="account.invoice"
+            string="Invoices"
+            report_type="qweb-pdf"
+            name="account.report_invoice_with_payments"
+            file="account.report_invoice_with_payments"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            menu="False"
+        />
+        <report
+            id="account.account_invoices_without_payment"
+            model="account.invoice"
+            string="Invoices without Payment"
+            report_type="qweb-pdf"
+            name="account.report_invoice"
+            file="account.report_invoice"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            menu="False"
+        />
+
+    </data>
+</odoo>

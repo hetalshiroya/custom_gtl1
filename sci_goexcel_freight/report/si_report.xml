@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report id="action_si_report"
+            string="Shipping Instruction"
+            model="freight.website.si"
+            report_type="qweb-pdf"
+            name="sci_goexcel_freight.report_si"
+            menu="False"
+            print_report_name = "('SI - ' + object.si_no)"
+    />
+
+    <report id="action_si_report_xlsx"
+            string="Shipping Instruction Excel"
+            model="freight.website.si"
+            report_type="xlsx"
+            name="sci_goexcel_freight.report_si_xlsx"
+            menu="False"
+            print_report_name = "('SI - ' + object.si_no)"
+    />
+
+    <template id="report_si">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div>
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style=" margin-right:15px; max-height: 120px; max-width: 200px; float: left" alt="Logo"/>
+                        <t t-if="res_company.partner_id">
+                            <b><span t-field="res_company.partner_id.name" style="font-family:arial;font-size:15pt;"/></b>
+                            <span t-field="res_company.company_registry"/><br/>
+                            <span t-field="res_company.partner_id.street"/><br/>
+                            <span t-field="res_company.partner_id.zip"/>
+                            <span t-field="res_company.partner_id.city"/>,
+                            <span t-field="res_company.partner_id.state_id.name"/>,
+                            <span t-field="res_company.partner_id.country_id.name"/><br/>
+                            Hunting Line: <span t-field="res_company.partner_id.phone"/>
+                            <![CDATA[&nbsp;&nbsp;]]>
+                            <br/>
+                            Email : <span t-field="res_company.partner_id.email" style="font-size:11pt;"/>
+                            <![CDATA[&nbsp;]]>
+                            Website : <span t-field="res_company.partner_id.website" style="font-size:11pt;"/>
+                        </t>
+                    </div>
+                </div>
+                <div class="page">
+                    <t t-if="o.service_type == 'ocean' or o.service_type == 'air'">
+                        <t t-if="o.direction == 'import'">
+                            <div  style="font-size:14px;">
+                                <p><b>TO WHOM IT MAY CONCERN:</b></p><br/>
+                                <p><b><u>SUBJECT: SHIPPING INSTRUCTION FOR CONSIGNMENT</u></b></p>
+                                <p>REFER TO ABOVE CAPTIONED, PLEASE KINDLY FOLLOW BELOW CONSIGNMENT SHIPPING INSTRUCTION FOR ALL SHIPMENT TO MALAYSIA:</p>
+                                 <t t-if="o.direction == 'import' and o.service_type == 'air'">
+                                    <p><b><u>MAWB</u></b><br/>
+                                    <b>SHIPPER :</b><br/>
+                                    <span t-field="o.shipper"/></p>
+
+                                    <p><b>CONSIGNEE :</b><br/>
+                                    <span t-field="o.consignee"/></p><br/>
+
+                                    <p><b><u>HAWB</u></b><br/>
+                                    ACTUAL SHIPPER<br/>
+                                    ACTUAL CONSIGNEE<br/>
+                                    </p>
+                                 </t>
+
+                                <t t-if="o.direction == 'import' and o.service_type == 'ocean'">
+                                    <p>
+                                        <b><u>MBL /OBL</u></b><br/>
+                                        <b>SHIPPER</b><br/>
+                                        <span t-field="o.shipper"/><br/>
+                                    </p>
+
+                                    <p><b>CONSIGNEE :</b><br/>
+                                    <span t-field="o.consignee"/></p>
+
+                                    <p><b><u>HBL :</u></b><br/>
+                                    ACTUAL SHIPPER<br/>
+                                    ACTUAL CONSIGNEE<br/>
+                                    </p>
+                                </t>
+                                <p>
+                                    <b><u>NOTE :</u></b><br/>
+                                    ALL DOCUMENT MUST BE CHECK AND CONFIRMED BY US BEFORE FINAL B/L OR AIRWAYBILL IS ISSUED.<br/>
+                                    <b>WE NEED TO RECEIVE THE FULL PRE-ALERT 2DAYS (48 HOURS- SEAFREIGHT) AND 1 DAY (24 HOURS- AIRFREIGHT) FOR MANIFEST PURPOSE.</b><br/>
+                                    ANY FAILURE IN COMPLYING TO THE LEAD TIMES FOR ADVANCE MANIFEST WILL INCUR CUSTOMS PENALTIES WHICH WE SHALL HOLD YOUR SIDE ACCOUNTABLE.<br/>
+                                </p>
+
+                                <p>
+                                    <b>THANKS AND BEST REGARDS</b><br/>
+                                    <b>THE MANAGEMENT OF <span t-field="res_company.partner_id.name"/></b><br/>
+                                </p>
+                    </div>
+                        </t>
+                    </t>
+                    <t t-if="o.direction == 'export' or o.service_type == 'land'">
+                    <table border="1" style="border-collapse: collapse; line-height: 150%;
+                            font-size:14px; width:100%;">
+                        <tr>
+                            <td colspan="2" style=" vertical-align: top; padding-left: 5px;">
+                                <b>Booking No.</b><br/>
+                                <span t-field="o.booking_ref.booking_no"/>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                <b>Freight Type</b><br/>
+                                <span t-field="o.freight_type"/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                <b>Bill Of Lading Type</b><br/>
+                                <span t-field="o.bill_of_lading_type"/>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="2" style="padding-left: 5px;">
+                                <b>Shipper</b><br/>
+                                <span t-field="o.shipper"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                <b>Consignee </b><br/>
+                                <span t-field="o.consignee"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top; padding-left: 5px;">
+                                <b>Notify Party</b><br/>
+                                <span t-field="o.notify_party"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                <b>Vessel, Voyage &amp; Direction</b><br/>
+                                <span t-field="o.vessel"/> / <span t-field="o.voyage_no"/> / <span t-field="o.direction"/><br/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                <b>Port of Load</b><br/>
+                                <span t-field="o.port_of_loading_input"/><br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                <b>Port of Discharge</b><br/>
+                                <span t-field="o.port_of_discharge_input"/><br/>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 5px;">
+                                <b>Final Destination</b><br/>
+                                <span t-field="o.place_of_delivery"/><br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="width:60%; padding-left: 5px;">
+                                <b>Remark</b><br/>
+                                <span t-field="o.note"/>
+                            </td>
+                        </tr>
+                    </table>
+                    </t>
+                </div>
+                </t>
+        </t>
+    </template>
+</odoo>

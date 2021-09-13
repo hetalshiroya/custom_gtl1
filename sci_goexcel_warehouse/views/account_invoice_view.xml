@@ -1,0 +1,17 @@
+<odoo>
+    <!-- Invoice Form -->
+	<record model="ir.ui.view" id="view_invoice_warehouse">
+		<field name="name">account.invoice.form.inherit.warehouse</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="account.invoice_form"/>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="arch" type="xml">
+			 <xpath expr="//field[@name='date_invoice']" position="before">
+                 <field name="tally_sheet" attrs="{'invisible': [('tally_sheet', '=', False)]}"/>
+            </xpath>
+
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Register Payment form in invoice/vendor bill form-->
+		<record
+			id="view_account_payment_invoice_form_extends_add_manual_currency_exchange_rate"
+			model="ir.ui.view">
+			<field name="name">view.account.payment.invoice.form.extends.add.manual.currency.exchange.rate
+			</field>
+			<field name="model">account.payment</field>
+			<field name="inherit_id"
+				ref="account.view_account_payment_invoice_form" />
+			<field name="arch" type="xml">
+				<field name="journal_id" position="after">
+					<field name="apply_manual_currency_exchange" invisible="1"/>
+
+					<field name="active_manual_currency_rate" invisible="1"></field>
+<!--            		<field name="apply_manual_currency_exchange" attrs="{'invisible': [('active_manual_currency_rate', '=', False)]}"/>-->
+					<field name="exchange_rate_inverse" attrs="{'invisible': [('apply_manual_currency_exchange', '=', False)]}"/>
+
+
+<!--
+                    <field name="exchange_rate_inverse" attrs="{'invisible': [('apply_manual_currency_exchange', '=', False)],'required':[('apply_manual_currency_exchange', '=', True)]}"/>
+-->
+					<field name="manual_currency_exchange_rate" invisible="1"/>
+
+<!--
+                     <field name="manual_currency_exchange_rate" attrs="{'invisible': ['|',('apply_manual_currency_exchange', '=', False),('active_manual_currency_rate', '=', False)],'required':[('apply_manual_currency_exchange', '=', True)]}"/>
+-->
+				</field>
+			</field>
+		</record>
+
+
+		<!-- Inheriting Payment screen for custom exchange rate, for customer invoice/vendor bill-->
+		<record id="view_account_payment_form_extends_add_manual_currency_exchange_rate" model="ir.ui.view">
+			<field name="name">view.account.payment.invoice.form.extends.add.manual.currency.exchange.rate</field>
+			<field name="model">account.payment</field>
+			<field name="inherit_id" ref="account.view_account_payment_form" />
+			<field name="arch" type="xml">
+				<field name="payment_date" position="after">
+					<field name="active_manual_currency_rate" invisible="1"></field>
+  					<!-- TS -->
+            		<!--<field name="apply_manual_currency_exchange" attrs="{'invisible': [('active_manual_currency_rate', '=', False)]}"/>-->
+					<field name="apply_manual_currency_exchange" invisible="1"/>
+
+					<field name="manual_currency_exchange_rate" invisible="1"/>
+<!--
+                     <field name="manual_currency_exchange_rate" attrs="{'invisible': ['|',('apply_manual_currency_exchange', '=', False),('active_manual_currency_rate', '=', False)],'required':[('apply_manual_currency_exchange', '=', True)]}"/>
+-->
+				</field>
+				<field name="currency_id" position="after">
+					<field name="exchange_rate_inverse" attrs="{'invisible': [('apply_manual_currency_exchange', '=', False)]}"/>
+
+				</field>
+				<!--<field name="journal_id" position="before">
+					<label for="amount_in_cc"/>
+					<div name="amount_div" class="o_row">
+						<field name="amount_in_cc"/>
+						<field name="company_currency_id" readonly="1" groups="base.group_multi_currency"/>
+					</div>
+				</field>-->
+				<!--<xpath expr='//field[@name="payment_transaction_id"]' position="after">
+					<field name="balance_in_cc" attrs="{'invisible':[('state','in',['draft','cancelled'])]}"/>
+				</xpath>-->
+
+			</field>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,258 @@
+<odoo>
+
+     <!-- Inherited the purchase receipt view and added 'Print' button -->
+     <record model="ir.ui.view" id="view_account_voucher_pr_print">
+        <field name="name">Account Voucher</field>
+        <field name="model">account.voucher</field>
+        <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='cancel_voucher']" position="after">
+                <button name="action_print_payment_voucher" type="object" string="Print"/>
+            </xpath>
+             <xpath expr="//field[@name='account_id']" position="attributes">
+                <attribute name="attrs">{'invisible': True}</attribute>
+            </xpath>
+              <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="domain">[]</attribute>
+                  <attribute name="domain">[('type', 'in', ['cash', 'bank'])]</attribute>
+            </xpath>
+            <!-- hide the standard validate button and replace with a new one -->
+            <xpath expr="//button[@name='proforma_voucher']" position="attributes">
+                <attribute name="states"></attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pay_now']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//field[@name='payment_journal_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+               <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="attrs">{}</attribute>
+            </xpath>
+             <xpath expr="//button[@name='cancel_voucher']" position="before">
+                <button name="action_post_journal_entries" type="object" states="draft" string="Validate Journal"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Inherited the sale receipt view and added 'Print' button -->
+    <record model="ir.ui.view" id="view_account_voucher_sr_print">
+        <field name="name">Account Voucher</field>
+        <field name="model">account.voucher</field>
+        <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='cancel_voucher']" position="after">
+                <button name="action_print_payment_voucher" type="object" string="Print"/>
+            </xpath>
+              <xpath expr="//field[@name='account_id']" position="attributes">
+                <attribute name="attrs">{'invisible': True}</attribute>
+            </xpath>
+              <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="domain">[]</attribute>
+                  <attribute name="domain">[('type', 'in', ['cash', 'bank'])]</attribute>
+            </xpath>
+             <!-- hide the standard validate button and replace with a new one -->
+            <xpath expr="//button[@name='proforma_voucher']" position="attributes">
+                <attribute name="states"></attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pay_now']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//field[@name='payment_journal_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+               <xpath expr="//field[@name='name']" position="attributes">
+              <attribute name="attrs">{}</attribute>
+            </xpath>
+             <xpath expr="//button[@name='cancel_voucher']" position="before">
+                <button name="action_post_journal_entries" type="object" states="draft" string="Validate Journal"/>
+            </xpath>
+        </field>
+    </record>
+
+
+       <!-- Tree View for customer sales receipt -->
+     <record id='view_account_voucher_sale_receipt_tree' model='ir.ui.view'>
+        <field name="name">Account Voucher Tree</field>
+        <field name="model">account.voucher</field>
+        <field name="type">tree</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account_voucher.view_voucher_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='number']" position="after">
+    			<field name="name"/>
+  			</xpath>
+		</field>
+	</record>
+
+
+      <!-- Tree View for vendor purchase receipt -->
+    <!-- <record id='view_account_voucher_purchase_receipt_tree' model='ir.ui.view'>
+        <field name="name">Purchase Receipt Tree</field>
+        <field name="model">account.voucher</field>
+        <field name="type">tree</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account_voucher.view_voucher_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='number']" position="after">
+    			<field name="name"/>
+  			</xpath>
+		</field>
+	</record>-->
+
+
+    <!-- Inherited the account voucher view and added 'Print' button -->
+  <!--   <record model="ir.ui.view" id="view_account_voucher_pv_print">
+        <field name="name">Account Voucher</field>
+        <field name="model">account.voucher</field>
+        <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='cancel_voucher']" position="after">
+                <button name="action_print_payment_voucher" type="object" string="Print"/>
+            </xpath>
+             <xpath expr="//field[@name='account_id']" position="attributes">
+                <attribute name="attrs">{'invisible': True}</attribute>
+            </xpath>
+              <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="domain">[]</attribute>
+            </xpath>
+        </field>
+    </record>-->
+
+
+    <!--<record model="ir.ui.view" id="view_account_voucher_or_print">
+        <field name="name">Official Receipt</field>
+        <field name="model">account.voucher</field>
+        <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='cancel_voucher']" position="after">
+                <button name="action_print_payment_voucher" type="object" string="Print"/>
+            </xpath>
+        </field>
+    </record>-->
+
+
+      <!-- Tree View Official Receipt -->
+    <record id='view_tree_or' model='ir.ui.view'>
+        <field name="name">Official Receipt</field>
+        <field name="model">payment.receipt</field>
+        <field name="arch" type="xml">
+			<tree string='Official Receipt' decoration-muted="payment_receipt_status=='cancelled'">
+               <field name="payment_receipt_no" />
+                <field name="payment_receipt_date" />
+                <field name="payment_type"/>
+                <field name="partner_id" />
+                <field name="amount" />
+                <field name="create_uid" />
+                <field name="payment_receipt_status" />
+                <field name="create_date" />
+			</tree>
+		</field>
+	</record>
+
+
+
+     <!-- Form View Official Receipt -->
+    <record id="view_form_or" model="ir.ui.view">
+        <field name="name">Official Receipt</field>
+        <field name="model">payment.receipt</field>
+        <field name="arch" type="xml">
+            <form string="Official Receipt">
+                <header>
+                     <button name="action_print_receipt"
+							type="object"
+							string="Print Receipt"
+							class="oe_highlight"/>
+                    <field name="payment_receipt_status" widget="statusbar" clickable="True"
+                       statusbar_visible="new,done,cancelled"/>
+                </header>
+                <sheet>
+					<group string="Details">
+                        <group>
+                            <field name="payment_receipt_no"/>
+                            <field name="partner_id" context="{'show_address': 1, 'show_email': 1}" options='{"always_reload": True}'/>
+                             <field name="payment_type" readonly="1"/>
+                            <field name="amount" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="payment_receipt_date" readonly="1"/>
+                            <field name="create_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Payments">
+                             <group class="oe_title">
+                                <field name="payment_lines" nolabel="1">
+                                    <tree create="false" delete="0" editable="bottom" string="Payments" default_order="payment_date">
+                                        <field name="payment_date" readonly="1"/>
+                                        <field name="add_to_receipt" readonly="1"/>
+                                        <field name="name" readonly="1"/>
+                                        <field name="journal_id" readonly="1"/>
+                                        <field name="account_id" />
+                                        <field name="payment_method_id" readonly="1"/>
+                                        <field name="payment_reference" readonly="1"/>
+                                        <field name="partner_id" readonly="1"/>
+                                        <field name="amount" readonly="1"/>
+                                        <field name="state" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+						</page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Search View Official Receipt -->
+    <record id="view_search_pv" model="ir.ui.view">
+        <field name="name">Official Receipt</field>
+        <field name="model">payment.receipt</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="payment_receipt_no"/>
+                <field name="partner_id"/>
+                <filter string="Payment Receipt Date" name="Payment Receipt Date" date="payment_receipt_date"/>
+                <filter string="Creation Date" name="Creation Date" date="create_date"/>
+                <filter string="New" name="New" domain="[('payment_receipt_status', '=', 'new')]"/>
+                <filter string="Done" name="Done" domain="[('payment_receipt_status', '=', 'done')]"/>
+                <filter string="Payment Voucher" name="payment_voucher" domain="[('payment_type', '=', 'pv')]"/>
+                <filter string="Official Receipt" name="official_receipt" domain="[('payment_type', '=', 'or')]"/>
+            </search>
+        </field>
+    </record>
+
+
+
+     <record id="action_view_official_receipt" model="ir.actions.act_window">
+		<field name="name">Official Receipt</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">payment.receipt</field>
+		<field name="view_mode">tree,form</field>
+         <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_tree_or')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_form_or')})]"/>
+      <field name="context">{"search_default_official_receipt":1}</field>
+ 	</record>
+
+
+<!--
+    <menuitem action="action_view_payment_voucher" id="menu_action_view_payment_voucher" parent="account.menu_finance_payables" sequence="50"/>
+-->
+<!--
+    <menuitem action="action_view_official_receipt" id="menu_action_view_official_receipt" parent="account.menu_finance_receivables" sequence="50"/>
+-->
+
+
+
+
+</odoo>

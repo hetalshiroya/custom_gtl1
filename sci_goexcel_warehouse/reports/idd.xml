@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_idd" model="report.paperformat">
+        <field name="name">IDD A4</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">70</field>
+        <field name="margin_bottom">28</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">55</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report id="action_idd_northport"
+            model="freight.bol"
+            string="IDD for Northport"
+            report_type="qweb-pdf"
+            name="sci_goexcel_warehouse.idd_northport"
+            file="sci_goexcel_warehouse.idd_northport"
+            print_report_name="'IDD for Northport'"
+            paperformat="paperformat_idd"
+    />
+
+    <report id="action_idd_westport"
+            model="freight.bol"
+            string="IDD for Westport"
+            report_type="qweb-pdf"
+            name="sci_goexcel_warehouse.idd_westport"
+            file="sci_goexcel_warehouse.idd_westport"
+            print_report_name="'IDD for Westport'"
+            paperformat="paperformat_idd"
+    />
+
+    <template id="idd_northport">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <table style="font-size:15px; width:100%">
+                        <tr height="30px"/>
+                        <tr>
+                            <td style="vertical-align: top; width:13%;"/>
+                            <td style="vertical-align: top; width:9%;"/>
+                            <td style="vertical-align: top; width:8%;"/>
+                            <td style="vertical-align: top; width:5%;"/>
+                            <td style="vertical-align: top; width:12%;"/>
+                            <td style="vertical-align: top; width:5%;"/>
+                            <td style="vertical-align: top; width:11%;"/>
+                            <td style="vertical-align: top; width:8%;"/>
+                            <td style="vertical-align: top; width:6%;"/>
+                            <td style="vertical-align: top; width:11%;"/>
+                            <td style="vertical-align: top; width:12%;"/>
+                        </tr>
+                        <tr height="15px">
+                            <td rowspan="3" colspan="9"><span t-field="o.consignee"/></td>
+                            <td rowspan="2" colspan="2"><span t-field="o.bol_no"/></td>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px">
+                            <td colspan="2"><span t-field="o.manifest_no"/></td>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px">
+                            <td colspan="6"/>
+                            <td colspan="2"><!--<span t-field="o.unstuff_date"/>--></td>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px">
+                            <td colspan="2">
+                                <t t-if="o.cargo_line_ids">
+                                    <span t-field="o.cargo_line_ids[0].container_no"/>
+                                </t>
+                            </td>
+                            <td colspan="3"><span t-field="o.booking_ref.unstuff_at"/></td>
+                            <td colspan="6"/>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px">
+                            <td colspan="4"><span t-field="o.vessel"/> <span t-field="o.voyage_no"/></td>
+                            <td colspan="2"><span t-field="o.booking_ref.vessel_id"/></td>
+                            <td colspan="2"><span t-field="o.booking_ref.booking_date_time"/></td>
+                            <td colspan="3"><span t-field="o.port_of_loading_input"/></td>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px">
+                            <td colspan="7"/>
+                            <td colspan="4"><span t-field="o.booking_ref.scn_code"/></td>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="7"/>
+                            <td colspan="4"><span t-field="o.booking_ref.manifest_no"/></td>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="7"/>
+                            <td colspan="4"><span t-field="o.booking_ref.shipping_agent_code"/></td>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="7"/>
+                            <td colspan="4"><!--<span t-field="o.hbl_no"/>--></td>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="7"/>
+                            <td colspan="4"><span t-field="o.booking_ref.terminal.code"/></td>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <t t-foreach="o.cargo_line_ids" t-as="line">
+                            <tr height="15px">
+                                <td colspan="2" style="vertical-align: top"><span t-field="line.marks"/> <span t-field="line.container_no"/></td>
+                                <td colspan="2" style="vertical-align: top"><span t-field="line.packages_no_value"/> <span t-field="line.packages_no_uom.name"/></td>
+                                <td colspan="3" style="vertical-align: top"><span t-field="line.container_product_name"/></td>
+                                <td colspan="2" style="vertical-align: top"><span t-field="line.exp_net_weight"/></td>
+                                <td style="vertical-align: top"><span t-field="line.exp_gross_weight"/></td>
+                                <td style="vertical-align: top; text-align:center;"><span t-field="line.exp_vol"/></td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="idd_westport">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <table style="font-size:15px; width:100%">
+                        <tr height="60px"/>
+                        <tr>
+                            <td style="vertical-align: top; width:24%;"/>
+                            <td style="vertical-align: top; width:9%;"/>
+                            <td style="vertical-align: top; width:13%;"/>
+                            <td style="vertical-align: top; width:18%;"/>
+                            <td style="vertical-align: top; width:14%;"/>
+                            <td style="vertical-align: top; width:8%;"/>
+                            <td style="vertical-align: top; width:14%;"/>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="6"/>
+                            <td style="vertical-align: top;"><span t-field="o.bol_no"/></td>
+                        </tr>
+                        <tr height="60px">
+                            <td colspan="6"><span t-field="o.consignee"/></td>
+                            <td style="vertical-align: top;"><span t-field="o.manifest_no"/></td>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+
+                        <tr height="15px">
+                            <td>
+                                <t t-if="o.cargo_line_ids">
+                                    <span t-field="o.cargo_line_ids[0].container_no"/>
+                                </t>
+                            </td>
+                            <td colspan="6"/>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px">
+                            <td colspan="2"><span t-field="o.vessel"/> <span t-field="o.voyage_no"/></td>
+                            <td><span t-field="o.booking_ref.vessel_id"/></td>
+                            <td><span t-field="o.booking_ref.booking_date_time"/></td>
+                            <td colspan="3"><span t-field="o.port_of_loading_input"/></td>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px">
+                            <td colspan="5"/>
+                            <td colspan="2"><!--<span t-field="o.hbl_no"/>--></td>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="5"/>
+                            <td colspan="2"><span t-field="o.booking_ref.scn_code"/></td>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="5"/>
+                            <td colspan="2"><span t-field="o.booking_ref.manifest_no"/></td>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="5"/>
+                            <td colspan="2"><span t-field="o.booking_ref.shipping_agent_code"/></td>
+                        </tr>
+                        <tr height="15px">
+                            <td colspan="5"/>
+                            <td colspan="2"><!--S/HBL--></td>
+                        </tr>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+                        <tr height="15px"/>
+
+                        <t t-foreach="o.cargo_line_ids" t-as="line">
+                            <tr height="15px">
+                                <td style="vertical-align: top;"><span t-field="line.marks"/> <span t-field="line.container_no"/></td>
+                                <td style="vertical-align: top; text-align:center;"><span t-field="line.packages_no_value"/></td>
+                                <td colspan="2" style="vertical-align: top;">
+                                    <span t-field="line.packages_no_uom.name"/><br/>
+                                    <span t-field="line.container_product_name"/>
+                                </td>
+                                <td colspan="2" style="vertical-align: top;text-align:right;"><span t-field="line.exp_gross_weight"/></td>
+                                <td style="vertical-align: top;text-align:right;"><span t-field="line.exp_vol"/></td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

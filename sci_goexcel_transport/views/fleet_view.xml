@@ -1,0 +1,54 @@
+<odoo>
+
+     <!-- Timeline View Vehicle and Driver -->
+      <record id="vehicle_dispatch_trip_timeline" model="ir.ui.view">
+        <field name="model">dispatch.trip</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="plan_departure_date_time"
+                      date_stop="plan_arrival_date_time"
+                      default_group_by="vehicle"
+                      event_open_popup="true"
+                      colors="#ec7063: trip_status == '02' ; #2ecb71: trip_status == '04'; #FFFF00: trip_status == '03';
+									#696969: trip_status == '05'">
+                <field name="driver_id"/>
+				 <field name="plan_trip_duration"/>
+                 <templates>
+
+					  <div t-name="timeline-item">
+                        <div t-esc="record.driver_id"/>
+                         :-
+                        <span t-esc="record.plan_trip_duration"/>
+                    </div>
+                </templates>
+            </timeline>
+        </field>
+      </record>
+
+	<record id="action_vehicle_availability" model="ir.actions.act_window">
+		<field name="name">Dispatch Trip By Vehicle</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">dispatch.trip</field>
+		<field name="view_mode">timeline,form,tree</field>
+        <field name="view_id" ref="vehicle_dispatch_trip_timeline"/>
+ 	</record>
+
+
+    <!-- Action -->
+	<record id="action_vehicle_master" model="ir.actions.act_window">
+		<field name="name">Vehicle Availability</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">fleet.vehicle</field>
+	<!--	<field name="view_type">form</field>-->
+		<field name="view_mode">kanban,tree,form</field>
+ 	</record>
+
+	<menuitem id="main_menu_transport_vehicle"
+			  name="Fleet"
+			  parent="menu_goexcel_transport"
+			  sequence="3"/>
+	<menuitem id="menu_consignment_vehicle_availability"    name="Vehicle Availability"    parent="main_menu_transport_vehicle"    action="action_vehicle_availability"/>
+    <menuitem id="menu_consignment_vehicle"    name="Vehicle"    parent="main_menu_transport_vehicle"    action="action_vehicle_master"/>
+
+
+</odoo>

@@ -1,0 +1,26 @@
+
+<odoo>
+
+
+	 <!-- SQ Form -->
+	<record model="ir.ui.view" id="view_sales_quotation_view_booking">
+		<field name="name">Freight Booking</field>
+		<field name="model">sale.order</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="sale.view_order_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='commodity']" position="replace">
+				<field name="commodity" domain="[('categ_id', '=', commodity_category_id)]"
+					   options='{"always_reload": True}'
+					   attrs="{'invisible': [('service_type', '=', 'others')]}"/>
+			</xpath>
+			<xpath expr="//button[@name='action_copy_to_booking']" position="replace">
+
+            </xpath>
+			<xpath expr="//button[@name='action_copy_to_rft']" position="replace">
+
+            </xpath>
+		</field>
+	</record>
+</odoo>

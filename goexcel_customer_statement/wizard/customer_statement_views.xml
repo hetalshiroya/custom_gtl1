@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_customer_statement_form" model="ir.ui.view">
+        <field name="name">view.customer.statement.form</field>
+        <field name="model">customer.statement</field>
+        <field name="arch" type="xml">
+           <form string="Statement of Account">
+                <field name="soa_type" widget="radio" options="{'horizontal': true}"/>
+                <group>
+                    <group>
+                        <field name="invoice_start_date"/>
+                        <field name="aging_by" widget="radio" options="{'horizontal': true}"/>
+                        <field name="date_upto" string="Date As on" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="invoice_end_date"/>
+                        <field name="account_type" widget="radio" options="{'horizontal': true}"/>
+                        <field name="aging_group" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                </group>
+                <footer>
+	        	<button string="Print Statement" name="print_statement" type="object" class="oe_highlight"/>
+	        	 or
+
+                    <button string="Send Email" name="send_statement" type="object" class="oe_highlight"/>
+                    or
+                 <button string="Cancel" class="oe_link" special="cancel" />
+            </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Statement of Account"
+            res_model="customer.statement"
+            src_model="res.partner"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            key2="client_print_multi"
+            id="action_customer_statement"/>
+                
+
+</odoo>
+

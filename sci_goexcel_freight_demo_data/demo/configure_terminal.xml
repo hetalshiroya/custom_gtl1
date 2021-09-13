@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data noupdate="1">
+        <record id="terminal_1" model="freight.terminal">
+            <field name="code">NORTHPORT</field>
+            <field name="name">KCT</field>
+        </record>
+        <record id="terminal_2" model="freight.terminal">
+            <field name="code">NORTHPORT</field>
+            <field name="name">KPM</field>
+        </record>
+        <record id="terminal_3" model="freight.terminal">
+            <field name="code">WESTPORT</field>
+            <field name="name">KMT</field>
+        </record>
+        <record id="terminal_4" model="freight.terminal">
+            <field name="code">PASIR GUDANG</field>
+            <field name="name">PGU</field>
+        </record>
+        <record id="terminal_5" model="freight.terminal">
+            <field name="code">TANJUNG PELEPAS</field>
+            <field name="name">PTP</field>
+        </record>
+    </data>
+</odoo>

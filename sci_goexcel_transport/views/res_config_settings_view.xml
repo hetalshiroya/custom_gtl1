@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.transport</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="4"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Transport" string="Transport" data-key="sci_goexcel_transport">
+                    <h2>Transport</h2>
+                    <div class="row mt16 o_settings_container" name="transport_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" title="PO/Vendor bill for RFT.">
+                            <div class="o_setting_left_pane">
+                                <field name="use_po"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Purchase Order For RFT?</span>
+                                <div class="text-muted">
+                                    Ticked it if using the purchase order for your vendor
+                                </div>
+                            </div>
+                             <div class="o_setting_left_pane">
+                                <field name="use_vb"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Vendor Bill For RFT?</span>
+                                <div class="text-muted">
+                                    Ticked it if using the vendor bill to pay your vendor invoice without Purchase Order
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" title="Other Services for RFT.">
+                            <div class="o_setting_left_pane">
+                                <field name="use_packaging"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Packaging for RFT?</span>
+                                <div class="text-muted">
+                                    Ticked it if adding the packaging material to the RFT
+                                </div>
+                            </div>
+                             <div class="o_setting_left_pane">
+                                <field name="use_manpower"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Additional ManPower For RFT?</span>
+                                <div class="text-muted">
+                                    Ticked it if adding manpower to the RFT
+                                </div>
+                            </div>
+                            <div class="o_setting_left_pane">
+                                <field name="use_equipment"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Additional Tool &amp; Equipment For RFT?</span>
+                                <div class="text-muted">
+                                    Ticked it if adding other Tools and Equipments to the RFT
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="transport_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_settings_view_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'sci_goexcel_transport'}</field>
+    </record>
+
+    <menuitem id="menu_consignment_transport_setting" name="Settings" parent="menu_goexcel_transport" sequence="6"/>
+    <menuitem id="menu_consignment_transport_setting_config"    name="Settings"    parent="menu_consignment_transport_setting"    action="transport_config_settings_action"/>
+
+
+</odoo>

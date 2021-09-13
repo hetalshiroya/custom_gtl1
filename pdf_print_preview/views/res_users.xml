@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_users_preview_print_form" model="ir.ui.view">
+        <field name="name">res.users.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[last()]" position="after">
+                <page string="Preview">
+                    <group>
+                        <group string="Report">
+                            <field name="preview_print"/>
+                            <field name="automatic_printing"/>
+                            <button class="oe_link oe_left fa fa-refresh" name="preview_reload" type="object" string="Refresh"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="short_preview_print_from" model="ir.ui.view">
+        <field name="name">res.users.preview_print.form</field>
+        <field name="model">res.users</field>
+        <field eval="18" name="priority"/>
+        <field name="arch" type="xml">
+            <form string="Users">
+                <field name="image" readonly="0" widget='image' class="oe_right oe_avatar" options='{"preview_image": "image_small"}'/>
+                <h1>
+                    <field name="name" readonly="1" class="oe_inline"/>
+                </h1>
+            
+                <group name="preview_print">
+                    <field name="preview_print" readonly="0"/>
+                    <field name="automatic_printing" readonly="0"/>
+                </group>
+                
+                <footer>
+                    <button name="preview_print_save" type="object" string="Save" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-default"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_short_preview_print" model="ir.actions.act_window">
+        <field name="name">Preview Print</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.users</field>
+        <field name="target">new</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record id="action_short_preview_print2" model="ir.actions.act_window.view">
+        <field eval="10" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="short_preview_print_from"/>
+        <field name="act_window_id" ref="action_short_preview_print"/>
+    </record>
+</odoo>

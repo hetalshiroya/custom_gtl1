@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record model="ir.ui.view" id="view_multi_folder_tree">
+        <field name="name">multi.folder.tree</field>
+        <field name="model">multi.folder.drive</field>
+        <field name="arch" type="xml">
+            <tree string="Manage MultiFolder on Drive" editable="top">
+                <field name="model_id" required="1"
+					options="{'no_create_edit':True,'no_open':True,'no_edit':True,'no_create':True}"/>
+				<field name="name" required="1" />
+				<field name="folder_id" readonly="1"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_open': True, 'no_edit': True, 'no_create_edit': True}"/>
+				<button type="object" name="create_folder_on_drive" string="Create" class="oe_highlight" attrs="{'invisible':[('folder_id','!=',False)]}"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_manage_folder">
+        <field name="name">Manage Google Folders</field>
+        <field name="res_model">multi.folder.drive</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_multi_folder_tree"/>
+    </record>
+   
+   <menuitem id="menu_google_drive_config" parent="base.menu_administration" name="Google Drive"/>
+   
+	<menuitem id="menu_multi_folder" parent="google_drive_attachment.menu_google_drive_config" action="action_manage_folder"/>
+</odoo>

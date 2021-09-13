@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+		<record id="sequence_rft" model="ir.sequence">
+            <field name="name">rft</field>
+            <field name="code">rft</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">RT-%(y)s%(month)s%(day)s-</field>
+     <!--       <field name="sequence_size">3</field>-->
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+		</record>
+
+		<record id="sequence_cn" model="ir.sequence">
+            <field name="name">cn</field>
+            <field name="code">cn</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">CN-%(y)s%(month)s%(day)s-</field>
+     <!--       <field name="sequence_size">3</field>-->
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+		</record>
+
+        <record id="sequence_trip" model="ir.sequence">
+            <field name="name">trip</field>
+            <field name="code">trip</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">DT-%(y)s%(month)s%(day)s-</field>
+     <!--       <field name="sequence_size">3</field>-->
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+		</record>
+
+        <record id="manifest_cn_sequence" model="ir.sequence">
+            <field name="name">manifest_cn</field>
+            <field name="code">manifest_cn</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">CN-%(y)s%(month)s%(day)s-</field>
+     <!--       <field name="sequence_size">3</field>-->
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+		</record>
+	</data>
+</odoo>

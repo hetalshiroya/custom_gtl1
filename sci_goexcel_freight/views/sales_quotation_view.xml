@@ -1,0 +1,32 @@
+<odoo>
+
+	<record id="view_sq_freight_booking" model="ir.actions.act_window">
+        <field name="name">Freight Job History</field>
+        <field name="res_model">freight.booking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>
+        <field name="view_id" ref="sci_goexcel_freight.view_tree_ocean_booking"/>
+		<field name="domain">[('sq_reference', '=', active_id)]</field>
+    </record>
+
+	<record id="action_sales_quotation" model="ir.actions.act_window">
+		<field name="name">Sales Quotation</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">sale.order</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_ids" eval="[(5, 0, 0),
+               (0, 0, {'view_mode': 'tree', 'view_id': ref('sale.view_quotation_tree_with_onboarding')})]"/>
+ 	</record>
+
+	<menuitem id="main_menu_sales_quotation"
+			  name="Sales Quotation"
+			  parent="menu_freight"
+			  sequence="3"/>
+
+	<menuitem id="menu_sales_quotation"
+			  name="Sales Quotation"
+			  parent="main_menu_sales_quotation"
+			  action="action_sales_quotation"/>
+
+</odoo>

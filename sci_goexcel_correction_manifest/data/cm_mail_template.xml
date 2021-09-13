@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template and notification section -->
+    <data noupdate="1">
+         <record id="email_template_correction_manifest" model="mail.template">
+            <field name="name">Correction Manifest: Send by email</field>
+            <field name="model_id" ref="sci_goexcel_correction_manifest.model_freight_booking"/>
+            <field name="email_from">${object.owner.email_formatted |safe}</field>
+            <field name="partner_to">${object.customer_name.id}</field>
+            <field name="subject">Import Correction Manifest</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.customer_name.name}
+                        <br /><br />
+                        Here is the Import Correction Manifest
+                        on ${object.booking_date_time or 'n/a' }
+
+                        Do not hesitate to contact us if you have any question.
+                        Thanks.
+                    </p>
+                </div>
+            </field>
+            <field name="report_template" ref="action_correction_manifest"/>
+            <field name="report_name">Correction Manifest</field>
+            <field name="lang">${object.customer_name.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

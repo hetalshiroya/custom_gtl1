@@ -1,0 +1,34 @@
+<odoo>
+
+    <!-- == "More" menu == -->
+
+    <!-- Mark read -->
+    <record id="message_mark_read_multi" model="ir.actions.server">
+        <field name="name">Mark read</field>
+        <field name="binding_model_id" ref="model_mail_message"/>
+        <field name="model_id" ref="model_mail_message"/>
+        <field name="state">code</field>
+        <field name="code">records.mark_read_multi()</field>
+    </record>
+
+    <!-- Star/Unstar messages -->
+    <record id="message_star_multi" model="ir.actions.server">
+        <field name="name">Star/Unstar</field>
+        <field name="binding_model_id" ref="model_mail_message"/>
+        <field name="model_id" ref="model_mail_message"/>
+        <field name="state">code</field>
+        <field name="code">records.star_multi()</field>
+    </record>
+
+    <!-- Move messages -->
+    <record id="message_move_multi" model="ir.actions.act_window">
+        <field name="name">Move</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="binding_type">action</field>
+        <field name="binding_model_id" ref="model_mail_message"/>
+        <field name="res_model">prt.message.move.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

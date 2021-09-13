@@ -1,0 +1,39 @@
+<odoo>
+
+    <!-- Inherited the invoice view and add freight booking id -->
+	<!--<record model="ir.ui.view" id="view_invoice_view_booking">
+		<field name="name">Freight Booking</field>
+		<field name="model">account.invoice</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		&lt;!&ndash;<field name="inherit_id" ref="account_operating_unit.invoice_form"/>&ndash;&gt;
+		<field name="inherit_id" ref="account.invoice_form"/>
+		<field name="arch" type="xml">
+             <xpath expr="//field[@name='date_invoice']" position="before">
+                 <field name="freight_booking"/>
+            </xpath>
+			 <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']"
+                   position="before">
+                <field name="booking_job_cost"/>
+            </xpath>
+		</field>
+	</record>-->
+
+      <!--Inherited the vendor bill view and add freight booking id -->
+	<!--<record model="ir.ui.view" id="view_vendor_bill_view_booking">
+		<field name="name">Freight Booking</field>
+		<field name="model">account.invoice</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account.invoice_supplier_form"/>
+		<field name="arch" type="xml">
+              <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']"
+                   position="before">
+                <field name="booking_job_cost" invisible="1"/>
+            </xpath>
+		</field>
+	</record>-->
+
+
+
+</odoo>

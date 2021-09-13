@@ -1,0 +1,110 @@
+<odoo>
+
+    <!-- ADD by Kinjal - 18 Jun- For Cancel button visible in draft state also -->
+    <record id="payment_cancel_form_inherit_cancel" model="ir.ui.view">
+        <field name="name">Account Payment</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account_cancel.payment_cancel_form_inherit"/>
+        <field name="arch" type="xml">
+             <!-- cancel buttin -->
+            <button name="cancel" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', '=', 'cancelled')]}</attribute>
+            </button>
+        </field>
+    </record>
+    <!-- / -->
+
+    <record id="view_account_payment" model="ir.ui.view">
+        <field name="name">Account Payment</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <field name="payment_date" position="after">
+                <field name="cheque_no"/>
+                <field name="reference" placeholder="e.g. 003/10"/>
+              <!--  <field name="check_no" attrs="{'invisible': [('journal_type', '!=', 'bank')]}"/>-->
+                <field name="journal_type" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='communication']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="reference" position="after">
+                <field name="bank_date"/>
+            </field>
+            <!--<xpath expr="//button[@name='action_account_payment_sent']" position="after">-->
+            <button name="action_draft" position="after">
+                 <!--<button name="action_print_receipt" attrs="{'invisible': [('payment_type', '=', 'outbound')]}"
+							type="object" string="Print Receipt" class="oe_highlight"/>-->
+                     <button name="action_print_receipt"
+							type="object" string="Print Receipt" class="oe_highlight"/>
+            </button>
+           
+            <!-- restrict access to confirm button -->
+            <xpath expr="//button[@name='post']" position="attributes">
+                <attribute name="groups">account.group_account_manager,account.group_account_user</attribute>
+            </xpath>
+            <!-- to be used in the custom module -->
+            <!-- <xpath expr="//field[@name='payment_invoice_ids']/tree/field[@name='origin']" position="after">
+                    <field name="description"/>
+            </xpath>-->
+
+<!--            <xpath expr="//field[@name='open_move_line_ids']/tree/field[@name='credit']" position="replace">-->
+<!--                 <field name="credit" sum="Total Credit"/>-->
+<!--            </xpath>-->
+
+<!--             <xpath expr="//field[@name='open_move_line_ids']/tree/field[@name='debit']" position="replace">-->
+<!--                 <field name="debit" sum="Total Debit"/>-->
+<!--            </xpath>-->
+
+<!--             <xpath expr="//field[@name='open_move_line_ids']/tree/field[@name='amount_currency']" position="replace">-->
+<!--                 <field name="amount_currency" sum="Total Amount Currency"/>-->
+<!--            </xpath>-->
+
+        </field>
+    </record>
+
+
+     <!-- Tree View for customer invoice payment -->
+     <record id='view_account_payment_tree_customer' model='ir.ui.view'>
+        <field name="name">Account Payment Tree</field>
+        <field name="model">account.payment</field>
+        <field name="type">tree</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account.view_account_payment_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="after">
+    			<field name="cheque_no"/>
+                <field name="reference"/>
+  			</xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_method_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+		</field>
+	</record>
+
+
+    <!-- Tree View for vendor account payment  -->
+     <record id='view_account_payment_tree_vendor' model='ir.ui.view'>
+        <field name="name">Account Payment Tree</field>
+        <field name="model">account.payment</field>
+        <field name="type">tree</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="account.view_account_supplier_payment_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="after">
+                <field name="cheque_no"/>
+    			<field name="reference"/>
+  			</xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_method_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+		</field>
+	</record>
+
+</odoo>

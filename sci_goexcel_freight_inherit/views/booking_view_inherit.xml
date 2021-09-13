@@ -1,0 +1,17 @@
+<odoo>
+
+	 <!--Invoice Form-->
+	<record model="ir.ui.view" id="view_form_booking_inherit">
+		<field name="name">Booking Inherit</field>
+		<field name="model">freight.booking</field>
+		<field name="inherit_id" ref="sci_goexcel_freight.view_form_booking"/>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+
+
+		</field>
+	</record>
+
+
+
+</odoo>

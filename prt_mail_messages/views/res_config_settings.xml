@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.cetmix.messages.easy.settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Messages Easy" string="Messages Easy" data-key="prt_mail_messages">
+                    <h2>Cetmix Mail Messages Easy</h2>
+                    <div class="row mt16 o_settings_container" id="cetmix_mail_bot_settings">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="messages_easy_text_preview">
+                                <label for="messages_easy_text_preview"/>
+                                <div class="text-muted">
+                                    Message body preview length for List View, characters<br/>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="messages_easy_text_preview"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="messages_easy_color_note">
+                                <label for="messages_easy_color_note"/>
+                                <div class="text-muted">
+                                    Background color for internal notes in HTML format (e.g. #fbd78b)<br/>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="messages_easy_color_note"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ## Action ## -->
+    <record id="action_messages_config_settings" model="ir.actions.act_window">
+        <field name="name">General Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_settings_view_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'prt_mail_messages'}</field>
+    </record>
+
+    <!-- ## Menu -->
+    <menuitem id="menu_messages_general_settings"
+        name="General Settings"
+        parent="prt_messages_settings"
+        sequence="0"
+        action="action_messages_config_settings"
+        groups="base.group_system"/>
+
+</odoo>

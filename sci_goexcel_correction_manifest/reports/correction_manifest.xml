@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <report id="action_correction_manifest"
+            string="Correction Manifest"
+            model="freight.booking"
+            report_type="qweb-pdf"
+            name="sci_goexcel_correction_manifest.report_correction_manifest"
+             print_report_name = "('CM - ' + object.booking_no)"
+     />
+
+    <report id="action_correction_manifest_bl"
+            string="Correction Manifest"
+            model="freight.bol"
+            report_type="qweb-pdf"
+            name="sci_goexcel_correction_manifest.report_correction_manifest_bl"
+             print_report_name = "('CM - ' + object.bol_no)"
+     />
+
+    <template id="report_correction_manifest">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <table style="font-size:14px; width:100%">
+                            <tr>
+                                <td style="width:30%;">
+                                    TO
+                                </td>
+                                <td style="width:5%;">:</td>
+                                <td style="width:68%;">
+                                    <span t-field="o.changed_to"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    TEL
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <span t-field="o.changed_tel"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ATTN
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <!--
+                                        <span t-field="o.contact_name.name"/>
+                                    -->
+                                    <span t-field="o.changed_attn"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    FROM
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <span t-esc="user.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    DATE
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <span t-field="o.changed_date"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <p><b><u>SUBJ : IMPORT CORRECTION MANIFEST</u></b></p>
+                        <table style="font-size:14px; width:100%">
+                            <tr>
+                                <td style="width:30%;">
+                                    VESSEL/VOY
+                                </td>
+                                <td style="width:5%;">
+                                    :
+                                </td>
+                                <td style="width:68%;">
+                                    <span t-field="o.vessel_name.name"/>/<span t-field="o.voyage_no"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ETA PORT KLANG
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.port_of_discharge_eta"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    POL
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.port_of_loading.name"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    OCEAN B/L NO
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.obl_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    HOUSE B/L NO
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.hbl_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    JOB NO
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    DESCRIPTION
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.changed_description"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    GROSS WEIGHT(KG)
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.changed_gross_weight"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    MEASUREMENT(M3)
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.changed_measurement"/></td>
+                            </tr>
+                        </table>
+                        <hr/>
+                        <p><b>
+                            WITH REFERENCE TO THE ABOVE CONSIGNMENT, WE SHALL BE MUCH OBLIGED IF YOU COULD AMEND THE
+                            CONSIGNEE / NOTIFY PARTY IN ORDER FOR YOUR GOOD OFFICE TO SUBMIT CORRECTION MANIFEST (K4)
+                            SMOOTHLY TO PORT AUTHORITY
+                        </b></p>
+                        <table style="font-size:14px; width:100%">
+                            <tr>
+                                <td style="width:49%;">
+                                    <b><u>ORIGINAL CONSIGNEE</u></b>
+                                </td>
+                                <td style="width:2%;">
+                                </td>
+                                <td style="width:49%;">
+                                    <b><u>ORIGINAL SHIPPER</u></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!--
+                                    <t t-if="o.original_consignee">
+                                        <span t-esc="o.original_consignee.upper()"/>
+                                    </t>
+                                    -->
+                                    <span t-field="o.original_consignee"/>
+                                    <br/><br/>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <!--
+                                    <t t-if="o.original_shipper">
+                                        <span t-esc="o.original_shipper.upper()"/>
+                                    </t>
+                                    -->
+                                    <span t-field="o.original_shipper"/>
+                                    <br/><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%;">
+                                    <b><u>TO BE AMENDED TO READ</u></b>
+                                </td>
+                                <td></td>
+                                <td style="width:50%;">
+                                    <b><u>TO BE AMENDED TO READ</u></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!--
+                                    <t t-if="o.changed_consignee">
+                                        <span t-esc="o.changed_consignee.upper()"/>
+                                    </t>
+                                    -->
+                                    <span t-field="o.changed_consignee"/>
+                                    <br/>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <!--
+                                    <t t-if="o.changed_shipper">
+                                        <span t-esc="o.changed_shipper.upper()"/>
+                                    </t>
+                                    -->
+                                    <span t-field="o.changed_shipper"/>
+                                    <br/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/><hr/>
+                        <p>WE HEREBY WILL BE RESPONSIBLE FOR THE CONSEQUENCES THAT MAY ARISE BY YOUR SO DOING</p>
+                        <p>THANK YOU &amp; BEST REGARDS</p>
+                        <span t-esc="user.name"></span>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_correction_manifest_bl">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <table style="font-size:14px; width:100%">
+                            <tr>
+                                <td style="width:30%;">
+                                    TO
+                                </td>
+                                <td style="width:5%;">:</td>
+                                <td style="width:68%;">
+                                    <span t-field="o.changed_to"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    TEL
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <span t-field="o.changed_tel"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ATTN
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <!--
+                                        <span t-field="o.contact_name.name"/>
+                                    -->
+                                    <span t-field="o.changed_attn"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    FROM
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <span t-esc="user.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    DATE
+                                </td>
+                                <td>:</td>
+                                <td>
+                                    <span t-field="o.changed_date"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <p><b><u>SUBJ : IMPORT CORRECTION MANIFEST</u></b></p>
+                        <table style="font-size:14px; width:100%">
+                            <tr>
+                                <td style="width:30%;">
+                                    VESSEL/VOY
+                                </td>
+                                <td style="width:5%;">
+                                    :
+                                </td>
+                                <td style="width:68%;">
+                                    <span t-field="o.vessel"/>/<span t-field="o.voyage_no"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ETA PORT KLANG
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.port_of_discharge_eta"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    POL
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.port_of_loading_input"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    OCEAN B/L NO
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.obl_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    HOUSE B/L NO
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.bol_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    JOB NO
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.booking_ref.booking_no"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    DESCRIPTION
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.changed_description"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    GROSS WEIGHT(KG)
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.changed_gross_weight"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    MEASUREMENT(M3)
+                                </td>
+                                <td>:</td>
+                                <td><span t-field="o.changed_measurement"/></td>
+                            </tr>
+                        </table>
+                        <hr/>
+                        <p><b>
+                            WITH REFERENCE TO THE ABOVE CONSIGNMENT, WE SHALL BE MUCH OBLIGED IF YOU COULD AMEND THE
+                            CONSIGNEE / NOTIFY PARTY IN ORDER FOR YOUR GOOD OFFICE TO SUBMIT CORRECTION MANIFEST (K4)
+                            SMOOTHLY TO PORT AUTHORITY
+                        </b></p>
+                        <table style="font-size:14px; width:100%">
+                            <tr>
+                                <td style="width:49%;">
+                                    <b><u>ORIGINAL CONSIGNEE</u></b>
+                                </td>
+                                 <td style="width:2%;">
+                                </td>
+                                <td style="width:49%;">
+                                    <b><u>ORIGINAL SHIPPER</u></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!--
+                                    <t t-if="o.original_consignee">
+                                        <span t-esc="o.original_consignee.upper()"/>
+                                    </t>
+                                    -->
+                                    <span t-field="o.original_consignee"/>
+                                    <br/><br/>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <!--
+                                    <t t-if="o.original_shipper">
+                                        <span t-esc="o.original_shipper.upper()"/>
+                                    </t>
+                                    -->
+                                    <span t-field="o.original_shipper"/>
+                                    <br/><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%;">
+                                    <b><u>TO BE AMENDED TO READ</u></b>
+                                </td>
+                                <td></td>
+                                <td style="width:50%;">
+                                    <b><u>TO BE AMENDED TO READ</u></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!--
+                                    <t t-if="o.changed_consignee">
+                                        <span t-esc="o.changed_consignee.upper()"/>
+                                    </t>
+                                    -->
+                                    <span t-field="o.changed_consignee"/>
+                                    <br/>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <!--
+                                    <t t-if="o.changed_shipper">
+                                        <span t-esc="o.changed_shipper.upper()"/>
+                                    </t>
+                                    -->
+                                    <span t-field="o.changed_shipper"/>
+                                    <br/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/><hr/>
+                        <p>WE HEREBY WILL BE RESPONSIBLE FOR THE CONSEQUENCES THAT MAY ARISE BY YOUR SO DOING</p>
+                        <p>THANK YOU &amp; BEST REGARDS</p>
+                        <span t-esc="user.name"></span>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

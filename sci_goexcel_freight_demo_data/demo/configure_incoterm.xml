@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data noupdate="1">
+        <record id="incoterm_1" model="freight.incoterm">
+            <field name="name">EXW - Ex Work</field>
+            <field name="code">EXW</field>
+        </record>
+        <record id="incoterm_2" model="freight.incoterm">
+            <field name="name">CPT - Carriage Paid To</field>
+            <field name="code">CPT</field>
+        </record>
+        <record id="incoterm_3" model="freight.incoterm">
+            <field name="name">CIP - Carriage and Insurance Paid to</field>
+            <field name="code">CIP</field>
+        </record>
+        <record id="incoterm_4" model="freight.incoterm">
+            <field name="name">DPU - Delivered At Place Unloaded</field>
+            <field name="code">DPU</field>
+        </record>
+        <record id="incoterm_5" model="freight.incoterm">
+            <field name="name">DAP - Delivered At Place</field>
+            <field name="code">DAP</field>
+        </record>
+        <record id="incoterm_6" model="freight.incoterm">
+            <field name="name">DDP - Delivered Duty Paid</field>
+            <field name="code">DDP</field>
+        </record>
+        <record id="incoterm_7" model="freight.incoterm">
+            <field name="name">FAS - Free Alongside Ship</field>
+            <field name="code">FAS</field>
+        </record>
+        <record id="incoterm_8" model="freight.incoterm">
+            <field name="name">FOB - Free on Board</field>
+            <field name="code">FOB</field>
+        </record>
+        <record id="incoterm_9" model="freight.incoterm">
+            <field name="name">CFR - Cost and Freight</field>
+            <field name="code">CFR</field>
+        </record>
+        <record id="incoterm_10" model="freight.incoterm">
+            <field name="name">CIF - Cost, Insurance &amp; Freight</field>
+            <field name="code">CIF</field>
+        </record>
+
+    </data>
+</odoo>

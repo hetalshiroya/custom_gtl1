@@ -1,0 +1,116 @@
+<odoo>
+
+    <!-- Inherited the sales quotation view and added 'Copy to RFT' button -->
+     <record model="ir.ui.view" id="view_sales_quotation_copy_to_rft">
+        <field name="name">Copy to RFT</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='action_cancel']" position="after">
+                <button name="action_copy_to_rft" type="object" string="Copy to RFT"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Must place before the form view button that call this -->
+     <!-- Call action window to view freight booking -->
+    <record id="view_sq_transport_rft" model="ir.actions.act_window">
+        <field name="name">RFT History</field>
+        <field name="res_model">transport.rft</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="view_id" ref="sci_goexcel_transport.view_tree_transport_rft"/>
+		<field name="domain">[('sq_reference', '=', active_id)]</field>
+		<!--<field name="context">{
+                'search_default_partner_id': active_id
+            }</field>-->
+    </record>
+
+    <!-- Inherited the sales quotation view and added smart button to call view booking -->
+	<record model="ir.ui.view" id="view_sales_quotation_view_rft">
+		<field name="name">Transport RFT</field>
+		<field name="model">sale.order</field>
+        <field name="type">form</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="sale.view_order_form"/>
+		<field name="arch" type="xml">
+			<button name="action_view_invoice" position="after">
+				<button class="oe_stat_button" type="action" name="%(sci_goexcel_transport.view_sq_transport_rft)d"
+                    icon="fa-truck" attrs="{'invisible': [('sq_rft_count', '=', 0)]}">
+                    <field string="Transport RFT" name="sq_rft_count" widget="statinfo"/>
+					<!--
+				&lt;!&ndash;attrs="{'invisible': [('type', '=', 'contact')]}"&ndash;&gt;
+					&lt;!&ndash; for type 'contact', company and contact is the  same &ndash;&gt;
+					-->
+                </button>
+			</button>
+			<!--
+			<xpath expr="//field[@name='validity_date']" position="before">
+                 <field name="sq_description"/>
+            </xpath>
+            -->
+
+		</field>
+	</record>
+    <!--
+
+	 &lt;!&ndash; Tree View trip in Sales Module &ndash;&gt;
+     <record id='view_sales_quotation_tree_rft' model='ir.ui.view'>
+        <field name="name">Sales Quotation Tree</field>
+        <field name="model">sale.order</field>
+        <field name="type">tree</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='date_order']" position="before">
+    			<field name="sq_description"/>
+  			</xpath>
+		</field>
+	</record>
+
+
+	&lt;!&ndash; Tree View trip in Transport Module &ndash;&gt;
+     <record id='view_sales_quotation_tree_transport_rft' model='ir.ui.view'>
+        <field name="name">Sales Quotation Tree</field>
+        <field name="model">sale.order</field>
+        <field name="type">tree</field>
+		<field name="priority" eval="1"/>
+		<field name="inherit_id" ref="sale.view_order_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='confirmation_date']" position="before">
+    			<field name="sq_description"/>
+  			</xpath>
+		</field>
+	</record>
+
+	&lt;!&ndash; Search SQ with added field &ndash;&gt;
+	<record id="view_sales_quotation_search_rft" model="ir.ui.view">
+            <field name="name">Sales Quotation Search</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+				<search>
+					<field name="sq_description"/>
+				</search>
+            </field>
+    </record>-->
+
+    <record id="action_transport_sales_quotation" model="ir.actions.act_window">
+		<field name="name">Sales Quotation</field>
+        <field name="type">ir.actions.act_window</field>
+		<field name="res_model">sale.order</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+ 	</record>
+
+	<menuitem id="main_menu_transport_sales_quotation"
+			  name="Sales Quotation"
+			  parent="menu_goexcel_transport"
+			  sequence="4"/>
+
+	<menuitem id="menu_transport_sales_quotation"
+			  name="Sales Quotation"
+			  parent="main_menu_transport_sales_quotation"
+			  action="action_transport_sales_quotation"/>
+
+</odoo>
