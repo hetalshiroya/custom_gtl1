@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Booking Report Pivot -->
+    <record id='view_booking_report_pivot_id' model='ir.ui.view'>
+        <field name="name">Booking Report Pivot</field>
+        <field name="model">freight.booking.pivot.report</field>
+        <field name="arch" type="xml">
+            <pivot string='Booking Report'>
+                <field name="booking_date_time" interval="month" type="row" />
+                <field name="customer_name" type="row" />
+                <field name="sale_total" type="measure" />
+                <field name="cost_total" type="measure" />
+                <field name="profit_total" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Booking Report Tree -->
+    <record id="view_tree_booking_report_id" model="ir.ui.view">
+        <field name="name">Booking Report Form</field>
+        <field name="model">freight.booking.pivot.report</field>
+        <field name="arch" type="xml">
+            <tree string='Booking Job'>
+                <field name="booking_no" />
+                <field name="booking_date_time" />
+                <field name="customer_name" />
+                <field name="container_product_id"/>
+                <field name="direction" />
+                <field name="cargo_type" />
+                <field name="shipper" />
+                <field name="consignee" />
+                <field name="port_of_loading" />
+                <field name="port_of_discharge" />
+                <field name="type" />
+                <field name="container_qty" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Booking Report Form -->
+    <record id="view_form_booking_report_id" model="ir.ui.view">
+        <field name="name">Booking Report Form</field>
+        <field name="model">freight.booking.pivot.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="booking_no" />
+                            <field name="booking_date_time" />
+                            <field name="customer_name" />
+                            <field name="owner" />
+                            <field name="container_product_id"/>
+                            <field name="container_qty" />
+                            <field name="type" />
+                            <field name="company_id" />
+                        </group>
+                        <group>
+                            <field name="direction" />
+                            <field name="cargo_type" />
+                            <field name="carrier_booking_no" />
+                            <field name="shipper" />
+                            <field name="consignee" />
+                            <field name="port_of_loading" />
+                            <field name="port_of_discharge" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Search View Booking -->
+    <record id="view_search_booking_report_id" model="ir.ui.view">
+        <field name="name">Booking Report Filter</field>
+        <field name="model">freight.booking.pivot.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="booking_no" />
+                <field name="customer_name" />
+                <field name="carrier_booking_no" />
+                <field name="port_of_loading" />
+                <field name="port_of_discharge" />
+                <field name="job_no" />
+                <field name="type" />
+                <field name="company_id" />
+                <field name="container_product_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_view_freight_booking_report_id" model="ir.actions.act_window">
+        <field name="name">Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">freight.booking.pivot.report</field>
+        <field name="view_mode">pivot,form,tree</field>
+    </record>
+
+    <record model="ir.ui.menu" id="sci_goexcel_freight.menu_freight_analysis">
+        <field name="active" eval="False" />
+    </record>
+
+    <menuitem id="menu_freight_analysis_id" name="Booking Job Profit" parent="sci_goexcel_freight.menu_freight_report_analysis" action="action_view_freight_booking_report_id" />
+</odoo>
